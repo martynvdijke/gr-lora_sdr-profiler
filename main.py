@@ -18,8 +18,8 @@ def main():
     # cr_list = [0]
     frames_list = [10]
     frame_period_list = [200]
-    impl_head_list = [True, False]
-    has_crc_list = [False, True]
+    impl_head_list = [True]
+    has_crc_list = [False]
     cr_list = [0,2,3,4]
 
     colums_names = ['template', 'source_data', 'bw', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
