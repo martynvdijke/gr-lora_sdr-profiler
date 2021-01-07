@@ -5,7 +5,7 @@ from helpers import profiler
 
 def main():
     templates_list = ["lora_sim_blocks","lora_sim_chain","lora_sim_multi1","lora_sim_multi2","lora_sim_multi3","lora_sim_multi4","lora_sim_multi5","lora_sim_multi6"]
-    # templates_list = ["lora_sim_blocks"]
+    templates_list = ["lora_sim_multi4","lora_sim_multi5","lora_sim_multi6"]
 
     # list values to generate profiling cases for
     source_data_list = [
@@ -20,7 +20,9 @@ def main():
     frame_period_list = [200]
     impl_head_list = [True]
     has_crc_list = [False]
-    cr_list = [0,2,3,4]
+    cr_list = [0]
+
+    #,2,3,4]
 
     colums_names = ['template', 'source_data', 'bw', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
                     'frame_period', 'num_right', 'num_total', 'time', 'mem']
@@ -28,6 +30,7 @@ def main():
     num_tx = 1
     # loop over all templates to profile
     for template in templates_list:
+        print(template)
         if (template == "lora_sim_blocks"):
             num_tx = 1
         if (template == "lora_sim_chain"):
@@ -83,6 +86,8 @@ def main():
 
                                             df = df.append(
                                                 data, ignore_index=True)
+                                            print("Executed loop once.")
+                                            df.to_csv("profiled.csv")
                                             if (template == "lora_sim_multi2"):
                                                 break
                                             if (template == "lora_sim_multi3"):
@@ -93,8 +98,7 @@ def main():
                                                 break
                                             if (template == "lora_sim_multi6"):
                                                 break
-                                            print("Executed loop once.")
-    df.to_csv("profiled.csv")
+
     print("Done!")
     print("Exiting..")
 
