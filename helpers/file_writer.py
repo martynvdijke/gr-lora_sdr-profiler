@@ -13,7 +13,7 @@ def from_dict(dct):
         return dct.get(key, f'<{key} not found>')
     return lookup
 
-def write_template(file_name, source_data, bw, sf, paylen, impl_head, has_crc, cr,frames,frame_period):
+def write_template(file_name, source_data, bw, sf, paylen, impl_head, has_crc, cr,frames,frame_period,mean):
     """[summary]
 
     Args:
@@ -43,7 +43,8 @@ def write_template(file_name, source_data, bw, sf, paylen, impl_head, has_crc, c
         "has_crc": str(has_crc),
         "cr": str(cr),
         "n_frame" : str(frames),
-        "frame_period" : str(frame_period)
+        "frame_period" : str(frame_period),
+        "mean" : str(mean)
     }
     #replace placeholder values with real values
     replaced_text = re.sub('@@(.*?)@@', from_dict(subs), f_template_text)

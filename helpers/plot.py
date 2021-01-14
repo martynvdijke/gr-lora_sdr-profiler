@@ -91,8 +91,9 @@ def plot_multi_num_right(df):
 
 
 def main():
-    file_name = "../profiled_test.csv"
+    file_name = "../profiled.csv"
     df = pd.read_csv(file_name)
+    print(df)
 
     plot_sf(df)
     plot_mem(df)
