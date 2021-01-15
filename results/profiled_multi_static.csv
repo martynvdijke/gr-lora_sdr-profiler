@@ -1,0 +1,7 @@
+,template,mean,source_data,bw,paylen,impl_head,has_crc,cr,frames,frame_period,delay_sf1,delay_sf2,delay_sf3,delay_sf4,delay_sf5,delay_sf6,num_right,num_total,num_dec,time
+0,lora_sim_multi1,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,9,10,9,7.679004907608032
+1,lora_sim_multi2,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,13,20,15,3.8567962646484375
+2,lora_sim_multi3,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,20,30,24,3.969719171524048
+3,lora_sim_multi4,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,31,40,34,4.040566444396973
+4,lora_sim_multi5,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,24,50,35,6.4999260902404785
+5,lora_sim_multi6,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,18,60,33,11.922496795654297
