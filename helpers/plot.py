@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 
 def plot_sf(df):
@@ -90,17 +91,31 @@ def plot_multi_num_right(df):
     plt.close()
 
 
-def main():
-    file_name = "../profiled.csv"
-    df = pd.read_csv(file_name)
-    print(df)
+def mk_dir():
+    print("Generting output structure")
+    if not os.path.exists('figures'):
+        os.makedirs('figures')
+    if not os.path.exists('figures/eps'):
+        os.makedirs('figures/eps')
+    if not os.path.exists('figures/png'):
+        os.makedirs('figures/png')
 
-    plot_sf(df)
-    plot_mem(df)
-    plot_num_right(df)
-    plot_multi_time(df)
-    plot_multi_mem(df)
-    plot_multi_num_right(df)
+
+def main():
+    print("Welcome to the plotter..")
+    mk_dir()
+
+    file_name = "../profiled_single.csv"
+    df_single = pd.read_csv(file_name)
+    print("Going to plot all single values")
+    plot_sf(df_single)
+    plot_num_right(df_single)
+
+    file_name = "../profiled_multi.csv"
+    df_multi = pd.read_csv(file_name)
+    print("Going to plot all single values")
+    plot_multi_time(df_multi)
+    plot_multi_num_right(df_multi)
 
 
 main()

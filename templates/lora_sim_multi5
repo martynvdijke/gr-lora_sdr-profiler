@@ -29,14 +29,10 @@ class lora_sim_multi(gr.top_block):
         ##################################################
         # Variables
         ##################################################
+        # Input data in the system.
         src_data = "@@source_data@@"
         self.bw = bw = @@bw@@
-        self.sf6 = sf6 = 12
-        self.sf5 = sf5 = 11
-        self.sf4 = sf4 = 10
-        self.sf3 = sf3 = 9
-        self.sf2 = sf2 = 8
-        self.sf = sf = 7
+        self.sf = sf = @@sf@@
         self.samp_rate = samp_rate = bw
         self.pay_len = pay_len = @@pay_len@@
         self.n_frame = n_frame = @@n_frame@@
@@ -44,7 +40,22 @@ class lora_sim_multi(gr.top_block):
         self.has_crc = has_crc = @@has_crc@@
         self.frame_period = frame_period = @@frame_period@@
         self.cr = cr = @@cr@@
-        self.mult_const = mult_const = 1
+        self.mean = mean = @@mean@@
+        self.delay_sf6 = delay_sf6 = @@delay_sf6@@
+        self.delay_sf5 = delay_sf5 = @@delay_sf5@@
+        self.delay_sf4 = delay_sf4 = @@delay_sf4@@
+        self.delay_sf3 = delay_sf3 = @@delay_sf3@@
+        self.delay_sf2 = delay_sf2 = @@delay_sf2@@
+        self.delay_sf1 = delay_sf1 = @@delay_sf1@@
+        self.multi_control = multi_control = True
+        # static parameters
+        self.sf6 = sf6 = 12
+        self.sf5 = sf5 = 11
+        self.sf4 = sf4 = 10
+        self.sf3 = sf3 = 9
+        self.sf2 = sf2 = 8
+        self.sf = sf = 7
+
         ##################################################
         # Blocks
         ##################################################

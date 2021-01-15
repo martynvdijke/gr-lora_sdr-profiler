@@ -10,7 +10,7 @@ def profile(string_input):
         string : returns stdout from scalene run
     """
     start_time = td.time()
-    process = subprocess.Popen('python temp/flowgraph.py',
+    process = subprocess.Popen('timeout 30 python temp/flowgraph.py',
                                shell=True, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
 
@@ -29,17 +29,25 @@ def parser_stdout(stdout, string_input, time):
     Returns:
         [int]: number of rightlyfull decoded messages
     """
+    # Number of rightlyfully decoded messages
     num_right = 0
+    # Number of decoded messages
+    num_dec = 0
+    #for each line in stdout find the number of rightfull and decoded messages
     for out in stdout:
         line = str(out)
-        re_text = 'Decode msg is:' + str(string_input)
-        out = re.search(re_text, line)
+        re_text_right = 'Decode msg is:' + str(string_input)
+        out_right = re.search(re_text_right, line)
+        re_text_dec = 'Decode msg is:'
+        out_dec = re.search(re_text_dec, line)
         # check if the search found match objects
-        if out is not None:
+        if out_right is not None:
             num_right = num_right + 1
-    return num_right, time
+        if out_dec is not None:
+            num_dec = num_dec + 1
+    return num_right, num_dec, time
 
-
+##deprecated
 def parser_scalene():
     """[summary]
 

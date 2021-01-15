@@ -1,0 +1,5 @@
+,template,mean,source_data,bw,sf,paylen,impl_head,has_crc,cr,frames,frame_period,num_right,num_total,num_dec,time
+0,lora_sim_blocks,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,7,64,True,False,0,10,200,5,10,7,3.593233823776245
+1,lora_sim_blocks,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,8,64,True,False,0,10,200,6,10,7,3.7000679969787598
+2,lora_sim_blocks,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,9,64,True,False,0,10,200,6,10,7,3.805934190750122
+3,lora_sim_blocks,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,10,64,True,False,0,10,200,7,10,7,4.014740943908691
