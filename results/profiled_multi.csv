@@ -1,5 +1,0 @@
-,template,mean,source_data,bw,paylen,impl_head,has_crc,cr,frames,frame_period,delay_sf1,delay_sf2,delay_sf3,delay_sf4,delay_sf5,delay_sf6,num_right,num_total,num_dec,time
-0,lora_sim_multi1,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,2,10,6,3.946157693862915
-1,lora_sim_multi2,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,9,20,11,4.1836395263671875
-2,lora_sim_multi3,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,17,30,20,4.307419538497925
-3,lora_sim_multi4,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,23,40,26,4.50752329826355

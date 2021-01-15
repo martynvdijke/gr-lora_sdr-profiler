@@ -7,7 +7,7 @@ def main_single():
     """[summary]
     """
     templates_list = ["lora_sim_blocks", "lora_sim_chain", "lora_sim_multi1"]
-    templates_list = ["lora_sim_multi1"]
+    #templates_list = ["lora_sim_multi1"]
 
     # list values to generate profiling cases for
     source_data_list = [
