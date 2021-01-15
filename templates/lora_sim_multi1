@@ -59,54 +59,77 @@ class lora_sim_multi(gr.top_block):
     ##################################################
         # Blocks
         ##################################################
-        self.lora_sdr_hier_tx_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf, impl_head,has_crc, samp_rate, bw, 200, False)
-        self.lora_sdr_hier_rx_0_2_0 = lora_sdr.hier_rx(samp_rate, bw, 10, impl_head, cr, pay_len, has_crc)
-        self.lora_sdr_hier_rx_0_1_0_0_1_0 = lora_sdr.hier_rx(samp_rate, bw, 7, impl_head, cr, pay_len, has_crc)
-        self.lora_sdr_hier_rx_0_1_0_0_1 = lora_sdr.hier_rx(samp_rate, bw, 11, impl_head, cr, pay_len, has_crc)
-        self.lora_sdr_hier_rx_0_1_0_0_0_0_0 = lora_sdr.hier_rx(samp_rate, bw, 8, impl_head, cr, pay_len, has_crc)
-        self.lora_sdr_hier_rx_0_1_0_0_0_0 = lora_sdr.hier_rx(samp_rate, bw, 12, impl_head, cr, pay_len, has_crc)
-        self.lora_sdr_hier_rx_0_0_0_0 = lora_sdr.hier_rx(samp_rate, bw, 9, impl_head, cr, pay_len, has_crc)
-        self.interp_fir_filter_xxx_0_0_0_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,-0.212206590789194,-0.180063263231421,3.89817183251938e-17,0.300105438719035,0.636619772367581,0.900316316157106,1,0.900316316157106,0.636619772367581,0.300105438719035,3.89817183251938e-17,-0.180063263231421,-0.212206590789194,-0.128616616593872))
+        self.lora_sdr_hier_tx_0 = lora_sdr.hier_tx(
+            pay_len, n_frame, src_data, cr, sf, impl_head, has_crc, samp_rate, bw, mean, True)
+        self.lora_sdr_hier_rx_0_2_0 = lora_sdr.hier_rx(
+            samp_rate, bw, 10, impl_head, cr, pay_len, has_crc)
+        self.lora_sdr_hier_rx_0_1_0_0_1_0 = lora_sdr.hier_rx(
+            samp_rate, bw, 7, impl_head, cr, pay_len, has_crc)
+        self.lora_sdr_hier_rx_0_1_0_0_1 = lora_sdr.hier_rx(
+            samp_rate, bw, 11, impl_head, cr, pay_len, has_crc)
+        self.lora_sdr_hier_rx_0_1_0_0_0_0_0 = lora_sdr.hier_rx(
+            samp_rate, bw, 8, impl_head, cr, pay_len, has_crc)
+        self.lora_sdr_hier_rx_0_1_0_0_0_0 = lora_sdr.hier_rx(
+            samp_rate, bw, 12, impl_head, cr, pay_len, has_crc)
+        self.lora_sdr_hier_rx_0_0_0_0 = lora_sdr.hier_rx(
+            samp_rate, bw, 9, impl_head, cr, pay_len, has_crc)
+        self.interp_fir_filter_xxx_0_0_0_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872, -0.212206590789194, -0.180063263231421, 3.89817183251938e-17, 0.300105438719035,
+                                                                                    0.636619772367581, 0.900316316157106, 1, 0.900316316157106, 0.636619772367581, 0.300105438719035, 3.89817183251938e-17, -0.180063263231421, -0.212206590789194, -0.128616616593872))
         self.interp_fir_filter_xxx_0_0_0_0_0_0_0.declare_sample_delay(0)
         self.interp_fir_filter_xxx_0_0_0_0_0_0_0.set_min_output_buffer(32768)
-        self.interp_fir_filter_xxx_0_0_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,-0.212206590789194,-0.180063263231421,3.89817183251938e-17,0.300105438719035,0.636619772367581,0.900316316157106,1,0.900316316157106,0.636619772367581,0.300105438719035,3.89817183251938e-17,-0.180063263231421,-0.212206590789194,-0.128616616593872))
+        self.interp_fir_filter_xxx_0_0_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872, -0.212206590789194, -0.180063263231421, 3.89817183251938e-17, 0.300105438719035,
+                                                                                  0.636619772367581, 0.900316316157106, 1, 0.900316316157106, 0.636619772367581, 0.300105438719035, 3.89817183251938e-17, -0.180063263231421, -0.212206590789194, -0.128616616593872))
         self.interp_fir_filter_xxx_0_0_0_0_0_0.declare_sample_delay(0)
         self.interp_fir_filter_xxx_0_0_0_0_0_0.set_min_output_buffer(16384)
-        self.interp_fir_filter_xxx_0_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,-0.212206590789194,-0.180063263231421,3.89817183251938e-17,0.300105438719035,0.636619772367581,0.900316316157106,1,0.900316316157106,0.636619772367581,0.300105438719035,3.89817183251938e-17,-0.180063263231421,-0.212206590789194,-0.128616616593872))
+        self.interp_fir_filter_xxx_0_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872, -0.212206590789194, -0.180063263231421, 3.89817183251938e-17, 0.300105438719035,
+                                                                                0.636619772367581, 0.900316316157106, 1, 0.900316316157106, 0.636619772367581, 0.300105438719035, 3.89817183251938e-17, -0.180063263231421, -0.212206590789194, -0.128616616593872))
         self.interp_fir_filter_xxx_0_0_0_0_0.declare_sample_delay(0)
         self.interp_fir_filter_xxx_0_0_0_0_0.set_min_output_buffer(8192)
-        self.interp_fir_filter_xxx_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,-0.212206590789194,-0.180063263231421,3.89817183251938e-17,0.300105438719035,0.636619772367581,0.900316316157106,1,0.900316316157106,0.636619772367581,0.300105438719035,3.89817183251938e-17,-0.180063263231421,-0.212206590789194,-0.128616616593872))
+        self.interp_fir_filter_xxx_0_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872, -0.212206590789194, -0.180063263231421, 3.89817183251938e-17, 0.300105438719035, 0.636619772367581,
+                                                                              0.900316316157106, 1, 0.900316316157106, 0.636619772367581, 0.300105438719035, 3.89817183251938e-17, -0.180063263231421, -0.212206590789194, -0.128616616593872))
         self.interp_fir_filter_xxx_0_0_0_0.declare_sample_delay(0)
         self.interp_fir_filter_xxx_0_0_0_0.set_min_output_buffer(4096)
-        self.interp_fir_filter_xxx_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,-0.212206590789194,-0.180063263231421,3.89817183251938e-17,0.300105438719035,0.636619772367581,0.900316316157106,1,0.900316316157106,0.636619772367581,0.300105438719035,3.89817183251938e-17,-0.180063263231421,-0.212206590789194,-0.128616616593872))
+        self.interp_fir_filter_xxx_0_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872, -0.212206590789194, -0.180063263231421, 3.89817183251938e-17, 0.300105438719035, 0.636619772367581,
+                                                                            0.900316316157106, 1, 0.900316316157106, 0.636619772367581, 0.300105438719035, 3.89817183251938e-17, -0.180063263231421, -0.212206590789194, -0.128616616593872))
         self.interp_fir_filter_xxx_0_0_0.declare_sample_delay(0)
         self.interp_fir_filter_xxx_0_0_0.set_min_output_buffer(2048)
-        self.interp_fir_filter_xxx_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,-0.212206590789194,-0.180063263231421,3.89817183251938e-17,0.300105438719035,0.636619772367581,0.900316316157106,1,0.900316316157106,0.636619772367581,0.300105438719035,3.89817183251938e-17,-0.180063263231421,-0.212206590789194,-0.128616616593872))
+        self.interp_fir_filter_xxx_0_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872, -0.212206590789194, -0.180063263231421, 3.89817183251938e-17, 0.300105438719035, 0.636619772367581,
+                                                                          0.900316316157106, 1, 0.900316316157106, 0.636619772367581, 0.300105438719035, 3.89817183251938e-17, -0.180063263231421, -0.212206590789194, -0.128616616593872))
         self.interp_fir_filter_xxx_0_0.declare_sample_delay(0)
         self.interp_fir_filter_xxx_0_0.set_min_output_buffer(1024)
-        self.blocks_throttle_0_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate,True)
+        self.blocks_throttle_0_0 = blocks.throttle(
+            gr.sizeof_gr_complex*1, samp_rate, True)
         self.blocks_delay_0 = blocks.delay(gr.sizeof_gr_complex*1, delay_sf1)
-
-
 
         ##################################################
         # Connections
         ##################################################
         self.connect((self.blocks_delay_0, 0), (self.blocks_throttle_0_0, 0))
-        self.connect((self.blocks_throttle_0_0, 0), (self.interp_fir_filter_xxx_0_0, 0))
-        self.connect((self.blocks_throttle_0_0, 0), (self.interp_fir_filter_xxx_0_0_0, 0))
-        self.connect((self.blocks_throttle_0_0, 0), (self.interp_fir_filter_xxx_0_0_0_0, 0))
-        self.connect((self.blocks_throttle_0_0, 0), (self.interp_fir_filter_xxx_0_0_0_0_0, 0))
-        self.connect((self.blocks_throttle_0_0, 0), (self.interp_fir_filter_xxx_0_0_0_0_0_0, 0))
-        self.connect((self.blocks_throttle_0_0, 0), (self.interp_fir_filter_xxx_0_0_0_0_0_0_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0_0, 0), (self.lora_sdr_hier_rx_0_1_0_0_1_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0_0_0, 0), (self.lora_sdr_hier_rx_0_1_0_0_0_0_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0_0_0_0, 0), (self.lora_sdr_hier_rx_0_0_0_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0_0_0_0_0, 0), (self.lora_sdr_hier_rx_0_2_0, 0))
-        self.connect((self.interp_fir_filter_xxx_0_0_0_0_0_0, 0), (self.lora_sdr_hier_rx_0_1_0_0_1, 0))
-        self.connect((self.interp_fir_filter_xxx_0_0_0_0_0_0_0, 0), (self.lora_sdr_hier_rx_0_1_0_0_0_0, 0))
+        self.connect((self.blocks_throttle_0_0, 0),
+                     (self.interp_fir_filter_xxx_0_0, 0))
+        self.connect((self.blocks_throttle_0_0, 0),
+                     (self.interp_fir_filter_xxx_0_0_0, 0))
+        self.connect((self.blocks_throttle_0_0, 0),
+                     (self.interp_fir_filter_xxx_0_0_0_0, 0))
+        self.connect((self.blocks_throttle_0_0, 0),
+                     (self.interp_fir_filter_xxx_0_0_0_0_0, 0))
+        self.connect((self.blocks_throttle_0_0, 0),
+                     (self.interp_fir_filter_xxx_0_0_0_0_0_0, 0))
+        self.connect((self.blocks_throttle_0_0, 0),
+                     (self.interp_fir_filter_xxx_0_0_0_0_0_0_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0_0, 0),
+                     (self.lora_sdr_hier_rx_0_1_0_0_1_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0_0_0, 0),
+                     (self.lora_sdr_hier_rx_0_1_0_0_0_0_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0_0_0_0, 0),
+                     (self.lora_sdr_hier_rx_0_0_0_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0_0_0_0_0, 0),
+                     (self.lora_sdr_hier_rx_0_2_0, 0))
+        self.connect((self.interp_fir_filter_xxx_0_0_0_0_0_0, 0),
+                     (self.lora_sdr_hier_rx_0_1_0_0_1, 0))
+        self.connect((self.interp_fir_filter_xxx_0_0_0_0_0_0_0, 0),
+                     (self.lora_sdr_hier_rx_0_1_0_0_0_0, 0))
         self.connect((self.lora_sdr_hier_tx_0, 0), (self.blocks_delay_0, 0))
-
 
     def get_bw(self):
         return self.bw
@@ -264,6 +287,7 @@ class lora_sim_multi(gr.top_block):
     def set_cr(self, cr):
         with self._lock:
             self.cr = cr
+
 
 def main(top_block_cls=lora_sim_multi, options=None):
     tb = top_block_cls()

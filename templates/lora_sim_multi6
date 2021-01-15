@@ -35,7 +35,6 @@ class lora_sim_multi(gr.top_block):
         # Input data in the system.
         src_data = "@@source_data@@"
         self.bw = bw = @@bw@@
-        self.sf = sf = @@sf@@
         self.samp_rate = samp_rate = bw
         self.pay_len = pay_len = @@pay_len@@
         self.n_frame = n_frame = @@n_frame@@
@@ -62,12 +61,12 @@ class lora_sim_multi(gr.top_block):
         ##################################################
         # Blocks
         ##################################################
-        self.lora_sdr_hier_tx_0_0_0_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf6, impl_head,has_crc, samp_rate, bw, 200, True)
-        self.lora_sdr_hier_tx_0_0_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf5, impl_head,has_crc, samp_rate, bw, 200, True)
-        self.lora_sdr_hier_tx_0_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf4, impl_head,has_crc, samp_rate, bw, 200, False)
-        self.lora_sdr_hier_tx_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf3, impl_head,has_crc, samp_rate, bw, 200, False)
-        self.lora_sdr_hier_tx_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf2, impl_head,has_crc, samp_rate, bw, 200, False)
-        self.lora_sdr_hier_tx_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf, impl_head,has_crc, samp_rate, bw, 200, False)
+        self.lora_sdr_hier_tx_0_0_0_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf6, impl_head,has_crc, samp_rate, bw, mean, True)
+        self.lora_sdr_hier_tx_0_0_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf5, impl_head,has_crc, samp_rate, bw, mean, False)
+        self.lora_sdr_hier_tx_0_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf4, impl_head,has_crc, samp_rate, bw, mean, False)
+        self.lora_sdr_hier_tx_0_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf3, impl_head,has_crc, samp_rate, bw, mean, False)
+        self.lora_sdr_hier_tx_0_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf2, impl_head,has_crc, samp_rate, bw, mean, False)
+        self.lora_sdr_hier_tx_0 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf, impl_head,has_crc, samp_rate, bw, mean, False)
         self.lora_sdr_hier_rx_0_2_0 = lora_sdr.hier_rx(samp_rate, bw, 10, impl_head, cr, pay_len, has_crc)
         self.lora_sdr_hier_rx_0_1_0_0_1_0 = lora_sdr.hier_rx(samp_rate, bw, 7, impl_head, cr, pay_len, has_crc)
         self.lora_sdr_hier_rx_0_1_0_0_1 = lora_sdr.hier_rx(samp_rate, bw, 11, impl_head, cr, pay_len, has_crc)

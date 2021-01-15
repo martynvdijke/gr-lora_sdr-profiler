@@ -10,7 +10,7 @@ def profile(string_input):
         string : returns stdout from scalene run
     """
     start_time = td.time()
-    process = subprocess.Popen('timeout 30 python temp/flowgraph.py',
+    process = subprocess.Popen('timeout 60 python temp/flowgraph.py',
                                shell=True, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
 

@@ -54,9 +54,9 @@ class lora_sim(gr.top_block):
             taps=None,
             fractional_bw=None)
         self.lora_sdr_hier_tx_0_0 = lora_sdr.hier_tx(
-            pay_len, n_frame, src_data, cr, sf2, impl_head, has_crc, samp_rate, bw, 200, False)
+            pay_len, n_frame, src_data, cr, sf, impl_head, has_crc, samp_rate, bw, 200, False)
         self.lora_sdr_hier_rx_0_0 = lora_sdr.hier_rx(
-            samp_rate, bw, sf2, impl_head, cr, pay_len, has_crc)
+            samp_rate, bw, sf, impl_head, cr, pay_len, has_crc)
         self.blocks_throttle_0_0 = blocks.throttle(
             gr.sizeof_gr_complex*1, samp_rate, True)
 
