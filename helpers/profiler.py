@@ -3,6 +3,20 @@ import re
 import time as td
 
 
+# def load_avg():
+#     process = subprocess.Popen("cat /proc/loadavg | awk '{ print $1 }'",
+#                                shell=True, stdout=subprocess.PIPE)
+#     out, err = process.communicate()
+#     print(str(out))
+
+    # # stdout = process.stdout.readlines()
+    # re_load = '\d+\.\d+'
+    # for line in out:
+    #     load = re.search(re_load, str(line)).group()
+    #     print(load)
+    # print(stdout)
+
+
 def profile(string_input):
     """Runs the scalene profiler with output
 
@@ -33,7 +47,7 @@ def parser_stdout(stdout, string_input, time):
     num_right = 0
     # Number of decoded messages
     num_dec = 0
-    #for each line in stdout find the number of rightfull and decoded messages
+    # for each line in stdout find the number of rightfull and decoded messages
     for out in stdout:
         line = str(out)
         re_text_right = 'Decode msg is:' + str(string_input)
@@ -47,7 +61,9 @@ def parser_stdout(stdout, string_input, time):
             num_dec = num_dec + 1
     return num_right, num_dec, time
 
-##deprecated
+# deprecated
+
+
 def parser_scalene():
     """[summary]
 
@@ -67,3 +83,5 @@ def parser_scalene():
     time_line = re.search(re_time, line).group()
     time = re.search(re_val, time_line).group()
     return mem, time
+
+# load_avg()
