@@ -1,6 +1,7 @@
 import pandas as pd
 from helpers import file_writer
 from helpers import profiler
+from helpers import cpu_load
 
 
 def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
@@ -222,7 +223,7 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
 
     colums_names = ['template', 'run', 'mean', 'source_data', 'bw', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
                     'frame_period', 'delay_sf1', 'delay_sf2', 'delay_sf3', 'delay_sf4', 'delay_sf5', 'delay_sf6',
-                    'num_right', 'num_total', 'num_dec', 'time']
+                    'num_right', 'num_total', 'num_dec', 'time','load']
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
@@ -266,6 +267,9 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                         num_right, num_dec, time = profiler.profile(
                                                                             source_data)
 
+                                                                        load = cpu_load.load_avg()
+                                                                        print(load)
+
                                                                         data = {
                                                                             'template': str(template),
                                                                             'run': i,
@@ -288,6 +292,7 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                             'num_dec': num_dec,
                                                                             'num_total': num_tx * frames,
                                                                             'time': time,
+                                                                            'load':load
                                                                         }
                                                                         # append newly created data to dataframe
                                                                         df = df.append(
@@ -309,7 +314,7 @@ def main():
     sf_list = [7, 8, 9, 10, 11, 12]
     paylen_list = [64]
     frames_list = [10]
-    frame_period_list = [300, 400, 500]
+    frame_period_list = [300]
     impl_head_list = [True]
     has_crc_list = [False]
     cr_list = [4]

@@ -47,6 +47,7 @@ def parser_stdout(stdout, string_input, time):
     num_right = 0
     # Number of decoded messages
     num_dec = 0
+    print(string_input)
     # for each line in stdout find the number of rightfull and decoded messages
     for out in stdout:
         line = str(out)
@@ -62,8 +63,6 @@ def parser_stdout(stdout, string_input, time):
     return num_right, num_dec, time
 
 # deprecated
-
-
 def parser_scalene():
     """[summary]
 
