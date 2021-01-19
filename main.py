@@ -69,7 +69,7 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
                 delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs):
     """[summary]
     """
-    templates_list = ["lora_sim_blocks", "lora_sim_chain", "lora_sim_multi1"]
+    templates_list = ["lora_sim_blocks", "lora_sim_chain"]
     #templates_list = ["lora_sim_multi1"]
 
     colums_names = ['template', 'run', 'mean', 'source_data', 'bw', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
@@ -321,21 +321,21 @@ def main():
     delay_sf5_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
     delay_sf6_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
-    n_runs = 10
+    n_runs = 25
 
-    main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
-    print("Single run done!")
+    # main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    #             delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
+    # print("Single run done!")
     # print("Starting multi gateway run..")
     # main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
     #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
     #             delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
     # print("Multi gateway run done!")
-    # print("Running multiple runs single")
-    # main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #             delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
+    print("Running multiple runs single")
+    main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+                delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
     # print("Running multiple runs multi")
     # main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
     #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
