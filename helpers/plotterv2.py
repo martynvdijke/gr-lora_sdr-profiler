@@ -22,14 +22,51 @@ def plot_single(df, argument, templates, file_name, xlabel):
     if argument == "sf":
         df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).time.max().unstack().plot.barh()
+        plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
     if argument == "num_right":
         df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).num_right.max().unstack().plot.barh()
+        plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
     if argument == "num_dec":
         df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).num_dec.max().unstack().plot.barh()
+        plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
 
-    plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
+
+    if argument == "mean_num":
+        df.groupby(
+            ['template', 'mean']).num_right.sum().unstack().plot.barh()
+        plt.yticks(visible=False)
+    if argument == "frame_period_num":
+        df.groupby(
+            ['template', 'frame_period']).num_right.sum().unstack().plot.barh()
+        plt.yticks(visible=False)
+    if argument == "cr_num":
+        df.groupby(
+            ['template', 'cr']).num_right.sum().unstack().plot.barh()
+        plt.yticks(visible=False)
+    if argument == "has_crc_num":
+        df.groupby(
+            ['template', 'has_crc']).num_right.sum().unstack().plot.barh()
+        plt.yticks(visible=False)
+
+    if argument == "mean_time":
+        df.groupby(
+            ['template', 'mean']).time.mean().unstack().plot.barh()
+        plt.yticks(visible=False)
+    if argument == "frame_period_time":
+        df.groupby(
+            ['template', 'frame_period']).time.mean().unstack().plot.barh()
+        plt.yticks(visible=False)
+    if argument == "cr_time":
+        df.groupby(
+            ['template', 'cr']).time.mean().unstack().plot.barh()
+        plt.yticks(visible=False)
+    if argument == "has_crc_time":
+        df.groupby(
+            ['template', 'has_crc']).time.mean().unstack().plot.barh()
+        plt.yticks(visible=False)
+
     # ax = plt.axes()
     # ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.05),
     #           ncol=3, fancybox=True, shadow=True)
@@ -85,7 +122,6 @@ def plot_single_nruns(df, argument, templates, file_name, xlabel):
     plt.yticks(sf)
     plt.ylabel("Spreading Factor")
     plt.xlabel(xlabel)
-    file_name = "time_n_runs"
     plt.savefig('figures/eps/' + file_name + '.eps', format='eps')
     plt.savefig('figures/png/' + file_name + '.png')
     plt.show()
@@ -159,7 +195,6 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
     plt.yticks(yval)
     plt.ylabel("Number of sending Tx")
     plt.xlabel(xlabel)
-    file_name = "nright_multi_n_runs"
     plt.savefig('figures/eps/' + file_name + '.eps', format='eps')
     plt.savefig('figures/png/' + file_name + '.png')
     plt.show()
@@ -175,20 +210,40 @@ def main():
     templates = ["lora_sim_chain"]
     file_name = "../results/profiled_single.csv"
     df_single = pd.read_csv(file_name)
-    plot_single(df_single, "sf", templates, "sf_time", "Execution time [s]")
-    plot_single(df_single, "num_right", templates, "sf_num_right",
-                "Number of rightfully decoded messages")
+    plot_single(df_single, "sf", templates, "s_time", "Execution time [s]")
+    plot_single(df_single, "s_num_right", templates, "sf_num_right",
+                "Number of correctly decoded messages")
     plot_single(df_single, "num_dec", templates,
-                "sf_num_dec", "Number of decoded messages")
+                "s_num_dec", "Number of decoded messages")
+
+    file_name = "../results/profiled_single_dyn.csv"
+    df_single_dyn = pd.read_csv(file_name)
+    plot_single(df_single_dyn, "mean_num", "lora_sim_multi1",
+                "s_mean_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "frame_period_num", "lora_sim_multi1",
+                "s_frame_period_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "cr_num", "lora_sim_multi1",
+                "s_cr_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "has_crc_num", "lora_sim_multi1",
+                "s_has_crc_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "mean_time", "lora_sim_multi1",
+                "s_mean_time", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "frame_period_time", "lora_sim_multi1",
+                "s_frame_period_time", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "cr_time", "lora_sim_multi1",
+                "s_cr_time", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "has_crc_time", "lora_sim_multi1",
+                "s_has_crc_time", "Total number of correctly decoded messages")
+
 
     file_name = "../results/profiled_single_runs.csv"
     df_single_n = pd.read_csv(file_name)
     plot_single_nruns(df_single_n, "sf", templates,
-                      "time_n_runs", "Execution time [s]")
+                      "nsruns_time", "Execution time [s]")
     plot_single_nruns(df_single_n, "num_right", templates,
-                      "time_n_right", "Number of rightfully decoded messages")
+                      "nsruns_nright", "Number of correctly decoded messages")
     plot_single_nruns(df_single_n, "num_dec", templates,
-                      "time_n_dec", "Number of decoded messages")
+                      "nsruns_ndec", "Number of decoded messages")
 
     templates = ["lora_sim_multi1", "lora_sim_multi2", "lora_sim_multi3",
                  "lora_sim_multi4", "lora_sim_multi5", "lora_sim_multi6"]
@@ -197,19 +252,19 @@ def main():
     file_name = "../results/profiled_multi.csv"
     df_multi = pd.read_csv(file_name)
     plot_multi(df_multi, "sf", templates,
-               "sf_time_multi", "Execution time [s]")
+               "m_time", "Execution time [s]")
     plot_multi(df_multi, "num_right", templates,
-               "sf_num_right_multi", "Number of rightly decoded messages")
+               "m_num_right", "Number of rightly decoded messages")
     plot_multi(df_multi, "num_dec", templates,
-               "sf_num_dec_multi", "Number of decoded messages]")
+               "m_num_dec", "Number of decoded messages]")
 
     file_name = "../results/profiled_multi_runs.csv"
     df_multi_n = pd.read_csv(file_name)
     plot_multi_nruns(df_multi_n, "sf", templates,
-               "sf_time_multi", "Execution time [s]")
+               "nmruns_time", "Execution time [s]")
     plot_multi_nruns(df_multi_n, "num_right", templates,
-               "sf_num_right_multi", "Number of rightly decoded messages")
+               "nmruns_num_right", "Number of correctly decoded messages")
     plot_multi_nruns(df_multi_n, "num_dec", templates,
-               "sf_num_dec_multi", "Number of decoded messages]")
+               "nmruns_num_dec", "Number of decoded messages]")
 
 main()
