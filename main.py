@@ -13,7 +13,7 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
     templates_list = ["lora_sim_blocks", "lora_sim_chain"]
 
     colums_names = ['template', 'mean', 'source_data', 'bw', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
-                    'frame_period', 'num_right', 'num_total', 'num_dec', 'time']
+                    'frame_period', 'num_right', 'num_total', 'num_dec', 'time','load']
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
@@ -38,6 +38,8 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
 
                                                 num_right, num_dec, time = profiler.profile(
                                                     source_data)
+                                                load = cpu_load.load_avg()
+
 
                                                 data = {
                                                     'template': str(template),
@@ -55,6 +57,7 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
                                                     'num_total': frames,
                                                     'num_dec': num_dec,
                                                     'time': time,
+                                                    'load':load
                                                 }
                                                 # append newly created data to dataframe
                                                 df = df.append(
@@ -74,7 +77,7 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
     #templates_list = ["lora_sim_multi1"]
 
     colums_names = ['template', 'run', 'mean', 'source_data', 'bw', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
-                    'frame_period', 'num_right', 'num_total', 'num_dec', 'time']
+                    'frame_period', 'num_right', 'num_total', 'num_dec', 'time','load']
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
@@ -99,7 +102,8 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
 
                                                     num_right, num_dec, time = profiler.profile(
                                                         source_data)
-
+                                                    
+                                                    load = cpu_load.load_avg()
                                                     data = {
                                                         'template': str(template),
                                                         'run': i,
@@ -117,6 +121,7 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
                                                         'num_total': frames,
                                                         'num_dec': num_dec,
                                                         'time': time,
+                                                        'load':load
                                                     }
                                                     # append newly created data to dataframe
                                                     df = df.append(
@@ -138,7 +143,7 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
 
     colums_names = ['template', 'mean', 'source_data', 'bw', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
                     'frame_period', 'delay_sf1', 'delay_sf2', 'delay_sf3', 'delay_sf4', 'delay_sf5', 'delay_sf6',
-                    'num_right', 'num_total', 'num_dec', 'time']
+                    'num_right', 'num_total', 'num_dec', 'time','load']
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
@@ -180,7 +185,8 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
 
                                                                     num_right, num_dec, time = profiler.profile(
                                                                         source_data)
-
+                                                                    
+                                                                    load = cpu_load.load_avg()
                                                                     data = {
                                                                         'template': str(template),
                                                                         'mean': mean,
@@ -202,6 +208,7 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
                                                                         'num_dec': num_dec,
                                                                         'num_total': num_tx * frames,
                                                                         'time': time,
+                                                                        'load': load
                                                                     }
                                                                     # append newly created data to dataframe
                                                                     df = df.append(
@@ -314,11 +321,11 @@ def main():
     sf_list = [7, 8, 9, 10, 11, 12]
     paylen_list = [64]
     frames_list = [10]
-    frame_period_list = [300]
+    frame_period_list = [200]
     impl_head_list = [True]
     has_crc_list = [False]
     cr_list = [4]
-    mean_list = [200]
+    mean_list = [1000]
     delay_sf1_list = [0]
     delay_sf2_list = [0]
     delay_sf3_list = [0]
@@ -334,20 +341,20 @@ def main():
 
     n_runs = 25
 
-    # main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #             delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
-    # print("Single run done!")
-    # print("Starting multi gateway run..")
-    # main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #             delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
-    # print("Multi gateway run done!")
-    # print("Running multiple runs single")
-    # main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #             delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
-    # print("Running multiple runs multi")
+    main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+                delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
+    print("Single run done!")
+    print("Starting multi gateway run..")
+    main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+                delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
+    print("Multi gateway run done!")
+    print("Running multiple runs single")
+    main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+                delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
+    print("Running multiple runs multi")
     main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                 impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                 delay_sf4_list,delay_sf5_list,delay_sf6_list,n_runs)
