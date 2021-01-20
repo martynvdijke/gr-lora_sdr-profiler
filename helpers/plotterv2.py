@@ -177,6 +177,13 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
             ['template']).num_dec.agg('min').values.tolist()
         maxval = df[df['template'].isin(templates)].groupby(
             ['template']).num_dec.agg('max').values.tolist()
+    if argument == "load":
+        mean = df[df['template'].isin(templates)].groupby(
+            ['template']).load.agg('mean').values.tolist()
+        minval = df[df['template'].isin(templates)].groupby(
+            ['template']).load.agg('min').values.tolist()
+        maxval = df[df['template'].isin(templates)].groupby(
+            ['template']).load.agg('max').values.tolist()
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -189,7 +196,10 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
         max_err.append(list1_i - list2_i)
 
     errors = [min_err, max_err]
-    yval = np.arange(len(mean))
+    yval = []
+    for i in range(1,len(mean)+1):
+        yval.append(i)
+
     colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown']
     plt.barh(yval, mean, xerr=errors, capsize=6, label=yval, color=colors)
     plt.yticks(yval)
@@ -256,7 +266,7 @@ def main():
     plot_multi(df_multi, "num_right", templates,
                "m_num_right", "Number of rightly decoded messages")
     plot_multi(df_multi, "num_dec", templates,
-               "m_num_dec", "Number of decoded messages]")
+               "m_num_dec", "Number of decoded messages")
 
     file_name = "../results/profiled_multi_runs.csv"
     df_multi_n = pd.read_csv(file_name)
@@ -265,6 +275,8 @@ def main():
     plot_multi_nruns(df_multi_n, "num_right", templates,
                "nmruns_num_right", "Number of correctly decoded messages")
     plot_multi_nruns(df_multi_n, "num_dec", templates,
-               "nmruns_num_dec", "Number of decoded messages]")
+               "nmruns_num_dec", "Number of decoded messages")
+    plot_multi_nruns(df_multi_n, "load", templates,
+               "nmruns_load", "Average 1-min load")
 
 main()
