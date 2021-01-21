@@ -32,7 +32,6 @@ def plot_single(df, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_dec.max().unstack().plot.barh()
         plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
 
-
     if argument == "mean_num":
         df.groupby(
             ['template', 'mean']).num_right.mean().unstack().plot.barh()
@@ -102,6 +101,13 @@ def plot_single_nruns(df, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_dec.agg('min').unstack().values.tolist()[0]
         maxval = df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).num_dec.agg('max').unstack().values.tolist()[0]
+    if argument == "num_per":
+        mean = df[df['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('mean').unstack().values.tolist()[0]
+        minval = df[df['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('min').unstack().values.tolist()[0]
+        maxval = df[df['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('max').unstack().values.tolist()[0]
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -127,6 +133,7 @@ def plot_single_nruns(df, argument, templates, file_name, xlabel):
     plt.show()
     plt.close()
 
+
 def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
     plt.rcParams["figure.figsize"] = (8, 6)
     barwidth = 0.4
@@ -151,6 +158,13 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_dec.agg('min').unstack().values.tolist()[0]
         maxval = df1[df1['template'].isin(templates)].groupby(
             ['template', 'sf']).num_dec.agg('max').unstack().values.tolist()[0]
+    if argument == "num_per":
+        mean = df1[df1['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('mean').unstack().values.tolist()[0]
+        minval = df1[df1['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('min').unstack().values.tolist()[0]
+        maxval = df1[df1['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('max').unstack().values.tolist()[0]
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -167,7 +181,7 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
     sf = [7, 8, 9, 10, 11, 12]
     colors = ['tab:blue', 'tab:orange', 'tab:green',
               'tab:red', 'tab:purple', 'tab:brown']
-    plt.barh(sf, mean, barwidth,xerr=errors, capsize=6, label="mean=200[ms]")
+    plt.barh(sf, mean, barwidth, xerr=errors, capsize=6, label="mean=200[ms]")
 
     if argument == "sf":
         mean = df2[df2['template'].isin(templates)].groupby(
@@ -190,6 +204,14 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_dec.agg('min').unstack().values.tolist()[0]
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template', 'sf']).num_dec.agg('max').unstack().values.tolist()[0]
+    if argument == "num_per":
+        mean = df2[df2['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('mean').unstack().values.tolist()[0]
+        minval = df2[df2['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('min').unstack().values.tolist()[0]
+        maxval = df2[df2['template'].isin(templates)].groupby(
+            ['template', 'sf']).num_per.agg('max').unstack().values.tolist()[0]
+
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -203,13 +225,15 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
 
     errors = [min_err, max_err]
     # fig, ax = plt.subplots()
-    sf = [7+barwidth, 8+barwidth, 9+barwidth, 10+barwidth, 11+barwidth, 12+barwidth]
+    sf = [7+barwidth, 8+barwidth, 9+barwidth,
+          10+barwidth, 11+barwidth, 12+barwidth]
 
-    plt.barh(sf, mean, barwidth,xerr=errors, capsize=6, label="mean=1000[ms]")
+    plt.barh(sf, mean, barwidth, xerr=errors, capsize=6, label="mean=1000[ms]")
 
-    yticks = [7+barwidth/2, 8+barwidth/2, 9+barwidth/2, 10+barwidth/2, 11+barwidth/2, 12+barwidth/2]
+    yticks = [7+barwidth/2, 8+barwidth/2, 9+barwidth /
+              2, 10+barwidth/2, 11+barwidth/2, 12+barwidth/2]
     ylabels = [7, 8, 9, 10, 11, 12]
-    plt.yticks(yticks,labels=ylabels)
+    plt.yticks(yticks, labels=ylabels)
     plt.ylabel("Spreading Factor")
     plt.xlabel(xlabel)
     plt.legend()
@@ -233,6 +257,9 @@ def plot_multi(df, argument, templates, file_name, xlabel):
     if argument == "num_dec":
         df[df['template'].isin(templates)].groupby(
             ['template']).num_right.max().plot.barh(color=colors)
+    if argument == "num_dec":
+        df[df['template'].isin(templates)].groupby(
+            ['template']).num_per.max().plot.barh(color=colors)
 
     plt.yticks(ticks=np.arange(6), labels=("1", "2", "3", "4", "5", "6"))
     plt.ylabel("Number of sending Tx")
@@ -241,6 +268,7 @@ def plot_multi(df, argument, templates, file_name, xlabel):
     plt.savefig('figures/png/' + file_name + '.png')
     plt.show()
     plt.close()
+
 
 def plot_multi_nruns(df, argument, templates, file_name, xlabel):
     plt.rcParams["figure.figsize"] = (7, 4)
@@ -268,6 +296,13 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
             ['template']).num_dec.agg('min').values.tolist()
         maxval = df[df['template'].isin(templates)].groupby(
             ['template']).num_dec.agg('max').values.tolist()
+    if argument == "num_per":
+        mean = df[df['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('mean').values.tolist()
+        minval = df[df['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('min').values.tolist()
+        maxval = df[df['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('max').values.tolist()
     if argument == "load":
         mean = df[df['template'].isin(templates)].groupby(
             ['template']).load.agg('mean').values.tolist()
@@ -288,10 +323,11 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
 
     errors = [min_err, max_err]
     yval = []
-    for i in range(1,len(mean)+1):
+    for i in range(1, len(mean)+1):
         yval.append(i)
 
-    colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown']
+    colors = ['tab:blue', 'tab:orange', 'tab:green',
+              'tab:red', 'tab:purple', 'tab:brown']
     plt.barh(yval, mean, xerr=errors, capsize=6, label=yval, color=colors)
     plt.yticks(yval)
     plt.ylabel("Number of sending Tx")
@@ -301,14 +337,15 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
     plt.show()
     plt.close()
 
-def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
+
+def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
     plt.rcParams["figure.figsize"] = (7, 6)
     colors = ['tab:blue', 'tab:orange', 'tab:green',
               'tab:red', 'tab:purple', 'tab:brown']
 
     bar_width = 0.4
 
-    #do first df
+    # do first df
     if argument == "sf":
         mean = df1[df1['template'].isin(templates)].groupby(
             ['template']).time.agg('mean').values.tolist()
@@ -330,6 +367,13 @@ def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
             ['template']).num_dec.agg('min').values.tolist()
         maxval = df1[df1['template'].isin(templates)].groupby(
             ['template']).num_dec.agg('max').values.tolist()
+    if argument == "num_per":
+        mean = df1[df1['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('mean').values.tolist()
+        minval = df1[df1['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('min').values.tolist()
+        maxval = df1[df1['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('max').values.tolist()
     if argument == "load":
         mean = df1[df1['template'].isin(templates)].groupby(
             ['template']).load.agg('mean').values.tolist()
@@ -337,7 +381,6 @@ def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
             ['template']).load.agg('min').values.tolist()
         maxval = df1[df1['template'].isin(templates)].groupby(
             ['template']).load.agg('max').values.tolist()
-
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -351,14 +394,15 @@ def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
 
     errors = [min_err, max_err]
     yval = []
-    for i in range(1,len(mean)+1):
+    for i in range(1, len(mean)+1):
         yval.append(i)
         ylabels = yval
 
     # colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown']
-    plt.barh(yval, mean, bar_width,xerr=errors, capsize=6, label="mean=200[ms]")
+    plt.barh(yval, mean, bar_width, xerr=errors,
+             capsize=6, label="mean=200[ms]")
 
-    #do second df
+    # do second df
     if argument == "sf":
         mean = df2[df2['template'].isin(templates)].groupby(
             ['template']).time.agg('mean').values.tolist()
@@ -380,6 +424,13 @@ def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
             ['template']).num_dec.agg('min').values.tolist()
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template']).num_dec.agg('max').values.tolist()
+    if argument == "num_dec":
+        mean = df2[df2['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('mean').values.tolist()
+        minval = df2[df2['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('min').values.tolist()
+        maxval = df2[df2['template'].isin(templates)].groupby(
+            ['template']).num_per.agg('max').values.tolist()
     if argument == "load":
         mean = df2[df2['template'].isin(templates)].groupby(
             ['template']).load.agg('mean').values.tolist()
@@ -387,7 +438,6 @@ def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
             ['template']).load.agg('min').values.tolist()
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template']).load.agg('max').values.tolist()
-
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -402,13 +452,13 @@ def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
     errors = [min_err, max_err]
     yval = []
     yticks = []
-    for i in range(1,len(mean)+1):
+    for i in range(1, len(mean)+1):
         yval.append(i+bar_width)
         yticks.append(i+bar_width/2)
 
     # colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown']
-    plt.barh(yval, mean, bar_width,xerr=errors, capsize=6, label="mean=1000[ms]")
-
+    plt.barh(yval, mean, bar_width, xerr=errors,
+             capsize=6, label="mean=1000[ms]")
 
     plt.yticks(yticks, labels=ylabels)
     plt.ylabel("Number of sending Tx")
@@ -418,6 +468,7 @@ def plot_grouped_nruns_multi(df1,df2, argument, templates, file_name, xlabel):
     plt.savefig('figures/png/' + file_name + '.png')
     plt.show()
     plt.close()
+
 
 def main():
     """Main function
@@ -481,17 +532,13 @@ def main():
     #                   "nsruns_nright_high", "Number of correctly decoded messages")
     # plot_single_nruns(df_single_high_n, "num_dec", templates,
     #                   "nsruns_ndec_high", "Number of decoded messages")
-    
-    plot_grouped_single(df_single_low_n,df_single_high_n, "sf", templates,
-                       "nsruns_time_grouped", "Execution time [s]")
-    plot_grouped_single(df_single_low_n,df_single_high_n, "num_right", templates,
-                       "nsruns_nright_grouped", "Number of correctly decoded messages")
-    plot_grouped_single(df_single_low_n,df_single_high_n, "num_dec", templates,
-                       "nsruns_ndec_grouped", "Number of decoded messages")
 
-
-
-
+    plot_grouped_single(df_single_low_n, df_single_high_n, "sf", templates,
+                        "nsruns_time_grouped", "Execution time [s]")
+    plot_grouped_single(df_single_low_n, df_single_high_n, "num_right", templates,
+                        "nsruns_nright_grouped", "Number of correctly decoded messages")
+    plot_grouped_single(df_single_low_n, df_single_high_n, "num_dec", templates,
+                        "nsruns_ndec_grouped", "Number of decoded messages")
 
     #
     templates = ["lora_sim_multi1", "lora_sim_multi2", "lora_sim_multi3",
@@ -538,13 +585,14 @@ def main():
     # plot_multi_nruns(df_multi_n_high, "load", templates,
     #            "nmruns_load_high", "Average 1-min load")
 
-    plot_grouped_nruns_multi(df_multi_n_low,df_multi_n_high, "sf", templates,
-               "nmruns_time_grouped", "Execution time [s]")
-    plot_grouped_nruns_multi(df_multi_n_low,df_multi_n_high, "num_right", templates,
-               "nmruns_num_right_grouped", "Number of correctly decoded messages")
-    plot_grouped_nruns_multi(df_multi_n_low,df_multi_n_high, "num_dec", templates,
-               "nmruns_num_dec_grouped", "Number of decoded messages")
-    plot_grouped_nruns_multi(df_multi_n_low,df_multi_n_high, "load", templates,
-               "nmruns_load_grouped",  "Average 1-min load")
+    plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "sf", templates,
+                             "nmruns_time_grouped", "Execution time [s]")
+    plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "num_right", templates,
+                             "nmruns_num_right_grouped", "Number of correctly decoded messages")
+    plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "num_dec", templates,
+                             "nmruns_num_dec_grouped", "Number of decoded messages")
+    plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "load", templates,
+                             "nmruns_load_grouped",  "Average 1-min load")
+
 
 main()
