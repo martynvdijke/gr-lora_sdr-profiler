@@ -36,11 +36,15 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
                                                     template, source_data, bw, sf, paylen, impl_head, has_crc, cr, frames,
                                                     frame_period, mean)
 
-                                                num_right, num_dec, time = profiler.profile(
-                                                    source_data)
+                                                try:
+                                                    num_right, num_dec, time = profiler.profile(
+                                                            source_data)
+                                                except:
+                                                    num_right, num_dec, time  = 0
                                                 load = cpu_load.load_avg()
                                                 num_per = num_right/frames*100
-                                                data_rate = (paylen*frames) / time
+                                                data_rate = (
+                                                    paylen*frames) / time
 
                                                 data = {
                                                     'template': str(template),
@@ -106,7 +110,8 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
                                                     num_right, num_dec, time = profiler.profile(
                                                         source_data)
                                                     num_per = num_right/frames*100
-                                                    data_rate = (paylen*frames) / time
+                                                    data_rate = (
+                                                        paylen*frames) / time
 
                                                     load = cpu_load.load_avg()
                                                     data = {
@@ -194,7 +199,8 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
                                                                         source_data)
                                                                     num_per = num_right / (num_tx *
                                                                                            frames)*100
-                                                                    data_rate = (paylen*frames*num_tx)/time
+                                                                    data_rate = (
+                                                                        paylen*frames*num_tx)/time
                                                                     load = cpu_load.load_avg()
                                                                     data = {
                                                                         'template': str(template),
@@ -219,7 +225,7 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
                                                                         'time': time,
                                                                         'load': load,
                                                                         'num_per': num_per,
-                                                                        'data_rate':data_rate,
+                                                                        'data_rate': data_rate,
                                                                     }
                                                                     # append newly created data to dataframe
                                                                     df = df.append(
@@ -238,10 +244,11 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
     """
     templates_list = ["lora_sim_multi1", "lora_sim_multi2",
                       "lora_sim_multi3", "lora_sim_multi4", "lora_sim_multi5", "lora_sim_multi6"]
+    templates_list = ["lora_sim_multi5", "lora_sim_multi6"]
 
     colums_names = ['template', 'run', 'mean', 'source_data', 'bw', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
                     'frame_period', 'delay_sf1', 'delay_sf2', 'delay_sf3', 'delay_sf4', 'delay_sf5', 'delay_sf6',
-                    'num_right', 'num_total', 'num_dec', 'num_per', 'time', 'load','data_rate']
+                    'num_right', 'num_total', 'num_dec', 'num_per', 'time', 'load', 'data_rate']
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
@@ -277,13 +284,17 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                             for delay_sf4 in delay_sf4_list:
                                                                 for delay_sf5 in delay_sf5_list:
                                                                     for delay_sf6 in delay_sf6_list:
-                                                                        # write new template config
+                                                        # write new template config
                                                                         file_writer.write_template_multi(
                                                                             template, source_data, bw, paylen, impl_head, has_crc, cr, frames, frame_period, mean,
                                                                             delay_sf1, delay_sf2, delay_sf3, delay_sf4, delay_sf5, delay_sf6)
-
-                                                                        num_right, num_dec, time = profiler.profile(
-                                                                            source_data)
+                                                                        try:
+                                                                            num_right, num_dec, time = profiler.profile(
+                                                                                source_data)
+                                                                        except:
+                                                                            num_right = -1
+                                                                            num_dec =-1
+                                                                            time  = -1
 
                                                                         load = cpu_load.load_avg()
                                                                         print(
@@ -291,7 +302,8 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                         num_per = num_right / \
                                                                             (num_tx *
                                                                              frames)*100
-                                                                        data_rate = (num_tx *paylen*frames)/time
+                                                                        data_rate = (
+                                                                            num_tx * paylen*frames)/time
                                                                         data = {
                                                                             'template': str(template),
                                                                             'run': i,
@@ -316,7 +328,7 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                             'time': time,
                                                                             'load': load,
                                                                             'num_per': num_per,
-                                                                            'data_rate':data_rate,
+                                                                            'data_rate': data_rate,
                                                                         }
                                                                         # append newly created data to dataframe
                                                                         df = df.append(
@@ -342,7 +354,7 @@ def main():
     impl_head_list = [True]
     has_crc_list = [False]
     cr_list = [4]
-    mean_list = [200,1000]
+    mean_list = [200, 1000]
     delay_sf1_list = [0]
     delay_sf2_list = [0]
     delay_sf3_list = [0]
@@ -358,23 +370,26 @@ def main():
 
     n_runs = 25
 
-    main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-    print("Single run done!")
-    print("Starting multi gateway run..")
-    main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-               impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-               delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-    print("Multi gateway run done!")
-    print("Running multiple runs single")
-    main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                  impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                  delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    # print("Single run done!")
+    # print("Starting multi gateway run..")
+    # main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    #            impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    #            delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    # print("Multi gateway run done!")
+    # print("Running multiple runs single")
+    # main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    #               impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    #               delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
     # # print("Running multiple runs multi")
     main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                  impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                  delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+
+    frames_list = [100]
+
+    main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+                delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
 
     print("Exiting..")
 
