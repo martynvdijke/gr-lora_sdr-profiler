@@ -337,8 +337,8 @@ def main():
     bw_list = [250000]
     sf_list = [7, 8, 9, 10, 11, 12]
     paylen_list = [64]
-    frames_list = [100]
-    frame_period_list = [200]
+    frames_list = [20]
+    frame_period_list = [200,1000]
     impl_head_list = [True]
     has_crc_list = [False]
     cr_list = [4]
@@ -358,10 +358,10 @@ def main():
 
     n_runs = 25
 
-    # main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #             delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-    # print("Single run done!")
+    main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+                delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    print("Single run done!")
     print("Starting multi gateway run..")
     main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
