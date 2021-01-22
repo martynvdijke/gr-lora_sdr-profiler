@@ -9,12 +9,12 @@ import time as td
 #     out, err = process.communicate()
 #     print(str(out))
 
-    # # stdout = process.stdout.readlines()
-    # re_load = '\d+\.\d+'
-    # for line in out:
-    #     load = re.search(re_load, str(line)).group()
-    #     print(load)
-    # print(stdout)
+# # stdout = process.stdout.readlines()
+# re_load = '\d+\.\d+'
+# for line in out:
+#     load = re.search(re_load, str(line)).group()
+#     print(load)
+# print(stdout)
 
 
 def profile(string_input):
@@ -24,12 +24,31 @@ def profile(string_input):
         string : returns stdout from scalene run
     """
     start_time = td.time()
-    process = subprocess.Popen('timeout 300 python temp/flowgraph.py',
+    process = subprocess.Popen('./helpers/run.sh',
                                shell=True, stdout=subprocess.PIPE,
                                stderr=subprocess.STDOUT)
+    process.communicate()
+    process_read = subprocess.call('cat temp/out.txt',
+                                    shell=True, stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+    try:
+        process_read.communicate()
+    except:
+        print("test")
+    process.terminate()
 
-    stdout = process.stdout.readlines()
+    # process_read.terminate()
+    
+    # print("Waited for execution, now catting the file")
+
+    # stdout = process_read.stdout.readlines()
+    file1 = open('temp/out2.txt', 'r') 
+    stdout = file1.readlines() 
     time = (td.time() - start_time)
+    # process = subprocess.Popen('rm temp/out.txt',
+    #                            shell=True, stdout=subprocess.PIPE,
+    #                            stderr=subprocess.STDOUT)
+    # process.terminate()
     return parser_stdout(stdout, string_input, time)
 
 
@@ -63,6 +82,8 @@ def parser_stdout(stdout, string_input, time):
     return num_right, num_dec, time
 
 # deprecated
+
+
 def parser_scalene():
     """[summary]
 
@@ -84,3 +105,5 @@ def parser_scalene():
     return mem, time
 
 # load_avg()
+
+# profile("PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ")

@@ -40,7 +40,7 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
                                                     source_data)
                                                 load = cpu_load.load_avg()
                                                 num_per = num_right/frames*100
-                                                data_rate = time/paylen
+                                                data_rate = (paylen*frames) / time
 
                                                 data = {
                                                     'template': str(template),
@@ -106,7 +106,7 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
                                                     num_right, num_dec, time = profiler.profile(
                                                         source_data)
                                                     num_per = num_right/frames*100
-                                                    data_rate = time/paylen
+                                                    data_rate = (paylen*frames) / time
 
                                                     load = cpu_load.load_avg()
                                                     data = {
@@ -194,7 +194,7 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
                                                                         source_data)
                                                                     num_per = num_right / (num_tx *
                                                                                            frames)*100
-                                                                    data_rate = time/paylen
+                                                                    data_rate = (paylen*frames*num_tx)/time
                                                                     load = cpu_load.load_avg()
                                                                     data = {
                                                                         'template': str(template),
@@ -291,7 +291,7 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                         num_per = num_right / \
                                                                             (num_tx *
                                                                              frames)*100
-                                                                        data_rate = time/paylen
+                                                                        data_rate = (num_tx *paylen*frames)/time
                                                                         data = {
                                                                             'template': str(template),
                                                                             'run': i,
@@ -342,7 +342,7 @@ def main():
     impl_head_list = [True]
     has_crc_list = [False]
     cr_list = [4]
-    mean_list = [200, 1000]
+    mean_list = [200]
     delay_sf1_list = [0]
     delay_sf2_list = [0]
     delay_sf3_list = [0]
@@ -358,10 +358,10 @@ def main():
 
     n_runs = 25
 
-    main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-    print("Single run done!")
+    # main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    #             delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    # print("Single run done!")
     print("Starting multi gateway run..")
     main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
