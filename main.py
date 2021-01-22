@@ -377,9 +377,7 @@ def main():
     #            delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
     # print("Multi gateway run done!")
     # print("Running multiple runs single")
-    # main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #               impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #               delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+
     # # print("Running multiple runs multi")
     main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                  impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
@@ -390,6 +388,10 @@ def main():
     main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                 impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                 delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+
+    main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+                  impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+                  delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
 
     print("Exiting..")
 
