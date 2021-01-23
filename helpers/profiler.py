@@ -50,7 +50,9 @@ def profile(string_input):
     try:
         stdout = file1.readlines() 
     except:
+        stdout = "except in reading"
         print("except in reading")
+
     time = (td.time() - start_time)
     # process = subprocess.Popen('rm temp/out.txt',
     #                            shell=True, stdout=subprocess.PIPE,

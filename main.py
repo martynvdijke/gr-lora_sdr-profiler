@@ -2,6 +2,7 @@ import pandas as pd
 from helpers import file_writer
 from helpers import profiler
 from helpers import cpu_load
+import subprocess
 
 
 def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
@@ -38,9 +39,9 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
 
                                                 try:
                                                     num_right, num_dec, time = profiler.profile(
-                                                            source_data)
+                                                        source_data)
                                                 except:
-                                                    num_right, num_dec, time  = 0
+                                                    num_right, num_dec, time = 0
                                                 load = cpu_load.load_avg()
                                                 num_per = num_right/frames*100
                                                 data_rate = (
@@ -284,7 +285,7 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                             for delay_sf4 in delay_sf4_list:
                                                                 for delay_sf5 in delay_sf5_list:
                                                                     for delay_sf6 in delay_sf6_list:
-                                                        # write new template config
+                                                                        # write new template config
                                                                         file_writer.write_template_multi(
                                                                             template, source_data, bw, paylen, impl_head, has_crc, cr, frames, frame_period, mean,
                                                                             delay_sf1, delay_sf2, delay_sf3, delay_sf4, delay_sf5, delay_sf6)
@@ -293,8 +294,8 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                                 source_data)
                                                                         except:
                                                                             num_right = -1
-                                                                            num_dec =-1
-                                                                            time  = -1
+                                                                            num_dec = -1
+                                                                            time = -1
 
                                                                         load = cpu_load.load_avg()
                                                                         print(
@@ -379,21 +380,24 @@ def main():
     # print("Running multiple runs single")
 
     # # print("Running multiple runs multi")
-    main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                 impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                 delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    # main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    #              impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    #              delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
 
     frames_list = [100]
 
-    main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    # main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    #             delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
 
     main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                   impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                   delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
 
     print("Exiting..")
+    process = subprocess.Popen('poweroff',
+                               shell=True, stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT)
 
 
 main()
