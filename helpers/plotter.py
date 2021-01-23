@@ -27,9 +27,13 @@ def plot_single(df, argument, templates, file_name, xlabel):
         df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).num_right.max().unstack().plot.barh()
         plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
-    if argument == "num_dec":
+    if argument == "num_per":
         df[df['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.max().unstack().plot.barh()
+            ['template', 'sf']).num_per.max().unstack().plot.barh()
+        plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
+    if argument == "data_rate":
+        df[df['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.max().unstack().plot.barh()
         plt.yticks(ticks=np.arange(2), labels=("blocks", "chain"))
 
     if argument == "mean_num":
@@ -94,13 +98,6 @@ def plot_single_nruns(df, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_right.agg('min').unstack().values.tolist()[0]
         maxval = df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).num_right.agg('max').unstack().values.tolist()[0]
-    if argument == "num_dec":
-        mean = df[df['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('mean').unstack().values.tolist()[0]
-        minval = df[df['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('min').unstack().values.tolist()[0]
-        maxval = df[df['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('max').unstack().values.tolist()[0]
     if argument == "num_per":
         mean = df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).num_per.agg('mean').unstack().values.tolist()[0]
@@ -108,6 +105,13 @@ def plot_single_nruns(df, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_per.agg('min').unstack().values.tolist()[0]
         maxval = df[df['template'].isin(templates)].groupby(
             ['template', 'sf']).num_per.agg('max').unstack().values.tolist()[0]
+    if argument == "data_rate":
+        mean = df[df['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('mean').unstack().values.tolist()[0]
+        minval = df[df['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('min').unstack().values.tolist()[0]
+        maxval = df[df['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('max').unstack().values.tolist()[0]
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -126,7 +130,7 @@ def plot_single_nruns(df, argument, templates, file_name, xlabel):
               'tab:red', 'tab:purple', 'tab:brown']
     plt.barh(sf, mean, xerr=errors, capsize=6, label=sf, color=colors)
     plt.yticks(sf)
-    plt.ylabel("Spreading Factor")
+    plt.ylabel("$SF$")
     plt.xlabel(xlabel)
     plt.savefig('figures/eps/' + file_name + '.eps', format='eps')
     plt.savefig('figures/png/' + file_name + '.png')
@@ -151,13 +155,6 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_right.agg('min').unstack().values.tolist()[0]
         maxval = df1[df1['template'].isin(templates)].groupby(
             ['template', 'sf']).num_right.agg('max').unstack().values.tolist()[0]
-    if argument == "num_dec":
-        mean = df1[df1['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('mean').unstack().values.tolist()[0]
-        minval = df1[df1['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('min').unstack().values.tolist()[0]
-        maxval = df1[df1['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('max').unstack().values.tolist()[0]
     if argument == "num_per":
         mean = df1[df1['template'].isin(templates)].groupby(
             ['template', 'sf']).num_per.agg('mean').unstack().values.tolist()[0]
@@ -165,6 +162,13 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_per.agg('min').unstack().values.tolist()[0]
         maxval = df1[df1['template'].isin(templates)].groupby(
             ['template', 'sf']).num_per.agg('max').unstack().values.tolist()[0]
+    if argument == "data_rate":
+        mean = df1[df1['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('mean').unstack().values.tolist()[0]
+        minval = df1[df1['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('min').unstack().values.tolist()[0]
+        maxval = df1[df1['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('max').unstack().values.tolist()[0]
 
     min_err = []
     zip_object = zip(mean, minval)
@@ -197,13 +201,6 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_right.agg('min').unstack().values.tolist()[0]
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template', 'sf']).num_right.agg('max').unstack().values.tolist()[0]
-    if argument == "num_dec":
-        mean = df2[df2['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('mean').unstack().values.tolist()[0]
-        minval = df2[df2['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('min').unstack().values.tolist()[0]
-        maxval = df2[df2['template'].isin(templates)].groupby(
-            ['template', 'sf']).num_dec.agg('max').unstack().values.tolist()[0]
     if argument == "num_per":
         mean = df2[df2['template'].isin(templates)].groupby(
             ['template', 'sf']).num_per.agg('mean').unstack().values.tolist()[0]
@@ -211,6 +208,13 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
             ['template', 'sf']).num_per.agg('min').unstack().values.tolist()[0]
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template', 'sf']).num_per.agg('max').unstack().values.tolist()[0]
+    if argument == "data_rate":
+        mean = df2[df2['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('mean').unstack().values.tolist()[0]
+        minval = df2[df2['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('min').unstack().values.tolist()[0]
+        maxval = df2[df2['template'].isin(templates)].groupby(
+            ['template', 'sf']).data_rate.agg('max').unstack().values.tolist()[0]
 
 
     min_err = []
@@ -234,7 +238,7 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
               2, 10+barwidth/2, 11+barwidth/2, 12+barwidth/2]
     ylabels = [7, 8, 9, 10, 11, 12]
     plt.yticks(yticks, labels=ylabels)
-    plt.ylabel("Spreading Factor")
+    plt.ylabel("$SF$")
     plt.xlabel(xlabel)
     plt.legend()
     plt.savefig('figures/eps/' + file_name + '.eps', format='eps')
@@ -245,6 +249,7 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
 
 def plot_multi(df, argument, templates, file_name, xlabel):
     plt.rcParams["figure.figsize"] = (7, 4)
+
     colors = ['tab:blue', 'tab:orange', 'tab:green',
               'tab:red', 'tab:purple', 'tab:brown']
 
@@ -254,15 +259,15 @@ def plot_multi(df, argument, templates, file_name, xlabel):
     if argument == "num_right":
         df[df['template'].isin(templates)].groupby(
             ['template']).num_right.max().plot.barh(color=colors)
-    if argument == "num_dec":
+    if argument == "num_per":
         df[df['template'].isin(templates)].groupby(
             ['template']).num_right.max().plot.barh(color=colors)
-    if argument == "num_dec":
+    if argument == "data_rate":
         df[df['template'].isin(templates)].groupby(
-            ['template']).num_per.max().plot.barh(color=colors)
+            ['template']).data_rate.max().plot.barh(color=colors)
 
     plt.yticks(ticks=np.arange(6), labels=("1", "2", "3", "4", "5", "6"))
-    plt.ylabel("Number of sending Tx")
+    plt.ylabel("$N_{Tx}$")
     plt.xlabel(xlabel)
     plt.savefig('figures/eps/' + file_name + '.eps', format='eps')
     plt.savefig('figures/png/' + file_name + '.png')
@@ -289,13 +294,6 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
             ['template']).num_right.agg('min').values.tolist()
         maxval = df[df['template'].isin(templates)].groupby(
             ['template']).num_right.agg('max').values.tolist()
-    if argument == "num_dec":
-        mean = df[df['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('mean').values.tolist()
-        minval = df[df['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('min').values.tolist()
-        maxval = df[df['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('max').values.tolist()
     if argument == "num_per":
         mean = df[df['template'].isin(templates)].groupby(
             ['template']).num_per.agg('mean').values.tolist()
@@ -303,6 +301,13 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
             ['template']).num_per.agg('min').values.tolist()
         maxval = df[df['template'].isin(templates)].groupby(
             ['template']).num_per.agg('max').values.tolist()
+    if argument == "data_rate":
+        mean = df[df['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('mean').values.tolist()
+        minval = df[df['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('min').values.tolist()
+        maxval = df[df['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('max').values.tolist()
     if argument == "load":
         mean = df[df['template'].isin(templates)].groupby(
             ['template']).load.agg('mean').values.tolist()
@@ -330,7 +335,7 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
               'tab:red', 'tab:purple', 'tab:brown']
     plt.barh(yval, mean, xerr=errors, capsize=6, label=yval, color=colors)
     plt.yticks(yval)
-    plt.ylabel("Number of sending Tx")
+    plt.ylabel("$N_{Tx}$")
     plt.xlabel(xlabel)
     plt.savefig('figures/eps/' + file_name + '.eps', format='eps')
     plt.savefig('figures/png/' + file_name + '.png')
@@ -360,13 +365,6 @@ def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
             ['template']).num_right.agg('min').values.tolist()
         maxval = df1[df1['template'].isin(templates)].groupby(
             ['template']).num_right.agg('max').values.tolist()
-    if argument == "num_dec":
-        mean = df1[df1['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('mean').values.tolist()
-        minval = df1[df1['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('min').values.tolist()
-        maxval = df1[df1['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('max').values.tolist()
     if argument == "num_per":
         mean = df1[df1['template'].isin(templates)].groupby(
             ['template']).num_per.agg('mean').values.tolist()
@@ -374,6 +372,13 @@ def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
             ['template']).num_per.agg('min').values.tolist()
         maxval = df1[df1['template'].isin(templates)].groupby(
             ['template']).num_per.agg('max').values.tolist()
+    if argument == "data_rate":
+        mean = df1[df1['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('mean').values.tolist()
+        minval = df1[df1['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('min').values.tolist()
+        maxval = df1[df1['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('max').values.tolist()
     if argument == "load":
         mean = df1[df1['template'].isin(templates)].groupby(
             ['template']).load.agg('mean').values.tolist()
@@ -417,20 +422,20 @@ def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
             ['template']).num_right.agg('min').values.tolist()
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template']).num_right.agg('max').values.tolist()
-    if argument == "num_dec":
-        mean = df2[df2['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('mean').values.tolist()
-        minval = df2[df2['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('min').values.tolist()
-        maxval = df2[df2['template'].isin(templates)].groupby(
-            ['template']).num_dec.agg('max').values.tolist()
-    if argument == "num_dec":
+    if argument == "num_per":
         mean = df2[df2['template'].isin(templates)].groupby(
             ['template']).num_per.agg('mean').values.tolist()
         minval = df2[df2['template'].isin(templates)].groupby(
             ['template']).num_per.agg('min').values.tolist()
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template']).num_per.agg('max').values.tolist()
+    if argument == "data_rate":
+        mean = df2[df2['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('mean').values.tolist()
+        minval = df2[df2['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('min').values.tolist()
+        maxval = df2[df2['template'].isin(templates)].groupby(
+            ['template']).data_rate.agg('max').values.tolist()
     if argument == "load":
         mean = df2[df2['template'].isin(templates)].groupby(
             ['template']).load.agg('mean').values.tolist()
@@ -461,7 +466,7 @@ def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
              capsize=6, label="mean=1000[ms]")
 
     plt.yticks(yticks, labels=ylabels)
-    plt.ylabel("Number of sending Tx")
+    plt.ylabel("$N_{Tx}$")
     plt.xlabel(xlabel)
     plt.legend()
     plt.savefig('figures/eps/' + file_name + '.eps', format='eps')
@@ -473,126 +478,152 @@ def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
 def main():
     """Main function
     """
-    # print("Welcome to the plotter..")
-    # mk_dir()
-    # print("Going to plot all single values")
+    print("Welcome to the plotter..")
+    mk_dir()
+    print("Going to plot all single values")
     templates = ["lora_sim_chain"]
-    file_name = "../results/profiled_single_low_mean.csv"
-    df_single = pd.read_csv(file_name)
-    # plot_single(df_single, "sf", templates, "s_time_low", "Execution time [s]")
-    # plot_single(df_single, "s_num_right_low", templates, "sf_num_right",
-    #             "Number of correctly decoded messages")
-    # plot_single(df_single, "num_dec", templates,
-    #             "s_num_dec_low", "Number of decoded messages")
-    # #high mean values
-    # file_name = "../results/profiled_single_high_mean.csv"
-    # df_single = pd.read_csv(file_name)
-    # plot_single(df_single, "sf", templates, "s_time_high", "Execution time [s]")
-    # plot_single(df_single, "s_num_right_high", templates, "sf_num_right",
-    #             "Number of correctly decoded messages")
-    # plot_single(df_single, "num_dec", templates,
-    #             "s_num_dec_high", "Number of decoded messages")
-    #
-    # #dynamic results
-    # file_name = "../results/profiled_single_dyn.csv"
-    # df_single_dyn = pd.read_csv(file_name)
-    # plot_single(df_single_dyn, "mean_num", "lora_sim_multi1",
-    #             "s_mean_num", "Total number of correctly decoded messages")
-    # plot_single(df_single_dyn, "frame_period_num", "lora_sim_multi1",
-    #             "s_frame_period_num", "Total number of correctly decoded messages")
-    # plot_single(df_single_dyn, "cr_num", "lora_sim_multi1",
-    #             "s_cr_num", "Total number of correctly decoded messages")
-    # plot_single(df_single_dyn, "has_crc_num", "lora_sim_multi1",
-    #             "s_has_crc_num", "Total number of correctly decoded messages")
-    # plot_single(df_single_dyn, "mean_time", "lora_sim_multi1",
-    #             "s_mean_time", "Execution time [s]")
-    # plot_single(df_single_dyn, "frame_period_time", "lora_sim_multi1",
-    #             "s_frame_period_time", "Execution time [s]")
-    # plot_single(df_single_dyn, "cr_time", "lora_sim_multi1",
-    #             "s_cr_time", "Execution time [s]")
-    # plot_single(df_single_dyn, "has_crc_time", "lora_sim_multi1",
-    #             "s_has_crc_time", "Execution time [s]")
+    file_name = "../results/profiled_single.csv"
+    df = pd.read_csv(file_name)
+    #low values
+    df_single = df.loc[df['mean'] == 200]
+    string_time = "Execution time $[s]$"
+    string_right = "Number of correctly decoded messages"
+    string_percentage = "$\eta$"
+    string_data_rate = "Data rate [bytes/s]"
+    string_load = "Average 1-min load"
+
+    plot_single(df_single, "sf", templates, "s_time_low", string_time)
+    plot_single(df_single, "s_num_right_low", templates, "sf_num_right",
+                string_right)
+    plot_single(df_single, "num_per", templates,
+                "s_num_per_low", string_percentage)
+    plot_single(df_single, "data_rate", templates,
+                "s_data_rate_low", string_data_rate)
+
+    #high values
+    df_single = df.loc[df['mean'] == 1000]
+    plot_single(df_single, "sf", templates, "s_time_high", string_time)
+    plot_single(df_single, "s_num_right_high", templates, "sf_num_right",
+                string_right)
+    plot_single(df_single, "num_per", templates,
+                "s_num_per_high", string_percentage)
+    plot_single(df_single, "data_rate", templates,
+                "s_data_rate_high", string_data_rate)
+    
+    #dynamic results
+    file_name = "../results/profiled_single_dyn.csv"
+    df_single_dyn = pd.read_csv(file_name)
+    plot_single(df_single_dyn, "mean_num", "lora_sim_multi1",
+                "s_mean_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "frame_period_num", "lora_sim_multi1",
+                "s_frame_period_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "cr_num", "lora_sim_multi1",
+                "s_cr_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "has_crc_num", "lora_sim_multi1",
+                "s_has_crc_num", "Total number of correctly decoded messages")
+    plot_single(df_single_dyn, "mean_time", "lora_sim_multi1",
+                "s_mean_time", string_time)
+    plot_single(df_single_dyn, "frame_period_time", "lora_sim_multi1",
+                "s_frame_period_time", string_time)
+    plot_single(df_single_dyn, "cr_time", "lora_sim_multi1",
+                "s_cr_time", string_time)
+    plot_single(df_single_dyn, "has_crc_time", "lora_sim_multi1",
+                "s_has_crc_time", string_time)
     #
     # #low values
-    file_name = "../results/profiled_single_runs_low_mean.csv"
-    df_single_low_n = pd.read_csv(file_name)
-    # plot_single_nruns(df_single_low_n, "sf", templates,
-    #                   "nsruns_time_low", "Execution time [s]")
-    # plot_single_nruns(df_single_low_n, "num_right", templates,
-    #                   "nsruns_nright_low", "Number of correctly decoded messages")
-    # plot_single_nruns(df_single_low_n, "num_dec", templates,
-    #                   "nsruns_ndec_low", "Number of decoded messages")
-    #
+    file_name = "../results/profiled_single_runs.csv"
+    df = pd.read_csv(file_name)
+    df_single_low_n = df.loc[df['mean'] == 200]
+    df_single_high_n = df.loc[df['mean'] == 1000]
+    plot_single_nruns(df_single_low_n, "sf", templates,
+                      "nsruns_time_low", string_time)
+    plot_single_nruns(df_single_low_n, "num_right", templates,
+                      "nsruns_nright_low", string_right)
+    plot_single_nruns(df_single_low_n, "num_per", templates,
+                      "nsruns_num_per_low", string_percentage)
+    plot_single_nruns(df_single_low_n, "data_rate", templates,
+                      "nsruns_data_rate_low", string_data_rate)
     # #high values
-    file_name = "../results/profiled_single_runs_mean_high.csv"
-    df_single_high_n = pd.read_csv(file_name)
-    # plot_single_nruns(df_single_high_n, "sf", templates,
-    #                   "nsruns_time_high", "Execution time [s]")
-    # plot_single_nruns(df_single_high_n, "num_right", templates,
-    #                   "nsruns_nright_high", "Number of correctly decoded messages")
-    # plot_single_nruns(df_single_high_n, "num_dec", templates,
-    #                   "nsruns_ndec_high", "Number of decoded messages")
 
+    plot_single_nruns(df_single_high_n, "sf", templates,
+                      "nsruns_time_high", string_time)
+    plot_single_nruns(df_single_high_n, "num_right", templates,
+                      "nsruns_nright_high", string_right)
+    plot_single_nruns(df_single_high_n, "num_per", templates,
+                      "nsruns_num_per_high", string_percentage)
+    plot_single_nruns(df_single_high_n, "data_rate", templates,
+                      "nsruns_data_rate_high", string_data_rate)
+    #grouped plots
     plot_grouped_single(df_single_low_n, df_single_high_n, "sf", templates,
-                        "nsruns_time_grouped", "Execution time [s]")
+                        "nsruns_time_grouped", string_time)
     plot_grouped_single(df_single_low_n, df_single_high_n, "num_right", templates,
-                        "nsruns_nright_grouped", "Number of correctly decoded messages")
-    plot_grouped_single(df_single_low_n, df_single_high_n, "num_dec", templates,
-                        "nsruns_ndec_grouped", "Number of decoded messages")
+                        "nsruns_nright_grouped", string_right)
+    plot_grouped_single(df_single_low_n, df_single_high_n, "num_per", templates,
+                        "nsruns_num_per_grouped", string_percentage)
+    plot_grouped_single(df_single_low_n, df_single_high_n, "data_rate", templates,
+                        "nsruns_ndata_rate_grouped", string_data_rate)
 
-    #
     templates = ["lora_sim_multi1", "lora_sim_multi2", "lora_sim_multi3",
                  "lora_sim_multi4", "lora_sim_multi5", "lora_sim_multi6"]
-    #
-    # # print("Going to plot all single values")
-    # file_name = "../results/profiled_multi_low_mean.csv"
-    # df_multi = pd.read_csv(file_name)
-    # plot_multi(df_multi, "sf", templates,
-    #            "m_time_low", "Execution time [s]")
-    # plot_multi(df_multi, "num_right", templates,
-    #            "m_num_right_low", "Number of rightly decoded messages")
-    # plot_multi(df_multi, "num_dec", templates,
-    #            "m_num_dec_low", "Number of decoded messages")
-    #
-    # file_name = "../results/profiled_multi_high_mean.csv"
-    # df_multi = pd.read_csv(file_name)
-    # plot_multi(df_multi, "sf", templates,
-    #            "m_time_high", "Execution time [s]")
-    # plot_multi(df_multi, "num_right", templates,
-    #            "m_num_right_high", "Number of rightly decoded messages")
-    # plot_multi(df_multi, "num_dec", templates,
-    #            "m_num_dec_high", "Number of decoded messages")
 
-    file_name = "../results/profiled_multi_runs_low_mean.csv"
-    df_multi_n_low = pd.read_csv(file_name)
-    # plot_multi_nruns(df_multi_n_low, "sf", templates,
-    #            "nmruns_time_low", "Execution time [s]")
-    # plot_multi_nruns(df_multi_n_low, "num_right", templates,
-    #            "nmruns_num_right_low", "Number of correctly decoded messages")
-    # plot_multi_nruns(df_multi_n_low, "num_dec", templates,
-    #            "nmruns_num_dec_low", "Number of decoded messages")
-    # plot_multi_nruns(df_multi_n_low, "load", templates,
-    #            "nmruns_load_low", "Average 1-min load")
+    print("Going to plot all single values")
+    file_name = "../results/profiled_multi.csv"
+    df = pd.read_csv(file_name)
+    df_multi = df.loc[df['mean'] == 200]
 
-    file_name = "../results/profiled_multi_runs_mean_high.csv"
-    df_multi_n_high = pd.read_csv(file_name)
-    # plot_multi_nruns(df_multi_n_high, "sf", templates,
-    #            "nmruns_time_high", "Execution time [s]")
-    # plot_multi_nruns(df_multi_n_high, "num_right", templates,
-    #            "nmruns_num_right_high", "Number of correctly decoded messages")
-    # plot_multi_nruns(df_multi_n_high, "num_dec", templates,
-    #            "nmruns_num_dec_high", "Number of decoded messages")
-    # plot_multi_nruns(df_multi_n_high, "load", templates,
-    #            "nmruns_load_high", "Average 1-min load")
+    plot_multi(df_multi, "sf", templates,
+               "m_time_low", string_time)
+    plot_multi(df_multi, "num_right", templates,
+               "m_num_right_low", "Number of rightly decoded messages")
+    plot_multi(df_multi, "num_per", templates,
+               "m_num_per_low", string_percentage)
+
+    df_multi = df.loc[df['mean'] == 1000]
+    plot_multi(df_multi, "sf", templates,
+               "m_time_high", string_time)
+    plot_multi(df_multi, "num_right", templates,
+               "m_num_right_high", "Number of rightly decoded messages")
+    plot_multi(df_multi, "num_per", templates,
+               "m_num_per_high", string_percentage)
+    plot_multi(df_multi, "data_rate", templates,
+               "m_data_rate_high", string_data_rate)
+
+    file_name = "../results/profiled_multi_runs.csv"
+    df = pd.read_csv(file_name)
+    df_multi_n_low = df.loc[df['mean'] == 200]
+    df_multi_n_high = df.loc[df['mean'] == 1000]
+
+    plot_multi_nruns(df_multi_n_low, "sf", templates,
+               "nmruns_time_low", string_time)
+    plot_multi_nruns(df_multi_n_low, "num_right", templates,
+               "nmruns_num_right_low", string_right)
+    plot_multi_nruns(df_multi_n_low, "num_per", templates,
+               "nmruns_num_per_low", string_percentage)
+    plot_multi_nruns(df_multi_n_low, "load", templates,
+               "nmruns_load_low", string_load)
+    plot_multi_nruns(df_multi_n_low, "data_rate", templates,
+               "nmruns_data_rate_low", string_data_rate)
+
+    plot_multi_nruns(df_multi_n_high, "sf", templates,
+               "nmruns_time_high", string_time)
+    plot_multi_nruns(df_multi_n_high, "num_right", templates,
+               "nmruns_num_right_high", string_right)
+    plot_multi_nruns(df_multi_n_high, "num_per", templates,
+               "nmruns_num_per_high", string_percentage)
+    plot_multi_nruns(df_multi_n_high, "load", templates,
+               "nmruns_load_high", string_load)
+    plot_multi_nruns(df_multi_n_high, "data_rate", templates,
+               "nmruns_data_rate_high", string_data_rate)
 
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "sf", templates,
-                             "nmruns_time_grouped", "Execution time [s]")
+                             "nmruns_time_grouped", string_time)
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "num_right", templates,
-                             "nmruns_num_right_grouped", "Number of correctly decoded messages")
-    plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "num_dec", templates,
-                             "nmruns_num_dec_grouped", "Number of decoded messages")
+                             "nmruns_num_right_grouped", string_right)
+    plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "num_per", templates,
+                             "nmruns_num_per_grouped", string_percentage)
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "load", templates,
-                             "nmruns_load_grouped",  "Average 1-min load")
-
+                             "nmruns_load_grouped",  string_load)
+    plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "data_rate", templates,
+                             "nmruns_data_rate_grouped",  string_data_rate)
 
 main()
