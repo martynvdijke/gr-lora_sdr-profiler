@@ -563,8 +563,44 @@ def main():
     plot_grouped_single(df_single_low_n, df_single_high_n, "data_rate", templates,
                         "nsruns_ndata_rate_grouped", string_data_rate)
 
+    #100 frames
+    # #low values
+    file_name = "../results/profiled_single_runs_frames100.csv"
+    df = pd.read_csv(file_name)
+    df_single_low_n = df.loc[df['mean'] == 200]
+    df_single_high_n = df.loc[df['mean'] == 1000]
+    plot_single_nruns(df_single_low_n, "sf", templates,
+                      "nsruns_time_low_frames", string_time)
+    plot_single_nruns(df_single_low_n, "num_right", templates,
+                      "nsruns_nright_low_frames", string_right)
+    plot_single_nruns(df_single_low_n, "num_per", templates,
+                      "nsruns_num_per_low_frames", string_percentage)
+    plot_single_nruns(df_single_low_n, "data_rate", templates,
+                      "nsruns_data_rate_low_frames", string_data_rate)
+    # #high values
+
+    plot_single_nruns(df_single_high_n, "sf", templates,
+                      "nsruns_time_high_frames", string_time)
+    plot_single_nruns(df_single_high_n, "num_right", templates,
+                      "nsruns_nright_high_frames", string_right)
+    plot_single_nruns(df_single_high_n, "num_per", templates,
+                      "nsruns_num_per_high_frames", string_percentage)
+    plot_single_nruns(df_single_high_n, "data_rate", templates,
+                      "nsruns_data_rate_high_frames", string_data_rate)
+    #grouped plots
+    plot_grouped_single(df_single_low_n, df_single_high_n, "sf", templates,
+                        "nsruns_time_grouped_frames", string_time)
+    plot_grouped_single(df_single_low_n, df_single_high_n, "num_right", templates,
+                        "nsruns_nright_grouped_frames", string_right)
+    plot_grouped_single(df_single_low_n, df_single_high_n, "num_per", templates,
+                        "nsruns_num_per_grouped_frames", string_percentage)
+    plot_grouped_single(df_single_low_n, df_single_high_n, "data_rate", templates,
+                        "nsruns_ndata_rate_grouped_frames", string_data_rate)
+
     templates = ["lora_sim_multi1", "lora_sim_multi2", "lora_sim_multi3",
                  "lora_sim_multi4", "lora_sim_multi5", "lora_sim_multi6"]
+
+
 
     print("Going to plot all single values")
     file_name = "../results/profiled_multi.csv"
