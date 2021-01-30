@@ -138,7 +138,7 @@ def plot_single_nruns(df, argument, templates, file_name, xlabel):
     plt.close()
 
 
-def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
+def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel, label_high, label_low):
     plt.rcParams["figure.figsize"] = (8, 6)
     barwidth = 0.4
     if argument == "sf":
@@ -185,7 +185,7 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
     sf = [7, 8, 9, 10, 11, 12]
     colors = ['tab:blue', 'tab:orange', 'tab:green',
               'tab:red', 'tab:purple', 'tab:brown']
-    plt.barh(sf, mean, barwidth, xerr=errors, capsize=6, label="mean=200[ms]")
+    plt.barh(sf, mean, barwidth, xerr=errors, capsize=6, label=label_low)
 
     if argument == "sf":
         mean = df2[df2['template'].isin(templates)].groupby(
@@ -216,7 +216,6 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
         maxval = df2[df2['template'].isin(templates)].groupby(
             ['template', 'sf']).data_rate.agg('max').unstack().values.tolist()[0]
 
-
     min_err = []
     zip_object = zip(mean, minval)
     for list1_i, list2_i in zip_object:
@@ -229,13 +228,13 @@ def plot_grouped_single(df1, df2, argument, templates, file_name, xlabel):
 
     errors = [min_err, max_err]
     # fig, ax = plt.subplots()
-    sf = [7+barwidth, 8+barwidth, 9+barwidth,
-          10+barwidth, 11+barwidth, 12+barwidth]
+    sf = [7 + barwidth, 8 + barwidth, 9 + barwidth,
+          10 + barwidth, 11 + barwidth, 12 + barwidth]
 
-    plt.barh(sf, mean, barwidth, xerr=errors, capsize=6, label="mean=1000[ms]")
+    plt.barh(sf, mean, barwidth, xerr=errors, capsize=6, label=label_high)
 
-    yticks = [7+barwidth/2, 8+barwidth/2, 9+barwidth /
-              2, 10+barwidth/2, 11+barwidth/2, 12+barwidth/2]
+    yticks = [7 + barwidth / 2, 8 + barwidth / 2, 9 + barwidth /
+              2, 10 + barwidth / 2, 11 + barwidth / 2, 12 + barwidth / 2]
     ylabels = [7, 8, 9, 10, 11, 12]
     plt.yticks(yticks, labels=ylabels)
     plt.ylabel("$SF$")
@@ -328,7 +327,7 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
 
     errors = [min_err, max_err]
     yval = []
-    for i in range(1, len(mean)+1):
+    for i in range(1, len(mean) + 1):
         yval.append(i)
 
     colors = ['tab:blue', 'tab:orange', 'tab:green',
@@ -343,7 +342,7 @@ def plot_multi_nruns(df, argument, templates, file_name, xlabel):
     plt.close()
 
 
-def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
+def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel, label_high, label_low):
     plt.rcParams["figure.figsize"] = (7, 6)
     colors = ['tab:blue', 'tab:orange', 'tab:green',
               'tab:red', 'tab:purple', 'tab:brown']
@@ -399,13 +398,13 @@ def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
 
     errors = [min_err, max_err]
     yval = []
-    for i in range(1, len(mean)+1):
+    for i in range(1, len(mean) + 1):
         yval.append(i)
         ylabels = yval
 
     # colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown']
     plt.barh(yval, mean, bar_width, xerr=errors,
-             capsize=6, label="mean=200[ms]")
+             capsize=6, label=label_low)
 
     # do second df
     if argument == "sf":
@@ -457,13 +456,13 @@ def plot_grouped_nruns_multi(df1, df2, argument, templates, file_name, xlabel):
     errors = [min_err, max_err]
     yval = []
     yticks = []
-    for i in range(1, len(mean)+1):
-        yval.append(i+bar_width)
-        yticks.append(i+bar_width/2)
+    for i in range(1, len(mean) + 1):
+        yval.append(i + bar_width)
+        yticks.append(i + bar_width / 2)
 
     # colors = ['tab:blue', 'tab:orange', 'tab:green', 'tab:red', 'tab:purple', 'tab:brown']
     plt.barh(yval, mean, bar_width, xerr=errors,
-             capsize=6, label="mean=1000[ms]")
+             capsize=6, label=label_high)
 
     plt.yticks(yticks, labels=ylabels)
     plt.ylabel("$N_{Tx}$")
@@ -484,13 +483,15 @@ def main():
     templates = ["lora_sim_chain"]
     file_name = "../results/profiled_single.csv"
     df = pd.read_csv(file_name)
-    #low values
+    # low values
     df_single = df.loc[df['mean'] == 200]
-    string_time = "Execution time $[s]$"
+    string_time = "Execution time [s]"
     string_right = "Number of correctly decoded messages"
-    string_percentage = "$\eta$"
-    string_data_rate = "Data rate [bytes/s]"
+    string_percentage = "$\eta \, [\%]$"
+    string_data_rate = "Throughput [bytes/s]"
     string_load = "Average 1-min load"
+    label_high = "$t_{wait}=1000$ [ms]"
+    label_low = "$t_{wait}=200$ [ms]"
 
     plot_single(df_single, "sf", templates, "s_time_low", string_time)
     plot_single(df_single, "s_num_right_low", templates, "sf_num_right",
@@ -500,7 +501,7 @@ def main():
     plot_single(df_single, "data_rate", templates,
                 "s_data_rate_low", string_data_rate)
 
-    #high values
+    # high values
     df_single = df.loc[df['mean'] == 1000]
     plot_single(df_single, "sf", templates, "s_time_high", string_time)
     plot_single(df_single, "s_num_right_high", templates, "sf_num_right",
@@ -509,8 +510,8 @@ def main():
                 "s_num_per_high", string_percentage)
     plot_single(df_single, "data_rate", templates,
                 "s_data_rate_high", string_data_rate)
-    
-    #dynamic results
+
+    # dynamic results
     file_name = "../results/profiled_single_dyn.csv"
     df_single_dyn = pd.read_csv(file_name)
     plot_single(df_single_dyn, "mean_num", "lora_sim_multi1",
@@ -553,17 +554,16 @@ def main():
                       "nsruns_num_per_high", string_percentage)
     plot_single_nruns(df_single_high_n, "data_rate", templates,
                       "nsruns_data_rate_high", string_data_rate)
-    #grouped plots
+    # grouped plots
     plot_grouped_single(df_single_low_n, df_single_high_n, "sf", templates,
-                        "nsruns_time_grouped", string_time)
+                        "nsruns_time_grouped", string_time, label_high, label_low)
     plot_grouped_single(df_single_low_n, df_single_high_n, "num_right", templates,
-                        "nsruns_nright_grouped", string_right)
+                        "nsruns_nright_grouped", string_right, label_high, label_low)
     plot_grouped_single(df_single_low_n, df_single_high_n, "num_per", templates,
-                        "nsruns_num_per_grouped", string_percentage)
+                        "nsruns_num_per_grouped", string_percentage, label_high, label_low)
     plot_grouped_single(df_single_low_n, df_single_high_n, "data_rate", templates,
-                        "nsruns_ndata_rate_grouped", string_data_rate)
-
-    #100 frames
+                        "nsruns_ndata_rate_grouped", string_data_rate, label_high, label_low)
+    # 100 frames
     # #low values
     file_name = "../results/profiled_single_runs_frames100.csv"
     df = pd.read_csv(file_name)
@@ -587,20 +587,18 @@ def main():
                       "nsruns_num_per_high_frames", string_percentage)
     plot_single_nruns(df_single_high_n, "data_rate", templates,
                       "nsruns_data_rate_high_frames", string_data_rate)
-    #grouped plots
+    # grouped plots
     plot_grouped_single(df_single_low_n, df_single_high_n, "sf", templates,
-                        "nsruns_time_grouped_frames", string_time)
+                        "nsruns_time_grouped_frames", string_time, label_high, label_low)
     plot_grouped_single(df_single_low_n, df_single_high_n, "num_right", templates,
-                        "nsruns_nright_grouped_frames", string_right)
+                        "nsruns_nright_grouped_frames", string_right, label_high, label_low)
     plot_grouped_single(df_single_low_n, df_single_high_n, "num_per", templates,
-                        "nsruns_num_per_grouped_frames", string_percentage)
+                        "nsruns_num_per_grouped_frames", string_percentage, label_high, label_low)
     plot_grouped_single(df_single_low_n, df_single_high_n, "data_rate", templates,
-                        "nsruns_ndata_rate_grouped_frames", string_data_rate)
+                        "nsruns_ndata_rate_grouped_frames", string_data_rate, label_high, label_low)
 
     templates = ["lora_sim_multi1", "lora_sim_multi2", "lora_sim_multi3",
                  "lora_sim_multi4", "lora_sim_multi5", "lora_sim_multi6"]
-
-
 
     print("Going to plot all single values")
     file_name = "../results/profiled_multi.csv"
@@ -630,36 +628,37 @@ def main():
     df_multi_n_high = df.loc[df['mean'] == 1000]
 
     plot_multi_nruns(df_multi_n_low, "sf", templates,
-               "nmruns_time_low", string_time)
+                     "nmruns_time_low", string_time)
     plot_multi_nruns(df_multi_n_low, "num_right", templates,
-               "nmruns_num_right_low", string_right)
+                     "nmruns_num_right_low", string_right)
     plot_multi_nruns(df_multi_n_low, "num_per", templates,
-               "nmruns_num_per_low", string_percentage)
+                     "nmruns_num_per_low", string_percentage)
     plot_multi_nruns(df_multi_n_low, "load", templates,
-               "nmruns_load_low", string_load)
+                     "nmruns_load_low", string_load)
     plot_multi_nruns(df_multi_n_low, "data_rate", templates,
-               "nmruns_data_rate_low", string_data_rate)
+                     "nmruns_data_rate_low", string_data_rate)
 
     plot_multi_nruns(df_multi_n_high, "sf", templates,
-               "nmruns_time_high", string_time)
+                     "nmruns_time_high", string_time)
     plot_multi_nruns(df_multi_n_high, "num_right", templates,
-               "nmruns_num_right_high", string_right)
+                     "nmruns_num_right_high", string_right)
     plot_multi_nruns(df_multi_n_high, "num_per", templates,
-               "nmruns_num_per_high", string_percentage)
+                     "nmruns_num_per_high", string_percentage)
     plot_multi_nruns(df_multi_n_high, "load", templates,
-               "nmruns_load_high", string_load)
+                     "nmruns_load_high", string_load)
     plot_multi_nruns(df_multi_n_high, "data_rate", templates,
-               "nmruns_data_rate_high", string_data_rate)
+                     "nmruns_data_rate_high", string_data_rate)
 
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "sf", templates,
-                             "nmruns_time_grouped", string_time)
+                             "nmruns_time_grouped", string_time, label_high, label_low)
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "num_right", templates,
-                             "nmruns_num_right_grouped", string_right)
+                             "nmruns_num_right_grouped", string_right, label_high, label_low)
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "num_per", templates,
-                             "nmruns_num_per_grouped", string_percentage)
+                             "nmruns_num_per_grouped", string_percentage, label_high, label_low)
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "load", templates,
-                             "nmruns_load_grouped",  string_load)
+                             "nmruns_load_grouped", string_load, label_high, label_low)
     plot_grouped_nruns_multi(df_multi_n_low, df_multi_n_high, "data_rate", templates,
-                             "nmruns_data_rate_grouped",  string_data_rate)
+                             "nmruns_data_rate_grouped", string_data_rate, label_high, label_low)
+
 
 main()
