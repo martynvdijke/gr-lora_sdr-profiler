@@ -1,7 +1,7 @@
 import pandas as pd
-from helpers import file_writer
-from helpers import profiler
-from helpers import cpu_load
+from . import  file_writer
+from . import run_flowgraph
+from . import  get_cpu_load
 import subprocess
 
 
@@ -343,61 +343,58 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
 
 def main():
     print("Starting the gr-lora_sdr profiler...")
-    print("Starting the single run, stay tuned...")
+    # print("Starting the single run, stay tuned...")
+    #
+    # source_data_list = [
+    #     "PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ"]
+    # bw_list = [250000]
+    # sf_list = [7, 8, 9, 10, 11, 12]
+    # paylen_list = [64]
+    # frames_list = [15]
+    # frame_period_list = [200]
+    # impl_head_list = [True]
+    # has_crc_list = [False]
+    # cr_list = [4]
+    # mean_list = [200, 1000]
+    # delay_sf1_list = [0]
+    # delay_sf2_list = [0]
+    # delay_sf3_list = [0]
+    # delay_sf4_list = [0]
+    # delay_sf5_list = [0]
+    # delay_sf6_list = [0]
+    # #delay_sf1_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # #delay_sf2_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # #delay_sf3_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # #delay_sf4_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # #delay_sf5_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    # #delay_sf6_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    #
+    # n_runs = 25
+    #
+    # # print("Single run done!")
+    # # print("Starting multi gateway run..")
+    # # main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    # #            impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    # #            delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    # # print("Multi gateway run done!")
+    # # print("Running multiple runs single")
+    #
+    # # # print("Running multiple runs multi")
+    # # main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    # #              impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    # #              delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    #
+    # frames_list = [100]
+    #
+    # # main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    # #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    # #             delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
+    #
+    # main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
+    #               impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
+    #               delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
 
-    source_data_list = [
-        "PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ"]
-    bw_list = [250000]
-    sf_list = [7, 8, 9, 10, 11, 12]
-    paylen_list = [64]
-    frames_list = [15]
-    frame_period_list = [200]
-    impl_head_list = [True]
-    has_crc_list = [False]
-    cr_list = [4]
-    mean_list = [200, 1000]
-    delay_sf1_list = [0]
-    delay_sf2_list = [0]
-    delay_sf3_list = [0]
-    delay_sf4_list = [0]
-    delay_sf5_list = [0]
-    delay_sf6_list = [0]
-    #delay_sf1_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    #delay_sf2_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    #delay_sf3_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    #delay_sf4_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    #delay_sf5_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    #delay_sf6_list = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
 
-    n_runs = 25
-
-    # print("Single run done!")
-    # print("Starting multi gateway run..")
-    # main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #            impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #            delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-    # print("Multi gateway run done!")
-    # print("Running multiple runs single")
-
-    # # print("Running multiple runs multi")
-    # main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #              impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #              delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-
-    frames_list = [100]
-
-    # main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-    #             impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-    #             delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-
-    main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                  impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                  delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-
-    print("Exiting..")
-    process = subprocess.Popen('poweroff',
-                               shell=True, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
 
 
 main()
