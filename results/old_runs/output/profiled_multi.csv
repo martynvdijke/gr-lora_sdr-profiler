@@ -1,2 +1,0 @@
-,template,mean,source_data,bw,paylen,impl_head,has_crc,cr,frames,frame_period,delay_sf1,delay_sf2,delay_sf3,delay_sf4,delay_sf5,delay_sf6,num_right,num_total,num_dec,time
-0,lora_sim_multi1,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,0,10,0,6.074018955230713

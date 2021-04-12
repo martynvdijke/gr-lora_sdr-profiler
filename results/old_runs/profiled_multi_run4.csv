@@ -1,7 +1,0 @@
-,template,mean,source_data,bw,paylen,impl_head,has_crc,cr,frames,frame_period,delay_sf1,delay_sf2,delay_sf3,delay_sf4,delay_sf5,delay_sf6,num_right,num_total,num_dec,time
-0,lora_sim_multi1,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,8,10,8,3.5656192302703857
-1,lora_sim_multi2,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,12,20,16,3.8213422298431396
-2,lora_sim_multi3,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,22,30,26,3.963613510131836
-3,lora_sim_multi4,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,21,40,27,4.068374872207642
-4,lora_sim_multi5,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,26,50,38,6.6801064014434814
-5,lora_sim_multi6,200,PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ,250000,64,True,False,0,10,200,0,0,0,0,0,0,8,60,9,67.27236604690552
