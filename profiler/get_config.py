@@ -3,16 +3,26 @@ import numpy as np
 
 
 def parse_config_colums(template, _logger):
+    """
+    Returns the colums names (to be used in pandas) to use for diffrent templates
+    Args:
+        template: name of the template currenlty in use
+        _logger: logger
+
+    Returns:
+        list of colum names
+    """
     # list ot hold all configs values
     config_list = []
     colum_names = []
 
-    colum_names.extend(['template','time_wait', 'input_data', 'sf','paylen', 'impl_head', 'has_crc', 'cr', 'frames'])
+    colum_names.extend(['template', 'time_wait', 'input_data', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames'])
     # add the derived general quantities
-    colum_names.extend(["time", "data_rate", "load_1min", "load_5min", "load_15min", "num_right","num_total","num_dec","num_per"])
+    colum_names.extend(
+        ["time", "data_rate", "load_1min", "load_5min", "load_15min", "num_right", "num_total", "num_dec", "num_per"])
 
     if template == "frame_detector":
-        colum_names.extend(["threshold", "noise"])
+        colum_names.extend(["threshold", "ampl_noise", "avg_snr"])
 
     return colum_names
 

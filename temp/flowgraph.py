@@ -12,13 +12,10 @@
 
 from gnuradio import blocks
 from gnuradio import filter
-from gnuradio.filter import firdes
 from gnuradio import gr
 import sys
 import signal
-from argparse import ArgumentParser
-from gnuradio.eng_arg import eng_float, intx
-from gnuradio import eng_notation
+from gnuradio import analog
 import lora_sdr
 import threading
 
@@ -33,31 +30,34 @@ class lora_sim(gr.top_block):
         ##################################################
         # Variables
         ##################################################
+        src_data = "PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ"
         self.bw = bw = 250000
-        self.sf = sf = 9
         self.samp_rate = samp_rate = bw
         self.pay_len = pay_len = 64
-        self.n_frame = n_frame = 5
-        self.multi_control = multi_control = True
-        self.mult_const = mult_const = 1
-        self.mean = mean = 200
-        self.impl_head = impl_head = True
+        self.n_frame = n_frame = 10
+        self.impl_head = impl_head = False
         self.has_crc = has_crc = False
-        self.frame_period = frame_period = 200
-        self.cr = cr = 4
+        self.cr = cr = 0
+        self.sf = sf = 7
+        self.threshold = threshold = 100
+        self.noise = noise = 0
+        self.time_wait = time_wait = 200
+
 
         ##################################################
         # Blocks
         ##################################################
-        self.lora_sdr_hier_tx_1 = lora_sdr.hier_tx(pay_len, n_frame, "TrccpfQHyKfvXswsA4ySxtTiIvi10nSJCUJPYonkWqDHH005UmNfGuocPw3FHKc9", cr, sf, impl_head,has_crc, samp_rate, bw, mean, [8, 16],True)
+        self.lora_sdr_hier_tx_1 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf, impl_head,has_crc, samp_rate, bw, time_wait, [8, 16],True)
         self.lora_sdr_hier_tx_1.set_min_output_buffer(10000000)
         self.lora_sdr_hier_rx_1 = lora_sdr.hier_rx(samp_rate, bw, sf, impl_head, cr, pay_len, has_crc, [8, 16] , True)
-        self.lora_sdr_frame_detector_1 = lora_sdr.frame_detector(samp_rate, bw, sf,200)
+        self.lora_sdr_frame_detector_1 = lora_sdr.frame_detector(samp_rate, bw, sf,threshold)
         self.lora_sdr_frame_detector_1.set_min_output_buffer(20000)
         self.interp_fir_filter_xxx_0_1_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,	-0.212206590789194,	-0.180063263231421,	3.89817183251938e-17	,0.300105438719035	,0.636619772367581	,0.900316316157106,	1	,0.900316316157106,	0.636619772367581,	0.300105438719035,	3.89817183251938e-17,	-0.180063263231421,	-0.212206590789194,	-0.128616616593872))
         self.interp_fir_filter_xxx_0_1_0.declare_sample_delay(0)
         self.interp_fir_filter_xxx_0_1_0.set_min_output_buffer(20000)
         self.blocks_throttle_0_1_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate*10,True)
+        self.blocks_add_xx_0 = blocks.add_vcc(1)
+        self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_UNIFORM, noise, 0)
 
 
 

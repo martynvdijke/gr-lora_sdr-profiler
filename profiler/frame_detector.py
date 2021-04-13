@@ -36,7 +36,7 @@ def main(args, _logger: object):
                                         _logger.debug("Writing frame_detector error")
                                     # run the flowgraph
                                     try:
-                                        num_right, num_dec, time = run_flowgraph.profile_flowgraph(input_data, timeout,
+                                        num_right, num_dec, time, snr = run_flowgraph.profile_flowgraph(input_data, timeout, "frame_detector",
                                                                                                    _logger)
                                     except:
                                         _logger.debug("Error executing flowgraph of frame_detector")
@@ -67,7 +67,8 @@ def main(args, _logger: object):
                                         'num_per': num_per,
                                         'data_rate': data_rate,
                                         'threshold': threshold,
-                                        'noise': noise
+                                        'noise': noise,
+                                        'avg_snr': snr,
                                     }
                                     #
                                     save.saver(data)

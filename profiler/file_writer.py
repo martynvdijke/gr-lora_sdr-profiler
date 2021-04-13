@@ -160,7 +160,7 @@ def write_template_multi_stream(file_name, source_data, bw, paylen, impl_head, h
     f.write(replaced_text)
     f.close()
 
-def write_template_frame_detector(file_name,input, sf, impl_head, has_crc, cr, frames, time_wait,threshold,noise,_logger):
+def write_template_frame_detector(file_name,input_data, sf, impl_head, has_crc, cr, frames, time_wait,threshold,noise,_logger):
     """
     Writes the frame_detector template using the arguments
     Args:
@@ -175,18 +175,19 @@ def write_template_frame_detector(file_name,input, sf, impl_head, has_crc, cr, f
         time_wait: time between frames
         threshold: thesshold value to use
         noise: noise level
+        _logger : logger entity
 
     Returns:
 
     """
     _logger.debug("Writing new template filer {0}".format(file_name))
-    _logger.debug("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(input,impl_head,has_crc,cr,frames,time_wait,threshold,noise))
+    _logger.debug("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(input_data,impl_head,has_crc,cr,frames,time_wait,threshold,noise))
     file_template = "templates/"+str(file_name)
     f_template = open(file_template, 'r')
     f_template_text = f_template.read()
     f_template.close()
     subs = {
-        "source_data": str(input),
+        "input_data": str(input_data),
         "impl_head": str(impl_head),
         "has_crc": str(has_crc),
         "cr": str(cr),

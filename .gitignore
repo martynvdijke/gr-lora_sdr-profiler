@@ -27,5 +27,5 @@ publish/*
 # User-specific stuff
 .idea/*
 .vscode/*
-
+results/*
 profiler/__pycache__/*

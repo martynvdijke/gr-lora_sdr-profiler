@@ -84,6 +84,6 @@ frame_detector:
     end: 200
     increment: 100
   noise:
-    start: 1
-    end: 2
-    increment: 1
+    start: 0
+    end: 10
+    increment: 20

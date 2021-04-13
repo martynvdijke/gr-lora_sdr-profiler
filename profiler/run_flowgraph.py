@@ -4,8 +4,7 @@ import time as td
 import datetime
 import os
 
-
-def profile_flowgraph(string_input, timeout, _logger):
+def profile_flowgraph(string_input, timeout, template, _logger):
     """
     Runs the actual flowgraph
     Args:
@@ -30,16 +29,18 @@ def profile_flowgraph(string_input, timeout, _logger):
         _logger.debug("Error reading the output of the run")
         stdout = "nothing"
 
-    return parse_stdout(stdout, string_input, time, _logger)
+    return parse_stdout(stdout, string_input, time, template, _logger)
 
 
-def parse_stdout(stdout, string_input, time, _logger):
+def parse_stdout(stdout, string_input, time, template, _logger):
     """
     Parses the stdout file of the flowgraph runner to find the number of decoded and rightfully decoded messages
 
     Args:
         stdout ([lines]): output of stdout
         string_input ([string]): string to match against
+        time (int): execeution time
+        template (string) : template file to use
 
     Returns:
         [int]: number of rightlyfull decoded messages
@@ -48,6 +49,8 @@ def parse_stdout(stdout, string_input, time, _logger):
     num_right = 0
     # Number of decoded messages
     num_dec = 0
+
+    snr = []
     # for each line in stdout find the number of rightfull and decoded messages
     for out in stdout:
         try:
@@ -56,6 +59,11 @@ def parse_stdout(stdout, string_input, time, _logger):
             out_right = re.search(re_text_right, line)
             re_text_dec = 'msg :'
             out_dec = re.search(re_text_dec, line)
+            if template == "frame_detector":
+                re_text_snr = 'snr: '
+                out_snr = re.search(re_text_snr, line)
+                if out_snr is not None:
+                    snr.append(float(re.findall("\d+\.\d+",line)[0]))
             # check if the search found match objects
             if out_right is not None:
                 num_right = num_right + 1
@@ -63,4 +71,10 @@ def parse_stdout(stdout, string_input, time, _logger):
                 num_dec = num_dec + 1
         except:
             _logger.debug("Error in parsing the flowgraph output")
-    return num_right, num_dec, time
+
+
+    if template == "frame_detector":
+        avg_snr = sum(snr)/len(snr)
+        return num_right, num_dec, time, avg_snr
+    else:
+        return num_right, num_dec, time
