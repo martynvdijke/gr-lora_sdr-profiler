@@ -2,7 +2,7 @@ import argparse
 import logging
 import sys
 import os
-from profiler import  __version__
+from profiler import __version__
 from . import frame_detector
 from . import multi_stream
 from . import frame_detector
@@ -12,10 +12,9 @@ __copyright__ = "Martyn van Dijke"
 __license__ = "MIT"
 _logger = logging.getLogger(__name__)
 __templates__ = (
-"lora_sim_blocks", "lora_sim_chains", "lora_sim_multi1", "lora_sim_multi2", "lora_sim_multi3", "lora_sim_multi4",
-"lora_sim_multi5", "lora_sim_multi6","lora_sim_frame_detector")
-__modes__ = ("multi_stream","frame_detector","cran")
-
+    "lora_sim_blocks", "lora_sim_chains", "lora_sim_multi1", "lora_sim_multi2", "lora_sim_multi3", "lora_sim_multi4",
+    "lora_sim_multi5", "lora_sim_multi6", "lora_sim_frame_detector")
+__modes__ = ("multi_stream", "frame_detector", "cran")
 
 
 def make_dirs(_logger):
@@ -49,11 +48,20 @@ def parse_args(args):
         action="version",
         version=f"profiler {__version__}",
     )
-    #chose the template to choose from
+    # chose the template to choose from
     parser.add_argument("-m", "--mode", default="frame_detector",
                         choices=__modes__,
                         help="Specify the mode to use [default=%(default)r]")
-    #set logging level
+    parser.add_argument("-s", "--save", default="pandas",
+                        choices=("pandas", "wandb","both"),
+                        help="Specify how to store the data [default=%(default)r]")
+    parser.add_argument("-n", "--name", default="profiler-run",
+                        help="Specify the name to use for wandb [default=%(default)r]")
+    parser.add_argument("-o", "--output", default="results/out.csv",
+                        help="Specify where to output the pandas csv file [default=%(default)r]")
+    parser.add_argument("-t", "--timeout", default=300, type=int,
+                        help="Maximum time a run may take [default=%(default)r]")
+    # set logging level
     parser.add_argument(
         "-v",
         "--verbose",
@@ -100,9 +108,10 @@ def main(args):
         multi_stream.main()
     if args.mode == "frame_detector":
         args.filename = "lora_sim_frame_detector.py"
-        frame_detector.main(args,_logger)
+        frame_detector.main(args, _logger)
 
     _logger.info("Profiler ended")
+
 
 if __name__ == "__main__":
     # ^  This is a guard statement that will prevent the following code from

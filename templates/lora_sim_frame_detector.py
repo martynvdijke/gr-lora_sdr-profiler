@@ -33,18 +33,18 @@ class lora_sim(gr.top_block):
         ##################################################
         # Variables
         ##################################################
+        src_data = "@@input_data@@"
         self.bw = bw = 250000
-        self.sf = sf = 9
         self.samp_rate = samp_rate = bw
-        self.pay_len = pay_len = 64
-        self.n_frame = n_frame = 5
-        self.multi_control = multi_control = True
-        self.mult_const = mult_const = 1
-        self.mean = mean = 200
-        self.impl_head = impl_head = True
-        self.has_crc = has_crc = False
-        self.frame_period = frame_period = 200
-        self.cr = cr = 4
+        self.pay_len = pay_len = @@pay_len@@
+        self.n_frame = n_frame = @@n_frame@@
+        self.impl_head = impl_head = @@impl_head@@
+        self.has_crc = has_crc = @@has_crc@@
+        self.frame_period = frame_period = @@frame_period@@
+        self.cr = cr = @@cr@@
+        self.thresshold = thresshold = @@thresshold@@
+
+
 
         ##################################################
         # Blocks

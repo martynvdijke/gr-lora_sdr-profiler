@@ -5,8 +5,6 @@ import datetime
 import os
 
 
-
-
 def profile_flowgraph(string_input, timeout, _logger):
     """
     Runs the actual flowgraph
@@ -19,36 +17,23 @@ def profile_flowgraph(string_input, timeout, _logger):
 
     """
     _logger.debug("Starting new flowgraph run")
-    # check if dirs exists otherwise make them
-    make_dirs(_logger)
-    #set starttime
+    # set starttime
     start_time = td.time()
-    process = subprocess.Popen('./bash_scripts/run.sh',
-                               shell=True, stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT)
-    process.communicate()
-    #read the output of the file
-    process_read = subprocess.call('cat temp/out.txt',
-                                   shell=True, stdout=subprocess.PIPE,
-                                   stderr=subprocess.STDOUT)
-    try:
-        process_read.communicate()
-    except:
-        _logger.debug("Error reading the output of the run")
-    process.terminate()
-    file1 = open('temp/out2.txt', 'r')
+    # call bash script to exectue flowgraph
+    subprocess.call('profiler/bash_scripts/run.sh {}'.format(timeout), shell=True)
+    time = (td.time() - start_time)
+    # open output for parsing processing
+    file1 = open('temp/out.txt', 'r')
     try:
         stdout = file1.readlines()
     except:
         _logger.debug("Error reading the output of the run")
-        stdout = "except in reading"
-    #set total time
-    time = (td.time() - start_time)
+        stdout = "nothing"
 
-    return parse_stdout(stdout, string_input, time)
+    return parse_stdout(stdout, string_input, time, _logger)
 
 
-def parse_stdout(stdout, string_input, time):
+def parse_stdout(stdout, string_input, time, _logger):
     """
     Parses the stdout file of the flowgraph runner to find the number of decoded and rightfully decoded messages
 
@@ -67,9 +52,9 @@ def parse_stdout(stdout, string_input, time):
     for out in stdout:
         try:
             line = str(out)
-            re_text_right = 'Decode msg is:' + str(string_input)
+            re_text_right = 'msg :' + str(string_input)
             out_right = re.search(re_text_right, line)
-            re_text_dec = 'Decode msg is:'
+            re_text_dec = 'msg :'
             out_dec = re.search(re_text_dec, line)
             # check if the search found match objects
             if out_right is not None:
@@ -77,5 +62,5 @@ def parse_stdout(stdout, string_input, time):
             if out_dec is not None:
                 num_dec = num_dec + 1
         except:
-            print("exception throw hero")
+            _logger.debug("Error in parsing the flowgraph output")
     return num_right, num_dec, time

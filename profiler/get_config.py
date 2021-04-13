@@ -2,7 +2,22 @@ import yaml
 import numpy as np
 
 
-def parse_config(cfg, template, _logger):
+def parse_config_colums(template, _logger):
+    # list ot hold all configs values
+    config_list = []
+    colum_names = []
+
+    colum_names.extend(['template','time_wait', 'input_data', 'sf','paylen', 'impl_head', 'has_crc', 'cr', 'frames'])
+    # add the derived general quantities
+    colum_names.extend(["time", "data_rate", "load_1min", "load_5min", "load_15min", "num_right","num_total","num_dec","num_per"])
+
+    if template == "frame_detector":
+        colum_names.extend(["threshold", "noise"])
+
+    return colum_names
+
+
+def parse_config_data(cfg, template, _logger):
     """
     Parses the cfg file and returns all values as a list object.
     Args:
@@ -14,9 +29,9 @@ def parse_config(cfg, template, _logger):
 
     """
 
-    #list ot hold all configs values
+    # list ot hold all configs values
     config_list = []
-    #open
+    # open
     with open(r'{}'.format(cfg)) as file:
         documents = yaml.full_load(file)
         config_list = documents['frame_detector']

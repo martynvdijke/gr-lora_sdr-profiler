@@ -1,5 +1,10 @@
 .DEFAULT_GOAL := help
-.PHONY: coverage deps help lint publish push test tox requirements
+.PHONY: coverage deps help lint publish push test tox requirements venv
+
+venv: ## Makes new virtual venv and loads all dependencies
+	python -m venv env
+	. env/bin/activate
+	$(MAKE) deps
 
 coverage:  ## Run tests with coverage
 	python -m coverage erase

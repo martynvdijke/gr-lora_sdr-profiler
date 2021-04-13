@@ -1,16 +1,18 @@
 import subprocess
 
+
 def load_avg_1min():
     """
     Querys the Linux system with the average 1 min Linux load
     Returns: average 1 min Linux load
 
     """
-    process = subprocess.Popen("helpers/avg_load_1.sh",
+    process = subprocess.Popen("profiler/bash_scripts/avg_load_1.sh",
                                shell=True, stdout=subprocess.PIPE)
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
+
 
 def load_avg_5min():
     """
@@ -18,11 +20,12 @@ def load_avg_5min():
     Returns: average 5 min Linux load
 
     """
-    process = subprocess.Popen("helpers/avg_load_5.sh",
+    process = subprocess.Popen("profiler/bash_scripts/avg_load_5.sh",
                                shell=True, stdout=subprocess.PIPE)
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
+
 
 def load_avg_15min():
     """
@@ -30,8 +33,21 @@ def load_avg_15min():
     Returns: average 15 min Linux load
 
     """
-    process = subprocess.Popen("helpers/avg_load_15.sh",
+    process = subprocess.Popen("profiler/bash_scripts/avg_load_15.sh",
                                shell=True, stdout=subprocess.PIPE)
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
+
+
+def load_all():
+    """
+    Runs the above functions to get all the loads (1,5 and 15 minutes)
+    Returns:
+
+    """
+    load_1min = load_avg_1min()
+    load_5min = load_avg_5min()
+    load_15min = load_avg_15min()
+
+    return load_1min, load_5min, load_15min

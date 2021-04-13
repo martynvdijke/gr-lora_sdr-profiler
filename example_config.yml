@@ -58,13 +58,13 @@ frame_detector:
   input_string: "PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ"
   sf:
     start: 7
-    end: 12
+    end: 8
     increment : 1
   paylen: 64
   frames:
     start: 10
     end: 100
-    increment: 1
+    increment: 100
   impl_head:
     start: True
     end: False
@@ -73,17 +73,17 @@ frame_detector:
     end: True
   cr:
     start: 0
-    end: 4
+    end: 1
     increment: 4
   time_wait:
     start: 200
     end: 1000
-    increment: 1
+    increment: 1000
   threshold:
     start: 100
     end: 200
-    increment: 1
+    increment: 100
   noise:
     start: 1
     end: 2
-    increment: 3
+    increment: 1

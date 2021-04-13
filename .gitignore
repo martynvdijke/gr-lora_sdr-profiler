@@ -28,3 +28,4 @@ publish/*
 .idea/*
 .vscode/*
 
+profiler/__pycache__/*
