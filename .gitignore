@@ -29,3 +29,4 @@ publish/*
 .vscode/*
 results/*
 profiler/__pycache__/*
+figures/*

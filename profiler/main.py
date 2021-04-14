@@ -2,10 +2,13 @@ import argparse
 import logging
 import sys
 import os
+import pathlib
 from profiler import __version__
-from . import frame_detector
 from . import multi_stream
 from . import frame_detector
+from . import plotter
+
+
 
 __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
@@ -19,7 +22,7 @@ __modes__ = ("multi_stream", "frame_detector", "cran")
 
 def make_dirs(_logger):
     """
-    Makes nececarry dirs
+    Makes necessary dirs
     Args:
         _logger: logger output
 
@@ -42,7 +45,7 @@ def parse_args(args):
         list of supported arguments
 
     """
-    parser = argparse.ArgumentParser(description="Profiler documentation")
+    parser = argparse.ArgumentParser(description="Profile gr-lora_sdr")
     parser.add_argument(
         "--version",
         action="version",
@@ -57,7 +60,9 @@ def parse_args(args):
                         help="Specify how to store the data [default=%(default)r]")
     parser.add_argument("-n", "--name", default="profiler-run",
                         help="Specify the name to use for wandb [default=%(default)r]")
-    parser.add_argument("-o", "--output", default="results/out.csv",
+    parser.add_argument("-p", "--plot", metavar='FILE',
+                        help="Specify to plot all the values from input file  [default=%(default)r]")
+    parser.add_argument("-o", "--output", default="results/out.csv", type=pathlib.Path,
                         help="Specify where to output the pandas csv file [default=%(default)r]")
     parser.add_argument("-t", "--timeout", default=300, type=int,
                         help="Maximum time a run may take [default=%(default)r]")
@@ -98,17 +103,22 @@ def setup_logging(loglevel):
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
-
 def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     make_dirs(_logger)
-    _logger.info("Starting profiler with mode: {}".format(args.mode))
-    if args.mode == "multi_stream":
-        multi_stream.main()
-    if args.mode == "frame_detector":
-        args.filename = "lora_sim_frame_detector.py"
-        frame_detector.main(args, _logger)
+
+    if args.plot is not None:
+        _logger.info("Running plotter with input file {}".format(args.plot))
+        plot = plotter.Plotter(args)
+        plot.main()
+    else:
+        _logger.info("Starting profiler with mode: {}".format(args.mode))
+        if args.mode == "multi_stream":
+            multi_stream.main()
+        if args.mode == "frame_detector":
+            args.filename = "lora_sim_frame_detector.py"
+            frame_detector.main(args)
 
     _logger.info("Profiler ended")
 

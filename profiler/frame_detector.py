@@ -4,19 +4,25 @@ from . import get_config
 from . import file_saver
 from . import get_cpu_load
 
+import logging
 
-def main(args, _logger: object):
-    _logger.debug("Running frame detector")
+_logger = logging.getLogger(__name__)
+
+
+def main(args):
+    _logger.debug("Running frame detector runner")
     filename = args.filename
     timeout = args.timeout
 
     # parse the config for the values to use
     input_data, sf_list, frames_list, impl_head_list, has_crc_list, cr_list, time_wait_list, threshold_list, noise_list = get_config.parse_config_data(
-        args.config[0], "frame_detector", _logger)
+        args.config[0], "frame_detector")
+    # initilize a saver object
+    save = file_saver.FileSaver(args, "frame_detector")
+    n_times = len(noise_list) * len(threshold_list) * len(cr_list) * len(has_crc_list) * len(impl_head_list) * len(
+        frames_list) * len(sf_list)
+    _logger.info("Flowgraph needs to run {}".format(n_times))
 
-    save = file_saver.FileSaver(args, "frame_detector", _logger)
-    times = len(input_data)*len(sf_list)*len(frames_list)*len(impl_head_list)*len(has_crc_list)*len(cr_list)*len(time_wait_list)*len(threshold_list)*len(noise_list)
-    _logger.info("Needing to run the flowgraph {} times".format(times))
     # loop over all values that needs to be runned
     for noise in noise_list:
         for threshold in threshold_list:
@@ -26,26 +32,29 @@ def main(args, _logger: object):
                         for impl_head in impl_head_list:
                             for frames in frames_list:
                                 for sf in sf_list:
-                                    _logger.debug("Starting another run")
+                                    _logger.info("Starting new run")
                                     # write template file
                                     try:
                                         file_writer.write_template_frame_detector(filename, input_data, sf, impl_head,
                                                                                   has_crc, cr, frames, time_wait,
-                                                                                  threshold, noise, _logger)
+                                                                                  threshold, noise)
                                     except:
                                         _logger.debug("Writing frame_detector error")
                                     # run the flowgraph
                                     try:
-                                        num_right, num_dec, time, snr = run_flowgraph.profile_flowgraph(input_data, timeout, "frame_detector",
-                                                                                                   _logger)
+                                        num_right, num_dec, time, snr, signal_power, noise_power = run_flowgraph.profile_flowgraph(
+                                            input_data, timeout, "frame_detector")
                                     except:
                                         _logger.debug("Error executing flowgraph of frame_detector")
                                     # get the average load
-                                    load_1min, load_5min, load_15min = get_cpu_load.load_all()
-                                    # calculate the derived values
-                                    num_per = num_right / frames * 100
-                                    paylen = len(input_data)
-                                    data_rate = (paylen * frames) / time
+                                    try:
+                                        load_1min, load_5min, load_15min = get_cpu_load.load_all()
+                                        # calculate the derived values
+                                        num_per = min(num_right / frames * 100, 100)
+                                        paylen = len(input_data)
+                                        data_rate = (paylen * frames) / time
+                                    except:
+                                        _logger.debug("Error in getting the values of the system")
                                     # setup data frame to hold all data
                                     data = {
                                         'template': "frame_detector",
@@ -69,9 +78,10 @@ def main(args, _logger: object):
                                         'threshold': threshold,
                                         'noise': noise,
                                         'avg_snr': snr,
+                                        'avg_signal_power': signal_power,
+                                        'avg_noise_power': noise_power
                                     }
                                     #
                                     save.saver(data)
-
 
     save.finish()

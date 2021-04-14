@@ -1,5 +1,6 @@
 import subprocess
-
+import  logging
+_logger = logging.getLogger(__name__)
 
 def load_avg_1min():
     """

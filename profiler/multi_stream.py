@@ -4,7 +4,7 @@ from . import run_flowgraph
 from . import  get_cpu_load
 import subprocess
 
-
+#need cleaning
 def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                 impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                 delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
@@ -75,7 +75,7 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
                                                 df.to_csv(
                                                     "results/profiled_single.csv")
 
-
+#need cleaning
 def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                   impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                   delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
@@ -145,7 +145,7 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
                                                     df.to_csv(
                                                         "results/profiled_single_runs.csv")
 
-
+#need cleaning
 def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
@@ -237,7 +237,7 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
                                                                     df.to_csv(
                                                                         "results/profiled_multi.csv")
 
-
+#need cleaning
 def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
                  impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
                  delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
@@ -340,7 +340,7 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                         df.to_csv(
                                                                             "results/profiled_multi_runs.csv")
 
-
+#need cleaning
 def main():
     print("Starting the gr-lora_sdr profiler...")
     # print("Starting the single run, stay tuned...")

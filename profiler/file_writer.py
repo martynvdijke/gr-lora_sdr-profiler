@@ -1,18 +1,20 @@
 import os
 import re
+import  logging
+_logger = logging.getLogger(__name__)
 
 def from_dict(dct):
-    """[summary]
+    """Replaces template files variables (denoted by @@<var>@@) with the variable value
 
     Args:
-        dct ([type]): [description]
+        dct ([type]): dict to replace
     """
     def lookup(match):
         key = match.group(1)
         return dct.get(key, f'<{key} not found>')
     return lookup
 
-
+#needs cleaning
 def write_template_single(file_name, source_data, bw, sf, paylen, impl_head, has_crc, cr, frames, frame_period, mean):
     """
     Writes the temporary single chain template
@@ -83,7 +85,7 @@ def write_template_single(file_name, source_data, bw, sf, paylen, impl_head, has
     f.write(replaced_text)
     f.close()
 
-
+#needs cleaning
 def write_template_multi_stream(file_name, source_data, bw, paylen, impl_head, has_crc, cr, frames, frame_period, mean,
                          delay_sf1, delay_sf2, delay_sf3, delay_sf4, delay_sf5, delay_sf6):
     """Writes the multi stream gateway template
@@ -160,7 +162,7 @@ def write_template_multi_stream(file_name, source_data, bw, paylen, impl_head, h
     f.write(replaced_text)
     f.close()
 
-def write_template_frame_detector(file_name,input_data, sf, impl_head, has_crc, cr, frames, time_wait,threshold,noise,_logger):
+def write_template_frame_detector(file_name,input_data, sf, impl_head, has_crc, cr, frames, time_wait,threshold,noise):
     """
     Writes the frame_detector template using the arguments
     Args:
@@ -175,10 +177,8 @@ def write_template_frame_detector(file_name,input_data, sf, impl_head, has_crc, 
         time_wait: time between frames
         threshold: thesshold value to use
         noise: noise level
-        _logger : logger entity
-
     Returns:
-
+        writen template file
     """
     _logger.debug("Writing new template filer {0}".format(file_name))
     _logger.debug("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(input_data,impl_head,has_crc,cr,frames,time_wait,threshold,noise))

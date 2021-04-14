@@ -1,7 +1,8 @@
 import pandas
 import wandb
 from . import get_config
-
+import  logging
+_logger = logging.getLogger(__name__)
 
 class FileSaver:
     """
@@ -9,20 +10,20 @@ class FileSaver:
     or as wandb data frames
     """
 
-    def __init__(self, args, template, _logger):
+    def __init__(self, args, template):
         self.logger = _logger
         self.logger.debug("Making new FileSaver class")
         self.modus = args.save
         self.name = args.name
         if args.save == "pandas":
-            colum_names = get_config.parse_config_colums(template, _logger)
+            colum_names = get_config.parse_config_colums(template)
             self.df = pandas.DataFrame(columns=colum_names)
             self.output = args.output
         if args.save == "wandb":
             wandb.init(project="lora_sdr-profiler", name=args.name)
             self.config = wandb.config
         if args.save == "both":
-            colum_names = get_config.parse_config_colums(template, _logger)
+            colum_names = get_config.parse_config_colums(template)
             self.df = pandas.DataFrame(columns=colum_names)
             self.output = args.output
             wandb.init(project="lora_sdr-profiler")
