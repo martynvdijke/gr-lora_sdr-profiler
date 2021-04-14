@@ -64,11 +64,12 @@ class lora_sim(gr.top_block):
         ##################################################
         # Connections
         ##################################################
+        self.connect((self.analog_noise_source_x_0, 0), (self.blocks_add_xx_0, 1))
+        self.connect((self.blocks_add_xx_0, 0), (self.blocks_throttle_0_1_0, 0))
         self.connect((self.blocks_throttle_0_1_0, 0), (self.lora_sdr_frame_detector_1, 0))
         self.connect((self.interp_fir_filter_xxx_0_1_0, 0), (self.lora_sdr_hier_rx_1, 0))
         self.connect((self.lora_sdr_frame_detector_1, 0), (self.interp_fir_filter_xxx_0_1_0, 0))
-        self.connect((self.lora_sdr_hier_tx_1, 0), (self.blocks_throttle_0_1_0, 0))
-
+        self.connect((self.lora_sdr_hier_tx_1, 0), (self.blocks_add_xx_0, 0))
 
     def get_bw(self):
         return self.bw
