@@ -61,8 +61,8 @@ def get_label(x_colum_name, y_colum_name, *names):
         'threshold': "Threshold value",
         'noise': "Noise amplitude",
         'avg_snr': "$SNR (dB)$",
-        'signal_power': "$P_{signal}$",
-        'noise_power': "$P_{noise}$"
+        'avg_signal_power': "$P_{signal}$",
+        'avg_noise_power': "$P_{noise}$",
     }
     return_list.append(labels[x_colum_name])
     return_list.append(labels[y_colum_name])

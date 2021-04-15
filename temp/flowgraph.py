@@ -39,8 +39,8 @@ class lora_sim(gr.top_block):
         self.has_crc = has_crc = False
         self.cr = cr = 2
         self.sf = sf = 9
-        self.threshold = threshold = 10
-        self.noise = noise = 0
+        self.threshold = threshold = 85
+        self.noise = noise = 8.5
         self.time_wait = time_wait = 200
 
 
