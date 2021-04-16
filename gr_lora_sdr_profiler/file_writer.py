@@ -1,7 +1,9 @@
 import os
 import re
-import  logging
+import logging
+
 _logger = logging.getLogger(__name__)
+
 
 def from_dict(dct):
     """Replaces template files variables (denoted by @@<var>@@) with the variable value
@@ -9,13 +11,18 @@ def from_dict(dct):
     Args:
         dct ([type]): dict to replace
     """
+
     def lookup(match):
         key = match.group(1)
-        return dct.get(key, f'<{key} not found>')
+        return dct.get(key, f"<{key} not found>")
+
     return lookup
 
-#needs cleaning
-def write_template_single(file_name, source_data, bw, sf, paylen, impl_head, has_crc, cr, frames, frame_period, mean):
+
+# needs cleaning
+def write_template_single(
+    file_name, source_data, bw, sf, paylen, impl_head, has_crc, cr, frames, frame_period, mean
+):
     """
     Writes the temporary single chain template
 
@@ -32,8 +39,8 @@ def write_template_single(file_name, source_data, bw, sf, paylen, impl_head, has
         frame_period ([type]): frame_period
     """
     # open template and read template into variable
-    file_name_open = "templates/"+str(file_name)
-    f_template = open(file_name_open, 'r')
+    file_name_open = "templates/" + str(file_name)
+    f_template = open(file_name_open, "r")
     f_template_text = f_template.read()
     f_template.close()
     delay_sf1 = 0
@@ -43,7 +50,7 @@ def write_template_single(file_name, source_data, bw, sf, paylen, impl_head, has
     delay_sf5 = 0
     delay_sf6 = 0
     # subsitutes placeholder values with values from run
-    if(file_name == "lora_sim_multi1"):
+    if file_name == "lora_sim_multi1":
         # subsitutes placeholder values with values from run
         subs = {
             "source_data": str(source_data),
@@ -56,12 +63,12 @@ def write_template_single(file_name, source_data, bw, sf, paylen, impl_head, has
             "n_frame": str(frames),
             "frame_period": str(frame_period),
             "mean": str(mean),
-            'delay_sf1': str(delay_sf1),
-            'delay_sf2': str(delay_sf2),
-            'delay_sf3': str(delay_sf3),
-            'delay_sf4': str(delay_sf4),
-            'delay_sf5': str(delay_sf5),
-            'delay_sf6': str(delay_sf6),
+            "delay_sf1": str(delay_sf1),
+            "delay_sf2": str(delay_sf2),
+            "delay_sf3": str(delay_sf3),
+            "delay_sf4": str(delay_sf4),
+            "delay_sf5": str(delay_sf5),
+            "delay_sf6": str(delay_sf6),
         }
     else:
         # subsitutes placeholder values with values from run
@@ -75,19 +82,36 @@ def write_template_single(file_name, source_data, bw, sf, paylen, impl_head, has
             "cr": str(cr),
             "n_frame": str(frames),
             "frame_period": str(frame_period),
-            "mean": str(mean)
+            "mean": str(mean),
         }
     # replace placeholder values with real values
-    replaced_text = re.sub('@@(.*?)@@', from_dict(subs), f_template_text)
+    replaced_text = re.sub("@@(.*?)@@", from_dict(subs), f_template_text)
     temp_file = "temp/flowgraph.py"
     # write temp file
     f = open(temp_file, "w")
     f.write(replaced_text)
     f.close()
 
-#needs cleaning
-def write_template_multi_stream(file_name, source_data, bw, paylen, impl_head, has_crc, cr, frames, frame_period, mean,
-                         delay_sf1, delay_sf2, delay_sf3, delay_sf4, delay_sf5, delay_sf6):
+
+# needs cleaning
+def write_template_multi_stream(
+    file_name,
+    source_data,
+    bw,
+    paylen,
+    impl_head,
+    has_crc,
+    cr,
+    frames,
+    frame_period,
+    mean,
+    delay_sf1,
+    delay_sf2,
+    delay_sf3,
+    delay_sf4,
+    delay_sf5,
+    delay_sf6,
+):
     """Writes the multi stream gateway template
 
     Args:
@@ -109,12 +133,12 @@ def write_template_multi_stream(file_name, source_data, bw, paylen, impl_head, h
         delay_sf2 ([type]): delay of block6
     """
     # open template and read template into variable
-    file_name_open = "templates/"+str(file_name)
-    f_template = open(file_name_open, 'r')
+    file_name_open = "templates/" + str(file_name)
+    f_template = open(file_name_open, "r")
     f_template_text = f_template.read()
     f_template.close()
 
-    if(file_name == "lora_sim_multi1"):
+    if file_name == "lora_sim_multi1":
         sf = 7
         # subsitutes placeholder values with values from run
         subs = {
@@ -128,12 +152,12 @@ def write_template_multi_stream(file_name, source_data, bw, paylen, impl_head, h
             "n_frame": str(frames),
             "frame_period": str(frame_period),
             "mean": str(mean),
-            'delay_sf1': str(delay_sf1),
-            'delay_sf2': str(delay_sf2),
-            'delay_sf3': str(delay_sf3),
-            'delay_sf4': str(delay_sf4),
-            'delay_sf5': str(delay_sf5),
-            'delay_sf6': str(delay_sf6),
+            "delay_sf1": str(delay_sf1),
+            "delay_sf2": str(delay_sf2),
+            "delay_sf3": str(delay_sf3),
+            "delay_sf4": str(delay_sf4),
+            "delay_sf5": str(delay_sf5),
+            "delay_sf6": str(delay_sf6),
         }
     else:
         # subsitutes placeholder values with values from run
@@ -147,22 +171,25 @@ def write_template_multi_stream(file_name, source_data, bw, paylen, impl_head, h
             "n_frame": str(frames),
             "frame_period": str(frame_period),
             "mean": str(mean),
-            'delay_sf1': str(delay_sf1),
-            'delay_sf2': str(delay_sf2),
-            'delay_sf3': str(delay_sf3),
-            'delay_sf4': str(delay_sf4),
-            'delay_sf5': str(delay_sf5),
-            'delay_sf6': str(delay_sf6),
+            "delay_sf1": str(delay_sf1),
+            "delay_sf2": str(delay_sf2),
+            "delay_sf3": str(delay_sf3),
+            "delay_sf4": str(delay_sf4),
+            "delay_sf5": str(delay_sf5),
+            "delay_sf6": str(delay_sf6),
         }
     # replace placeholder values with real values
-    replaced_text = re.sub('@@(.*?)@@', from_dict(subs), f_template_text)
+    replaced_text = re.sub("@@(.*?)@@", from_dict(subs), f_template_text)
     temp_file = "temp/flowgraph.py"
     # write temp file
     f = open(temp_file, "w")
     f.write(replaced_text)
     f.close()
 
-def write_template_frame_detector(file_name,input_data, sf, impl_head, has_crc, cr, frames, time_wait,threshold,noise):
+
+def write_template_frame_detector(
+    file_name, input_data, sf, impl_head, has_crc, cr, frames, time_wait, threshold, noise
+):
     """
     Writes the frame_detector template using the arguments
     Args:
@@ -181,9 +208,13 @@ def write_template_frame_detector(file_name,input_data, sf, impl_head, has_crc, 
         writen template file
     """
     _logger.debug("Writing new template filer {0}".format(file_name))
-    _logger.debug("{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(input_data,impl_head,has_crc,cr,frames,time_wait,threshold,noise))
-    file_template = "templates/"+str(file_name)
-    f_template = open(file_template, 'r')
+    _logger.debug(
+        "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(
+            input_data, impl_head, has_crc, cr, frames, time_wait, threshold, noise
+        )
+    )
+    file_template = "templates/" + str(file_name)
+    f_template = open(file_template, "r")
     f_template_text = f_template.read()
     f_template.close()
     subs = {
@@ -194,13 +225,12 @@ def write_template_frame_detector(file_name,input_data, sf, impl_head, has_crc, 
         "sf": str(sf),
         "n_frame": str(frames),
         "time_wait": str(time_wait),
-        "threshold" : str(threshold),
-        "noise" : str(noise)
+        "threshold": str(threshold),
+        "noise": str(noise),
     }
 
-
     ##serach the template text for @@ which hold the variables that need to be recplaced
-    replaced_text = re.sub('@@(.*?)@@', from_dict(subs), f_template_text)
+    replaced_text = re.sub("@@(.*?)@@", from_dict(subs), f_template_text)
     temp_file = "temp/flowgraph.py"
     # write temp file
     f = open(temp_file, "w")

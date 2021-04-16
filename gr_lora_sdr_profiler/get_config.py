@@ -41,32 +41,32 @@ def get_label(x_colum_name, y_colum_name, *names):
     return_list = []
     ## all labels possible
     labels = {
-        'template': "string",
-        'input_data': "string",
-        'time_wait': "$t_{wait}$",
-        'sf': "$SF$",
-        'paylen': "Payload length [B]",
-        'impl_head': "Impl head modus",
-        'has_crc': "CRC modus",
-        'cr': "Coding Rate",
-        'frames': "$N_{frames}$",
-        'time': "$t$",
-        'data_rate': "Throughput [bytes/s]",
-        'load_1_min': "1 min cpu load",
-        'load_5_min': "5 min cpu load",
-        'load_15_min': "15 min cpu load",
-        'num_right': "Rightfully decoded messages",
-        'num_dec': "Number of decoded messages",
-        'num_per': "Percentage correctly decoded messages",
-        'threshold': "Threshold value",
-        'noise': "Noise amplitude",
-        'avg_snr': "$SNR (dB)$",
-        'avg_signal_power': "$P_{signal}$",
-        'avg_noise_power': "$P_{noise}$",
+        "template": "string",
+        "input_data": "string",
+        "time_wait": "$t_{wait}$",
+        "sf": "$SF$",
+        "paylen": "Payload length [B]",
+        "impl_head": "Impl head modus",
+        "has_crc": "CRC modus",
+        "cr": "Coding Rate",
+        "frames": "$N_{frames}$",
+        "time": "$t$",
+        "data_rate": "Throughput [bytes/s]",
+        "load_1_min": "1 min cpu load",
+        "load_5_min": "5 min cpu load",
+        "load_15_min": "15 min cpu load",
+        "num_right": "Rightfully decoded messages",
+        "num_dec": "Number of decoded messages",
+        "num_per": "Percentage correctly decoded messages",
+        "threshold": "Threshold value",
+        "noise": "Noise amplitude",
+        "avg_snr": "$SNR (dB)$",
+        "avg_signal_power": "$P_{signal}$",
+        "avg_noise_power": "$P_{noise}$",
     }
     return_list.append(labels[x_colum_name])
     return_list.append(labels[y_colum_name])
-    #more names you want to have labels of
+    # more names you want to have labels of
     for name in names:
         return_list.append(labels[name])
 
@@ -85,10 +85,33 @@ def parse_config_colums(template):
     # list ot hold all configs values
     colum_names = []
 
-    colum_names.extend(['template', 'time_wait', 'input_data', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames'])
+    colum_names.extend(
+        [
+            "template",
+            "time_wait",
+            "input_data",
+            "sf",
+            "paylen",
+            "impl_head",
+            "has_crc",
+            "cr",
+            "frames",
+        ]
+    )
     # add the derived general quantities
     colum_names.extend(
-        ["time", "data_rate", "load_1min", "load_5min", "load_15min", "num_right", "num_total", "num_dec", "num_per"])
+        [
+            "time",
+            "data_rate",
+            "load_1min",
+            "load_5min",
+            "load_15min",
+            "num_right",
+            "num_total",
+            "num_dec",
+            "num_per",
+        ]
+    )
 
     if template == "frame_detector":
         colum_names.extend(["threshold", "noise", "avg_snr", "avg_signal_power", "avg_noise_power"])
@@ -110,33 +133,65 @@ def parse_config_data(cfg, template):
     # list ot hold all configs values
     config_list = []
     # open
-    with open(r'{}'.format(cfg)) as file:
+    with open(r"{}".format(cfg)) as file:
         documents = yaml.full_load(file)
-        config_list = documents['frame_detector']
-    input_list = config_list['input_string']
-    sf_list = increment_list(config_list['sf']['start'], config_list['sf']['end'],
-                             config_list['sf']['increment'])
-    frames_list = increment_list(config_list['frames']['start'], config_list['frames']['end'],
-                                 config_list['frames']['increment'])
-    impl_head_list = increment_list(config_list['impl_head']['start'],
-                                    config_list['impl_head']['end'], 1)
-    has_crc_list = increment_list(config_list['has_crc']['start'],
-                                  config_list['has_crc']['end'], 1)
-    cr_list = increment_list(config_list['cr']['start'], config_list['cr']['end'],
-                             config_list['cr']['increment'], 1)
-    time_wait_list = increment_list(config_list['time_wait']['start'], config_list['time_wait']['end'],
-                                    config_list['time_wait']['increment'])
+        config_list = documents["frame_detector"]
+    input_list = config_list["input_string"]
+    sf_list = increment_list(
+        config_list["sf"]["start"], config_list["sf"]["end"], config_list["sf"]["increment"]
+    )
+    frames_list = increment_list(
+        config_list["frames"]["start"],
+        config_list["frames"]["end"],
+        config_list["frames"]["increment"],
+    )
+    impl_head_list = increment_list(
+        config_list["impl_head"]["start"], config_list["impl_head"]["end"], 1
+    )
+    has_crc_list = increment_list(config_list["has_crc"]["start"], config_list["has_crc"]["end"], 1)
+    cr_list = increment_list(
+        config_list["cr"]["start"], config_list["cr"]["end"], config_list["cr"]["increment"], 1
+    )
+    time_wait_list = increment_list(
+        config_list["time_wait"]["start"],
+        config_list["time_wait"]["end"],
+        config_list["time_wait"]["increment"],
+    )
 
     if template == "single":
-        with open(r'{}'.format(cfg)) as file:
+        with open(r"{}".format(cfg)) as file:
             documents = yaml.full_load(file)
 
     if template == "frame_detector":
-        threshold_list = increment_list(config_list['threshold']['start'], config_list['threshold']['end'],
-                                        config_list['threshold']['increment'])
-        noise_list = increment_list(config_list['noise']['start'], config_list['noise']['end'],
-                                    config_list['noise']['increment'])
+        threshold_list = increment_list(
+            config_list["threshold"]["start"],
+            config_list["threshold"]["end"],
+            config_list["threshold"]["increment"],
+        )
+        noise_list = increment_list(
+            config_list["noise"]["start"],
+            config_list["noise"]["end"],
+            config_list["noise"]["increment"],
+        )
 
-        return input_list, sf_list, frames_list, impl_head_list, has_crc_list, cr_list, time_wait_list, threshold_list, noise_list
+        return (
+            input_list,
+            sf_list,
+            frames_list,
+            impl_head_list,
+            has_crc_list,
+            cr_list,
+            time_wait_list,
+            threshold_list,
+            noise_list,
+        )
     else:
-        return input_list, sf_list, frames_list, impl_head_list, has_crc_list, cr_list, time_wait_list
+        return (
+            input_list,
+            sf_list,
+            frames_list,
+            impl_head_list,
+            has_crc_list,
+            cr_list,
+            time_wait_list,
+        )

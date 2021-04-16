@@ -1,6 +1,8 @@
 import subprocess
-import  logging
+import logging
+
 _logger = logging.getLogger(__name__)
+
 
 def load_avg_1min():
     """
@@ -8,8 +10,9 @@ def load_avg_1min():
     Returns: average 1 min Linux load
 
     """
-    process = subprocess.Popen("profiler/bash_scripts/avg_load_1.sh",
-                               shell=True, stdout=subprocess.PIPE)
+    process = subprocess.Popen(
+        "profiler/bash_scripts/avg_load_1.sh", shell=True, stdout=subprocess.PIPE
+    )
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
@@ -21,8 +24,9 @@ def load_avg_5min():
     Returns: average 5 min Linux load
 
     """
-    process = subprocess.Popen("profiler/bash_scripts/avg_load_5.sh",
-                               shell=True, stdout=subprocess.PIPE)
+    process = subprocess.Popen(
+        "profiler/bash_scripts/avg_load_5.sh", shell=True, stdout=subprocess.PIPE
+    )
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
@@ -34,8 +38,9 @@ def load_avg_15min():
     Returns: average 15 min Linux load
 
     """
-    process = subprocess.Popen("profiler/bash_scripts/avg_load_15.sh",
-                               shell=True, stdout=subprocess.PIPE)
+    process = subprocess.Popen(
+        "profiler/bash_scripts/avg_load_15.sh", shell=True, stdout=subprocess.PIPE
+    )
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load

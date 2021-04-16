@@ -1,20 +1,53 @@
 import pandas as pd
-from . import  file_writer
+from . import file_writer
 from . import run_flowgraph
-from . import  get_cpu_load
+from . import get_cpu_load
 import subprocess
 
-#need cleaning
-def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
-    """[summary]
-    """
-    #templates_list = ["lora_sim_blocks", "lora_sim_chain", "lora_sim_multi1"]
+# need cleaning
+def main_single(
+    source_data_list,
+    bw_list,
+    sf_list,
+    paylen_list,
+    frames_list,
+    frame_period_list,
+    impl_head_list,
+    has_crc_list,
+    cr_list,
+    mean_list,
+    delay_sf1_list,
+    delay_sf2_list,
+    delay_sf3_list,
+    delay_sf4_list,
+    delay_sf5_list,
+    delay_sf6_list,
+    n_runs,
+):
+    """[summary]"""
+    # templates_list = ["lora_sim_blocks", "lora_sim_chain", "lora_sim_multi1"]
     templates_list = ["lora_sim_chain"]
 
-    colums_names = ['template', 'mean', 'source_data', 'bw', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
-                    'frame_period', 'num_right', 'num_total', 'num_dec', 'num_per', 'time', 'load', 'data_rate']
+    colums_names = [
+        "template",
+        "mean",
+        "source_data",
+        "bw",
+        "sf",
+        "paylen",
+        "impl_head",
+        "has_crc",
+        "cr",
+        "frames",
+        "frame_period",
+        "num_right",
+        "num_total",
+        "num_dec",
+        "num_per",
+        "time",
+        "load",
+        "data_rate",
+    ]
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
@@ -34,58 +67,101 @@ def main_single(source_data_list, bw_list, sf_list, paylen_list, frames_list, fr
                                             for sf in sf_list:
                                                 # write new template config
                                                 file_writer.write_template_single(
-                                                    template, source_data, bw, sf, paylen, impl_head, has_crc, cr, frames,
-                                                    frame_period, mean)
+                                                    template,
+                                                    source_data,
+                                                    bw,
+                                                    sf,
+                                                    paylen,
+                                                    impl_head,
+                                                    has_crc,
+                                                    cr,
+                                                    frames,
+                                                    frame_period,
+                                                    mean,
+                                                )
 
                                                 try:
                                                     num_right, num_dec, time = profiler.profile(
-                                                        source_data)
+                                                        source_data
+                                                    )
                                                 except:
                                                     num_right, num_dec, time = 0
                                                 load = cpu_load.load_avg()
-                                                num_per = num_right/frames*100
-                                                data_rate = (
-                                                    paylen*frames) / time
+                                                num_per = num_right / frames * 100
+                                                data_rate = (paylen * frames) / time
 
                                                 data = {
-                                                    'template': str(template),
-                                                    'mean': mean,
-                                                    'source_data': source_data,
-                                                    'bw': bw,
-                                                    'sf': sf,
-                                                    'paylen': paylen,
-                                                    'impl_head': impl_head,
-                                                    'has_crc': has_crc,
-                                                    'cr': cr,
-                                                    'frames': frames,
-                                                    'frame_period': frame_period,
-                                                    'num_right': num_right,
-                                                    'num_total': frames,
-                                                    'num_dec': num_dec,
-                                                    'time': time,
-                                                    'load': load,
-                                                    'num_per': num_per,
-                                                    'data_rate': data_rate,
+                                                    "template": str(template),
+                                                    "mean": mean,
+                                                    "source_data": source_data,
+                                                    "bw": bw,
+                                                    "sf": sf,
+                                                    "paylen": paylen,
+                                                    "impl_head": impl_head,
+                                                    "has_crc": has_crc,
+                                                    "cr": cr,
+                                                    "frames": frames,
+                                                    "frame_period": frame_period,
+                                                    "num_right": num_right,
+                                                    "num_total": frames,
+                                                    "num_dec": num_dec,
+                                                    "time": time,
+                                                    "load": load,
+                                                    "num_per": num_per,
+                                                    "data_rate": data_rate,
                                                 }
                                                 # append newly created data to dataframe
-                                                df = df.append(
-                                                    data, ignore_index=True)
+                                                df = df.append(data, ignore_index=True)
                                                 print("Executed loop once.")
                                                 # save dataframe to file
-                                                df.to_csv(
-                                                    "results/profiled_single.csv")
+                                                df.to_csv("results/profiled_single.csv")
 
-#need cleaning
-def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                  impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                  delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
-    """[summary]
-    """
+
+# need cleaning
+def main_single_n(
+    source_data_list,
+    bw_list,
+    sf_list,
+    paylen_list,
+    frames_list,
+    frame_period_list,
+    impl_head_list,
+    has_crc_list,
+    cr_list,
+    mean_list,
+    delay_sf1_list,
+    delay_sf2_list,
+    delay_sf3_list,
+    delay_sf4_list,
+    delay_sf5_list,
+    delay_sf6_list,
+    n_runs,
+):
+    """[summary]"""
     templates_list = ["lora_sim_blocks", "lora_sim_chain"]
     templates_list = ["lora_sim_chain"]
 
-    colums_names = ['template', 'run', 'mean', 'source_data', 'bw', 'sf', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
-                    'frame_period', 'num_right', 'num_total', 'num_dec', 'num_per', 'time', 'load', 'data_rate']
+    colums_names = [
+        "template",
+        "run",
+        "mean",
+        "source_data",
+        "bw",
+        "sf",
+        "paylen",
+        "impl_head",
+        "has_crc",
+        "cr",
+        "frames",
+        "frame_period",
+        "num_right",
+        "num_total",
+        "num_dec",
+        "num_per",
+        "time",
+        "load",
+        "data_rate",
+    ]
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
@@ -105,74 +181,125 @@ def main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, 
                                                 for sf in sf_list:
                                                     # write new template config
                                                     file_writer.write_template_single(
-                                                        template, source_data, bw, sf, paylen, impl_head, has_crc, cr, frames,
-                                                        frame_period, mean)
+                                                        template,
+                                                        source_data,
+                                                        bw,
+                                                        sf,
+                                                        paylen,
+                                                        impl_head,
+                                                        has_crc,
+                                                        cr,
+                                                        frames,
+                                                        frame_period,
+                                                        mean,
+                                                    )
 
                                                     num_right, num_dec, time = profiler.profile(
-                                                        source_data)
-                                                    num_per = num_right/frames*100
-                                                    data_rate = (
-                                                        paylen*frames) / time
+                                                        source_data
+                                                    )
+                                                    num_per = num_right / frames * 100
+                                                    data_rate = (paylen * frames) / time
 
                                                     load = cpu_load.load_avg()
                                                     data = {
-                                                        'template': str(template),
-                                                        'run': i,
-                                                        'mean': mean,
-                                                        'source_data': source_data,
-                                                        'bw': bw,
-                                                        'sf': sf,
-                                                        'paylen': paylen,
-                                                        'impl_head': impl_head,
-                                                        'has_crc': has_crc,
-                                                        'cr': cr,
-                                                        'frames': frames,
-                                                        'frame_period': frame_period,
-                                                        'num_right': num_right,
-                                                        'num_total': frames,
-                                                        'num_dec': num_dec,
-                                                        'time': time,
-                                                        'load': load,
-                                                        'num_per': num_per,
-                                                        'data_rate': data_rate,
+                                                        "template": str(template),
+                                                        "run": i,
+                                                        "mean": mean,
+                                                        "source_data": source_data,
+                                                        "bw": bw,
+                                                        "sf": sf,
+                                                        "paylen": paylen,
+                                                        "impl_head": impl_head,
+                                                        "has_crc": has_crc,
+                                                        "cr": cr,
+                                                        "frames": frames,
+                                                        "frame_period": frame_period,
+                                                        "num_right": num_right,
+                                                        "num_total": frames,
+                                                        "num_dec": num_dec,
+                                                        "time": time,
+                                                        "load": load,
+                                                        "num_per": num_per,
+                                                        "data_rate": data_rate,
                                                     }
                                                     # append newly created data to dataframe
-                                                    df = df.append(
-                                                        data, ignore_index=True)
-                                                    print(
-                                                        "Executed loop once.")
+                                                    df = df.append(data, ignore_index=True)
+                                                    print("Executed loop once.")
                                                     # save dataframe to file
-                                                    df.to_csv(
-                                                        "results/profiled_single_runs.csv")
+                                                    df.to_csv("results/profiled_single_runs.csv")
 
-#need cleaning
-def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-               impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-               delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
-    """[summary]
-    """
-    templates_list = ["lora_sim_multi1", "lora_sim_multi2",
-                      "lora_sim_multi3", "lora_sim_multi4", "lora_sim_multi5", "lora_sim_multi6"]
 
-    colums_names = ['template', 'mean', 'source_data', 'bw', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
-                    'frame_period', 'delay_sf1', 'delay_sf2', 'delay_sf3', 'delay_sf4', 'delay_sf5', 'delay_sf6',
-                    'num_right', 'num_total', 'num_dec', 'num_per', 'time', 'load', 'data_rate']
+# need cleaning
+def main_multi(
+    source_data_list,
+    bw_list,
+    sf_list,
+    paylen_list,
+    frames_list,
+    frame_period_list,
+    impl_head_list,
+    has_crc_list,
+    cr_list,
+    mean_list,
+    delay_sf1_list,
+    delay_sf2_list,
+    delay_sf3_list,
+    delay_sf4_list,
+    delay_sf5_list,
+    delay_sf6_list,
+    n_runs,
+):
+    """[summary]"""
+    templates_list = [
+        "lora_sim_multi1",
+        "lora_sim_multi2",
+        "lora_sim_multi3",
+        "lora_sim_multi4",
+        "lora_sim_multi5",
+        "lora_sim_multi6",
+    ]
+
+    colums_names = [
+        "template",
+        "mean",
+        "source_data",
+        "bw",
+        "paylen",
+        "impl_head",
+        "has_crc",
+        "cr",
+        "frames",
+        "frame_period",
+        "delay_sf1",
+        "delay_sf2",
+        "delay_sf3",
+        "delay_sf4",
+        "delay_sf5",
+        "delay_sf6",
+        "num_right",
+        "num_total",
+        "num_dec",
+        "num_per",
+        "time",
+        "load",
+        "data_rate",
+    ]
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
     for template in templates_list:
         print(template)
-        if (template == "lora_sim_multi1"):
+        if template == "lora_sim_multi1":
             num_tx = 1
-        if (template == "lora_sim_multi2"):
+        if template == "lora_sim_multi2":
             num_tx = 2
-        if (template == "lora_sim_multi3"):
+        if template == "lora_sim_multi3":
             num_tx = 3
-        if (template == "lora_sim_multi4"):
+        if template == "lora_sim_multi4":
             num_tx = 4
-        if (template == "lora_sim_multi5"):
+        if template == "lora_sim_multi5":
             num_tx = 5
-        if (template == "lora_sim_multi6"):
+        if template == "lora_sim_multi6":
             num_tx = 6
 
         # loop over all values and make the test cases and the reference file
@@ -193,79 +320,150 @@ def main_multi(source_data_list, bw_list, sf_list, paylen_list, frames_list, fra
                                                                 for delay_sf6 in delay_sf6_list:
                                                                     # write new template config
                                                                     file_writer.write_template_multi(
-                                                                        template, source_data, bw, paylen, impl_head, has_crc, cr, frames, frame_period, mean,
-                                                                        delay_sf1, delay_sf2, delay_sf3, delay_sf4, delay_sf5, delay_sf6)
+                                                                        template,
+                                                                        source_data,
+                                                                        bw,
+                                                                        paylen,
+                                                                        impl_head,
+                                                                        has_crc,
+                                                                        cr,
+                                                                        frames,
+                                                                        frame_period,
+                                                                        mean,
+                                                                        delay_sf1,
+                                                                        delay_sf2,
+                                                                        delay_sf3,
+                                                                        delay_sf4,
+                                                                        delay_sf5,
+                                                                        delay_sf6,
+                                                                    )
 
-                                                                    num_right, num_dec, time = profiler.profile(
-                                                                        source_data)
-                                                                    num_per = num_right / (num_tx *
-                                                                                           frames)*100
+                                                                    (
+                                                                        num_right,
+                                                                        num_dec,
+                                                                        time,
+                                                                    ) = profiler.profile(
+                                                                        source_data
+                                                                    )
+                                                                    num_per = (
+                                                                        num_right
+                                                                        / (num_tx * frames)
+                                                                        * 100
+                                                                    )
                                                                     data_rate = (
-                                                                        paylen*frames*num_tx)/time
+                                                                        paylen * frames * num_tx
+                                                                    ) / time
                                                                     load = cpu_load.load_avg()
                                                                     data = {
-                                                                        'template': str(template),
-                                                                        'mean': mean,
-                                                                        'source_data': source_data,
-                                                                        'bw': bw,
-                                                                        'paylen': paylen,
-                                                                        'impl_head': impl_head,
-                                                                        'has_crc': has_crc,
-                                                                        'cr': cr,
-                                                                        'frames': frames,
-                                                                        'frame_period': frame_period,
-                                                                        'delay_sf1': delay_sf1,
-                                                                        'delay_sf2': delay_sf2,
-                                                                        'delay_sf3': delay_sf3,
-                                                                        'delay_sf4': delay_sf4,
-                                                                        'delay_sf5': delay_sf5,
-                                                                        'delay_sf6': delay_sf6,
-                                                                        'num_right': num_right,
-                                                                        'num_dec': num_dec,
-                                                                        'num_total': num_tx * frames,
-                                                                        'time': time,
-                                                                        'load': load,
-                                                                        'num_per': num_per,
-                                                                        'data_rate': data_rate,
+                                                                        "template": str(template),
+                                                                        "mean": mean,
+                                                                        "source_data": source_data,
+                                                                        "bw": bw,
+                                                                        "paylen": paylen,
+                                                                        "impl_head": impl_head,
+                                                                        "has_crc": has_crc,
+                                                                        "cr": cr,
+                                                                        "frames": frames,
+                                                                        "frame_period": frame_period,
+                                                                        "delay_sf1": delay_sf1,
+                                                                        "delay_sf2": delay_sf2,
+                                                                        "delay_sf3": delay_sf3,
+                                                                        "delay_sf4": delay_sf4,
+                                                                        "delay_sf5": delay_sf5,
+                                                                        "delay_sf6": delay_sf6,
+                                                                        "num_right": num_right,
+                                                                        "num_dec": num_dec,
+                                                                        "num_total": num_tx
+                                                                        * frames,
+                                                                        "time": time,
+                                                                        "load": load,
+                                                                        "num_per": num_per,
+                                                                        "data_rate": data_rate,
                                                                     }
                                                                     # append newly created data to dataframe
                                                                     df = df.append(
-                                                                        data, ignore_index=True)
-                                                                    print(
-                                                                        "Executed loop once.")
+                                                                        data, ignore_index=True
+                                                                    )
+                                                                    print("Executed loop once.")
                                                                     # save dataframe to file
                                                                     df.to_csv(
-                                                                        "results/profiled_multi.csv")
+                                                                        "results/profiled_multi.csv"
+                                                                    )
 
-#need cleaning
-def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
-                 impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
-                 delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs):
-    """[summary]
-    """
-    templates_list = ["lora_sim_multi1", "lora_sim_multi2",
-                      "lora_sim_multi3", "lora_sim_multi4", "lora_sim_multi5", "lora_sim_multi6"]
+
+# need cleaning
+def main_multi_n(
+    source_data_list,
+    bw_list,
+    sf_list,
+    paylen_list,
+    frames_list,
+    frame_period_list,
+    impl_head_list,
+    has_crc_list,
+    cr_list,
+    mean_list,
+    delay_sf1_list,
+    delay_sf2_list,
+    delay_sf3_list,
+    delay_sf4_list,
+    delay_sf5_list,
+    delay_sf6_list,
+    n_runs,
+):
+    """[summary]"""
+    templates_list = [
+        "lora_sim_multi1",
+        "lora_sim_multi2",
+        "lora_sim_multi3",
+        "lora_sim_multi4",
+        "lora_sim_multi5",
+        "lora_sim_multi6",
+    ]
     templates_list = ["lora_sim_multi5", "lora_sim_multi6"]
 
-    colums_names = ['template', 'run', 'mean', 'source_data', 'bw', 'paylen', 'impl_head', 'has_crc', 'cr', 'frames',
-                    'frame_period', 'delay_sf1', 'delay_sf2', 'delay_sf3', 'delay_sf4', 'delay_sf5', 'delay_sf6',
-                    'num_right', 'num_total', 'num_dec', 'num_per', 'time', 'load', 'data_rate']
+    colums_names = [
+        "template",
+        "run",
+        "mean",
+        "source_data",
+        "bw",
+        "paylen",
+        "impl_head",
+        "has_crc",
+        "cr",
+        "frames",
+        "frame_period",
+        "delay_sf1",
+        "delay_sf2",
+        "delay_sf3",
+        "delay_sf4",
+        "delay_sf5",
+        "delay_sf6",
+        "num_right",
+        "num_total",
+        "num_dec",
+        "num_per",
+        "time",
+        "load",
+        "data_rate",
+    ]
     df = pd.DataFrame(columns=colums_names)
     num_tx = 1
     # loop over all templates to profile
     for template in templates_list:
         print(template)
-        if (template == "lora_sim_multi1"):
+        if template == "lora_sim_multi1":
             num_tx = 1
-        if (template == "lora_sim_multi2"):
+        if template == "lora_sim_multi2":
             num_tx = 2
-        if (template == "lora_sim_multi3"):
+        if template == "lora_sim_multi3":
             num_tx = 3
-        if (template == "lora_sim_multi4"):
+        if template == "lora_sim_multi4":
             num_tx = 4
-        if (template == "lora_sim_multi5"):
+        if template == "lora_sim_multi5":
             num_tx = 5
-        if (template == "lora_sim_multi6"):
+        if template == "lora_sim_multi6":
             num_tx = 6
 
         for i in range(0, n_runs):
@@ -287,60 +485,87 @@ def main_multi_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, f
                                                                     for delay_sf6 in delay_sf6_list:
                                                                         # write new template config
                                                                         file_writer.write_template_multi(
-                                                                            template, source_data, bw, paylen, impl_head, has_crc, cr, frames, frame_period, mean,
-                                                                            delay_sf1, delay_sf2, delay_sf3, delay_sf4, delay_sf5, delay_sf6)
+                                                                            template,
+                                                                            source_data,
+                                                                            bw,
+                                                                            paylen,
+                                                                            impl_head,
+                                                                            has_crc,
+                                                                            cr,
+                                                                            frames,
+                                                                            frame_period,
+                                                                            mean,
+                                                                            delay_sf1,
+                                                                            delay_sf2,
+                                                                            delay_sf3,
+                                                                            delay_sf4,
+                                                                            delay_sf5,
+                                                                            delay_sf6,
+                                                                        )
                                                                         try:
-                                                                            num_right, num_dec, time = profiler.profile(
-                                                                                source_data)
+                                                                            (
+                                                                                num_right,
+                                                                                num_dec,
+                                                                                time,
+                                                                            ) = profiler.profile(
+                                                                                source_data
+                                                                            )
                                                                         except:
                                                                             num_right = -1
                                                                             num_dec = -1
                                                                             time = -1
 
                                                                         load = cpu_load.load_avg()
-                                                                        print(
-                                                                            load)
-                                                                        num_per = num_right / \
-                                                                            (num_tx *
-                                                                             frames)*100
+                                                                        print(load)
+                                                                        num_per = (
+                                                                            num_right
+                                                                            / (num_tx * frames)
+                                                                            * 100
+                                                                        )
                                                                         data_rate = (
-                                                                            num_tx * paylen*frames)/time
+                                                                            num_tx * paylen * frames
+                                                                        ) / time
                                                                         data = {
-                                                                            'template': str(template),
-                                                                            'run': i,
-                                                                            'mean': mean,
-                                                                            'source_data': source_data,
-                                                                            'bw': bw,
-                                                                            'paylen': paylen,
-                                                                            'impl_head': impl_head,
-                                                                            'has_crc': has_crc,
-                                                                            'cr': cr,
-                                                                            'frames': frames,
-                                                                            'frame_period': frame_period,
-                                                                            'delay_sf1': delay_sf1,
-                                                                            'delay_sf2': delay_sf2,
-                                                                            'delay_sf3': delay_sf3,
-                                                                            'delay_sf4': delay_sf4,
-                                                                            'delay_sf5': delay_sf5,
-                                                                            'delay_sf6': delay_sf6,
-                                                                            'num_right': num_right,
-                                                                            'num_dec': num_dec,
-                                                                            'num_total': num_tx * frames,
-                                                                            'time': time,
-                                                                            'load': load,
-                                                                            'num_per': num_per,
-                                                                            'data_rate': data_rate,
+                                                                            "template": str(
+                                                                                template
+                                                                            ),
+                                                                            "run": i,
+                                                                            "mean": mean,
+                                                                            "source_data": source_data,
+                                                                            "bw": bw,
+                                                                            "paylen": paylen,
+                                                                            "impl_head": impl_head,
+                                                                            "has_crc": has_crc,
+                                                                            "cr": cr,
+                                                                            "frames": frames,
+                                                                            "frame_period": frame_period,
+                                                                            "delay_sf1": delay_sf1,
+                                                                            "delay_sf2": delay_sf2,
+                                                                            "delay_sf3": delay_sf3,
+                                                                            "delay_sf4": delay_sf4,
+                                                                            "delay_sf5": delay_sf5,
+                                                                            "delay_sf6": delay_sf6,
+                                                                            "num_right": num_right,
+                                                                            "num_dec": num_dec,
+                                                                            "num_total": num_tx
+                                                                            * frames,
+                                                                            "time": time,
+                                                                            "load": load,
+                                                                            "num_per": num_per,
+                                                                            "data_rate": data_rate,
                                                                         }
                                                                         # append newly created data to dataframe
                                                                         df = df.append(
-                                                                            data, ignore_index=True)
-                                                                        print(
-                                                                            "Executed loop once.")
+                                                                            data, ignore_index=True
+                                                                        )
+                                                                        print("Executed loop once.")
                                                                         # save dataframe to file
                                                                         df.to_csv(
-                                                                            "results/profiled_multi_runs.csv")
+                                                                            "results/profiled_multi_runs.csv"
+                                                                        )
 
-#need cleaning
+
+# need cleaning
 def main():
     print("Starting the gr-lora_sdr profiler...")
     # print("Starting the single run, stay tuned...")
@@ -393,8 +618,6 @@ def main():
     # main_single_n(source_data_list, bw_list, sf_list, paylen_list, frames_list, frame_period_list,
     #               impl_head_list, has_crc_list, cr_list, mean_list, delay_sf1_list, delay_sf2_list, delay_sf3_list,
     #               delay_sf4_list, delay_sf5_list, delay_sf6_list, n_runs)
-
-
 
 
 main()

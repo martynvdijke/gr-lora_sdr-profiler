@@ -15,12 +15,28 @@ def main(args):
     timeout = args.timeout
 
     # parse the config for the values to use
-    input_data, sf_list, frames_list, impl_head_list, has_crc_list, cr_list, time_wait_list, threshold_list, noise_list = get_config.parse_config_data(
-        args.config[0], "frame_detector")
+    (
+        input_data,
+        sf_list,
+        frames_list,
+        impl_head_list,
+        has_crc_list,
+        cr_list,
+        time_wait_list,
+        threshold_list,
+        noise_list,
+    ) = get_config.parse_config_data(args.config[0], "frame_detector")
     # initilize a saver object
     save = file_saver.FileSaver(args, "frame_detector")
-    n_times = len(noise_list) * len(threshold_list) * len(cr_list) * len(has_crc_list) * len(impl_head_list) * len(
-        frames_list) * len(sf_list)
+    n_times = (
+        len(noise_list)
+        * len(threshold_list)
+        * len(cr_list)
+        * len(has_crc_list)
+        * len(impl_head_list)
+        * len(frames_list)
+        * len(sf_list)
+    )
     _logger.info("Flowgraph needs to run {}".format(n_times))
 
     # loop over all values that needs to be runned
@@ -35,15 +51,32 @@ def main(args):
                                     _logger.info("Starting new run")
                                     # write template file
                                     try:
-                                        file_writer.write_template_frame_detector(filename, input_data, sf, impl_head,
-                                                                                  has_crc, cr, frames, time_wait,
-                                                                                  threshold, noise)
+                                        file_writer.write_template_frame_detector(
+                                            filename,
+                                            input_data,
+                                            sf,
+                                            impl_head,
+                                            has_crc,
+                                            cr,
+                                            frames,
+                                            time_wait,
+                                            threshold,
+                                            noise,
+                                        )
                                     except:
                                         _logger.debug("Writing frame_detector error")
                                     # run the flowgraph
                                     try:
-                                        num_right, num_dec, time, snr, signal_power, noise_power = run_flowgraph.profile_flowgraph(
-                                            input_data, timeout, "frame_detector")
+                                        (
+                                            num_right,
+                                            num_dec,
+                                            time,
+                                            snr,
+                                            signal_power,
+                                            noise_power,
+                                        ) = run_flowgraph.profile_flowgraph(
+                                            input_data, timeout, "frame_detector"
+                                        )
                                     except:
                                         _logger.debug("Error executing flowgraph of frame_detector")
                                     # get the average load
@@ -57,29 +90,29 @@ def main(args):
                                         _logger.debug("Error in getting the values of the system")
                                     # setup data frame to hold all data
                                     data = {
-                                        'template': "frame_detector",
-                                        'time_wait': time_wait,
-                                        'input_data': input_data,
-                                        'sf': sf,
-                                        'paylen': paylen,
-                                        'impl_head': impl_head,
-                                        'has_crc': has_crc,
-                                        'cr': cr,
-                                        'frames': frames,
-                                        'num_right': num_right,
-                                        'num_total': frames,
-                                        'num_dec': num_dec,
-                                        'time': time,
-                                        'load_1min': load_1min,
-                                        'load_5min': load_5min,
-                                        'load_15min': load_15min,
-                                        'num_per': num_per,
-                                        'data_rate': data_rate,
-                                        'threshold': threshold,
-                                        'noise': noise,
-                                        'avg_snr': snr,
-                                        'avg_signal_power': signal_power,
-                                        'avg_noise_power': noise_power
+                                        "template": "frame_detector",
+                                        "time_wait": time_wait,
+                                        "input_data": input_data,
+                                        "sf": sf,
+                                        "paylen": paylen,
+                                        "impl_head": impl_head,
+                                        "has_crc": has_crc,
+                                        "cr": cr,
+                                        "frames": frames,
+                                        "num_right": num_right,
+                                        "num_total": frames,
+                                        "num_dec": num_dec,
+                                        "time": time,
+                                        "load_1min": load_1min,
+                                        "load_5min": load_5min,
+                                        "load_15min": load_15min,
+                                        "num_per": num_per,
+                                        "data_rate": data_rate,
+                                        "threshold": threshold,
+                                        "noise": noise,
+                                        "avg_snr": snr,
+                                        "avg_signal_power": signal_power,
+                                        "avg_noise_power": noise_power,
                                     }
                                     #
                                     save.saver(data)

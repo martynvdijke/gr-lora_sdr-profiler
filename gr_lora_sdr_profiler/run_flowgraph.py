@@ -21,11 +21,11 @@ def profile_flowgraph(string_input, timeout, template):
     # set starttime
     start_time = td.time()
     # call bash script to exectue flowgraph
-    subprocess.call('profiler/bash_scripts/run.sh {}'.format(timeout), shell=True)
-    time = (td.time() - start_time)
+    subprocess.call("profiler/bash_scripts/run.sh {}".format(timeout), shell=True)
+    time = td.time() - start_time
     # subprocess.call('profiler/bash_scripts/convert.sh', shell=True)
     # open output for parsing processing
-    file1 = open('temp/out.txt', 'r')
+    file1 = open("temp/out.txt", "r")
     try:
         stdout = file1.readlines()
     except:
@@ -60,9 +60,9 @@ def parse_stdout(stdout, string_input, time, template):
     for out in stdout:
         try:
             line = str(out)
-            re_text_right = 'msg:' + str(string_input)
+            re_text_right = "msg:" + str(string_input)
             out_right = re.search(re_text_right, line)
-            re_text_dec = 'msg:'
+            re_text_dec = "msg:"
             out_dec = re.search(re_text_dec, line)
             # check if the search found match objects
             if out_right is not None:
@@ -70,17 +70,17 @@ def parse_stdout(stdout, string_input, time, template):
             if out_dec is not None:
                 num_dec = num_dec + 1
             if template == "frame_detector":
-                re_text_search = 'snr: '
+                re_text_search = "snr: "
                 out_snr = re.search(re_text_search, line)
                 if out_snr is not None:
                     snr.append(float(re.findall("\d+\.\d+", line)[0]))
 
-                re_text_search = 'signal power: '
+                re_text_search = "signal power: "
                 out_snr = re.search(re_text_search, line)
                 if out_snr is not None:
                     signal_power.append(float(re.findall("\d+\.\d+", line)[0]))
 
-                re_text_search = 'noise: '
+                re_text_search = "noise: "
                 out_snr = re.search(re_text_search, line)
                 if out_snr is not None:
                     noise_power.append(float(re.findall("\d+\.\d+", line)[0]))

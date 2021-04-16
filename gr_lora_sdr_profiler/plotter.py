@@ -10,9 +10,9 @@ from prompt_toolkit.completion import WordCompleter
 
 _logger = logging.getLogger(__name__)
 __plot_options__ = WordCompleter(["line", "bar"])
-__aggregate_options__ = WordCompleter(['min','max','mean'])
+__aggregate_options__ = WordCompleter(["min", "max", "mean"])
 
-mpl_logger = logging.getLogger('matplotlib')
+mpl_logger = logging.getLogger("matplotlib")
 mpl_logger.setLevel(logging.WARNING)
 
 
@@ -68,8 +68,8 @@ class Plotter:
         assert plot_y is not plot_x
         # get labels for names
         labels = get_config.get_label(plot_x, plot_y)
-        x_values = self.df.groupby('')[plot_x]
-        y_values = self.df.groupby('')[plot_y]
+        x_values = self.df.groupby("")[plot_x]
+        y_values = self.df.groupby("")[plot_y]
         plt.plot(x_values, y_values)
         plt.xlabel(labels[0])
         plt.ylabel(labels[1])

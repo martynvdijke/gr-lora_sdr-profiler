@@ -62,11 +62,11 @@ $ tox
 
 <!-- Badges -->
 
-[pypi-image]: https://img.shields.io/pypi/v/podsearch
-[pypi-url]: https://pypi.org/project/podsearch/
+<!-- [pypi-image]: https://img.shields.io/pypi/v/gr_lora_sdr_profiler
+[pypi-url]: https://pypi.org/project/gr_lora_sdr_profiler/
 [build-image]: https://github.com/nalgeon/podsearch-py/actions/workflows/build.yml/badge.svg
 [build-url]: https://github.com/nalgeon/podsearch-py/actions/workflows/build.yml
 [coverage-image]: https://codecov.io/gh/nalgeon/podsearch-py/branch/main/graph/badge.svg
 [coverage-url]: https://codecov.io/gh/nalgeon/podsearch-py
 [quality-image]: https://api.codeclimate.com/v1/badges/3130fa0ba3b7993fbf0a/maintainability
-[quality-url]: https://codeclimate.com/github/nalgeon/podsearch-py
+[quality-url]: https://codeclimate.com/github/nalgeon/podsearch-py -->
