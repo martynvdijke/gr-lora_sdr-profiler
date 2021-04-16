@@ -1,3 +1,4 @@
+"""gr_lora_sdr_profiler"""
 import sys
 
 if sys.version_info[:2] >= (3, 8):
@@ -11,6 +12,6 @@ try:
     dist_name = __name__
     __version__ = version(dist_name)
 except PackageNotFoundError:  # pragma: no cover
-    __version__ = "unknown"
+    __version__ = "v0.1"
 finally:
     del version, PackageNotFoundError

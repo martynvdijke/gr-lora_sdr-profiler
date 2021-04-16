@@ -107,13 +107,14 @@ def main(args):
     args = parse_args(args)
     setup_logging(args.loglevel)
     make_dirs(_logger)
+    _logger.info("Starting gr-lora_sdr-profiler, version {}".format(__version__))
 
     if args.plot is not None:
         _logger.info("Running plotter with input file {}".format(args.plot))
         plot = plotter.Plotter(args)
         plot.main()
     else:
-        _logger.info("Starting profiler with mode: {}".format(args.mode))
+        _logger.info("Running profiler with mode: {}".format(args.mode))
         if args.mode == "multi_stream":
             multi_stream.main()
         if args.mode == "frame_detector":
