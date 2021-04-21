@@ -31,3 +31,4 @@ results/*
 gr_lora_sdr_profiler/__pycache__/*
 figures/*
 temp/*
+.run/*
