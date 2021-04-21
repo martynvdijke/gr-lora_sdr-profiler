@@ -11,7 +11,7 @@ def load_avg_1min():
 
     """
     process = subprocess.Popen(
-        "profiler/bash_scripts/avg_load_1.sh", shell=True, stdout=subprocess.PIPE
+        "cat /proc/loadavg | awk '{ print $1; }'", shell=True, stdout=subprocess.PIPE
     )
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
@@ -25,7 +25,7 @@ def load_avg_5min():
 
     """
     process = subprocess.Popen(
-        "profiler/bash_scripts/avg_load_5.sh", shell=True, stdout=subprocess.PIPE
+        "cat /proc/loadavg | awk '{ print $2; }'", shell=True, stdout=subprocess.PIPE
     )
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])
@@ -39,7 +39,7 @@ def load_avg_15min():
 
     """
     process = subprocess.Popen(
-        "profiler/bash_scripts/avg_load_15.sh", shell=True, stdout=subprocess.PIPE
+        "cat /proc/loadavg | awk '{ print $3; }'", shell=True, stdout=subprocess.PIPE
     )
     out, err = process.communicate()
     load = float(out.decode("utf-8")[:-1])

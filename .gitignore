@@ -28,5 +28,6 @@ publish/*
 .idea/*
 .vscode/*
 results/*
-profiler/__pycache__/*
+gr_lora_sdr_profiler/__pycache__/*
 figures/*
+temp/*

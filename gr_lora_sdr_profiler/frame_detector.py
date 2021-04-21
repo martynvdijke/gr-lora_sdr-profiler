@@ -87,7 +87,7 @@ def main(args):
                                         paylen = len(input_data)
                                         data_rate = (paylen * frames) / time
                                     except:
-                                        _logger.debug("Error in getting the values of the system")
+                                        _logger.debug("Error in getting the cpu load values of the system")
                                     # setup data frame to hold all data
                                     data = {
                                         "template": "frame_detector",
@@ -114,7 +114,7 @@ def main(args):
                                         "avg_signal_power": signal_power,
                                         "avg_noise_power": noise_power,
                                     }
-                                    #
+                                    #save data to pandas or wandb
                                     save.saver(data)
 
     save.finish()

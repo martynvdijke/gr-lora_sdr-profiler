@@ -3,7 +3,7 @@ import logging
 import sys
 import os
 import pathlib
-from profiler import __version__
+from gr_lora_sdr_profiler import __version__
 from . import multi_stream
 from . import frame_detector
 from . import plotter

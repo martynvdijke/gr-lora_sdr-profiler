@@ -58,8 +58,8 @@ multi_stream:
 frame_detector:
   input_string: "PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ"
   sf:
-    start: 9
-    end: 9
+    start: 7
+    end: 12
     increment : 1
   paylen: 64
   frames:
@@ -82,9 +82,9 @@ frame_detector:
     increment: 1
   threshold:
     start: 10
-    end: 100
-    increment: 25
+    end: 500
+    increment: 20
   noise:
-    start: 0
-    end: 8
-    increment: 0.5
+    start: 1
+    end: 1
+    increment: 1

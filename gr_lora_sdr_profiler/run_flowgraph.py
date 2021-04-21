@@ -21,7 +21,7 @@ def profile_flowgraph(string_input, timeout, template):
     # set starttime
     start_time = td.time()
     # call bash script to exectue flowgraph
-    subprocess.call("profiler/bash_scripts/run.sh {}".format(timeout), shell=True)
+    subprocess.call("gr_lora_sdr_profiler/bash_scripts/run.sh {}".format(timeout), shell=True)
     time = td.time() - start_time
     # subprocess.call('profiler/bash_scripts/convert.sh', shell=True)
     # open output for parsing processing
