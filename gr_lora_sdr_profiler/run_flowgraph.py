@@ -1,3 +1,11 @@
+"""Run flowgraph module, runs the temporary flowgraph located in temp/flowgraph.py
+
+    Returns:
+        time: time needed for flowgraph execution
+        num_right: number of rightfully decoded messages
+        num_dec: number of decoded messages
+    """
+
 import subprocess
 import re
 import time as td
@@ -28,7 +36,7 @@ def profile_flowgraph(string_input, timeout, template):
     file1 = open("temp/out.txt", "r")
     try:
         stdout = file1.readlines()
-    except:
+    except (RuntimeError, TypeError, NameError):
         _logger.debug("Error reading the output of the run")
         stdout = "nothing"
 
@@ -84,7 +92,7 @@ def parse_stdout(stdout, string_input, time, template):
                 out_snr = re.search(re_text_search, line)
                 if out_snr is not None:
                     noise_power.append(float(re.findall("\d+\.\d+", line)[0]))
-        except:
+        except (RuntimeError, TypeError, NameError):
             _logger.debug("Error in parsing from line {}".format(line))
 
     if template == "frame_detector":
@@ -92,5 +100,4 @@ def parse_stdout(stdout, string_input, time, template):
         avg_signal_power = sum(signal_power) / len(signal_power)
         avg_noise_power = sum(noise_power) / len(noise_power)
         return num_right, num_dec, time, avg_snr, avg_signal_power, avg_noise_power
-    else:
-        return num_right, num_dec, time
+    return num_right, num_dec, time

@@ -63,7 +63,7 @@ def main(args):
                                             threshold,
                                             noise,
                                         )
-                                    except:
+                                    except (RuntimeError, TypeError, NameError):
                                         _logger.debug("Writing frame_detector error")
                                     # run the flowgraph
                                     try:
@@ -77,7 +77,7 @@ def main(args):
                                         ) = run_flowgraph.profile_flowgraph(
                                             input_data, timeout, "frame_detector"
                                         )
-                                    except:
+                                    except (RuntimeError, TypeError, NameError):
                                         _logger.debug("Error executing flowgraph of frame_detector")
                                     # get the average load
                                     try:
@@ -86,8 +86,10 @@ def main(args):
                                         num_per = min(num_right / frames * 100, 100)
                                         paylen = len(input_data)
                                         data_rate = (paylen * frames) / time
-                                    except:
-                                        _logger.debug("Error in getting the cpu load values of the system")
+                                    except (RuntimeError, TypeError, NameError):
+                                        _logger.debug(
+                                            "Error in getting the cpu load values of the system"
+                                        )
                                     # setup data frame to hold all data
                                     data = {
                                         "template": "frame_detector",
@@ -114,7 +116,7 @@ def main(args):
                                         "avg_signal_power": signal_power,
                                         "avg_noise_power": noise_power,
                                     }
-                                    #save data to pandas or wandb
+                                    # save data to pandas or wandb
                                     save.saver(data)
 
-    save.finish()
+                                    save.finish()

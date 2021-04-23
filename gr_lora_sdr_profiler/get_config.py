@@ -1,5 +1,4 @@
 import yaml
-import numpy as np
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -39,7 +38,7 @@ def get_label(x_colum_name, y_colum_name, *names):
 
     """
     return_list = []
-    ## all labels possible
+    # all labels possible
     labels = {
         "template": "string",
         "input_data": "string",

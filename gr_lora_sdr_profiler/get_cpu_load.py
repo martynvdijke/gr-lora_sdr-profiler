@@ -1,3 +1,10 @@
+"""Gets Linux cpu load
+
+    Returns:
+        load_1min: 1 minute avg load
+        load_5_min: 5 minute avg load
+        load_15_min: 15 minute avg load 
+    """
 import subprocess
 import logging
 
@@ -13,7 +20,7 @@ def load_avg_1min():
     process = subprocess.Popen(
         "cat /proc/loadavg | awk '{ print $1; }'", shell=True, stdout=subprocess.PIPE
     )
-    out, err = process.communicate()
+    out = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
 
@@ -27,7 +34,7 @@ def load_avg_5min():
     process = subprocess.Popen(
         "cat /proc/loadavg | awk '{ print $2; }'", shell=True, stdout=subprocess.PIPE
     )
-    out, err = process.communicate()
+    out = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
 
@@ -41,7 +48,7 @@ def load_avg_15min():
     process = subprocess.Popen(
         "cat /proc/loadavg | awk '{ print $3; }'", shell=True, stdout=subprocess.PIPE
     )
-    out, err = process.communicate()
+    out = process.communicate()
     load = float(out.decode("utf-8")[:-1])
     return load
 

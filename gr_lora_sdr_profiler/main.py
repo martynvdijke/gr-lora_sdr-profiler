@@ -39,7 +39,7 @@ def make_dirs(_logger):
     try:
         os.makedirs("temp")
         os.makedirs("results")
-    except:
+    except RuntimeError:
         _logger.debug("Something went wrong making dirs")
 
 

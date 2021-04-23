@@ -1,9 +1,9 @@
 import logging
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import os
-from rich import print
+
+# from rich import print
 from . import get_config
 from prompt_toolkit import prompt
 from prompt_toolkit.completion import WordCompleter
@@ -52,7 +52,7 @@ class Plotter:
                 os.makedirs(self.output_eps)
             if not os.path.exists(self.output_png):
                 os.makedirs(self.output_png)
-        except:
+        except RuntimeError:
             _logger.debug("Something went wrong making dirs")
 
     def line_plot(self):
@@ -82,7 +82,7 @@ class Plotter:
             plt.show()
         self.logger.debug("Line plotted {0} vs {1}".format(plot_x, plot_y))
 
-    def bar_plot(self, *values):
+    def bar_plot(self):
         """
         Lets user choose from the values in the data frame and makes a bar plot based on those values x vs y values
         Returns:
@@ -108,7 +108,7 @@ class Plotter:
             plt.savefig(self.output_png + filename + ".png")
         if self.show:
             plt.show()
-        self.logger.debug("Bar plotted {0} vs {1}".format(plot_x, plot_y, plot_z))
+        self.logger.debug("Bar plotted {0} vs {1} vs {2}".format(plot_x, plot_y, plot_z))
 
     def main(self):
         run = True

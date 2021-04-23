@@ -1,4 +1,3 @@
-import os
 import re
 import logging
 
@@ -229,7 +228,7 @@ def write_template_frame_detector(
         "noise": str(noise),
     }
 
-    ##serach the template text for @@ which hold the variables that need to be recplaced
+    # serach the template text for @@ which hold the variables that need to be recplaced
     replaced_text = re.sub("@@(.*?)@@", from_dict(subs), f_template_text)
     temp_file = "temp/flowgraph.py"
     # write temp file
