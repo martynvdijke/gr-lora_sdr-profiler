@@ -60,10 +60,6 @@ def parse_stdout(stdout, string_input, time, template):
     num_right = 0
     # Number of decoded messages
     num_dec = 0
-
-    snr = []
-    signal_power = []
-    noise_power = []
     # for each line in stdout find the number of rightfull and decoded messages
     for out in stdout:
         try:
@@ -77,27 +73,7 @@ def parse_stdout(stdout, string_input, time, template):
                 num_right = num_right + 1
             if out_dec is not None:
                 num_dec = num_dec + 1
-            if template == "frame_detector":
-                re_text_search = "snr: "
-                out_snr = re.search(re_text_search, line)
-                if out_snr is not None:
-                    snr.append(float(re.findall("\d+\.\d+", line)[0]))
-
-                re_text_search = "signal power: "
-                out_snr = re.search(re_text_search, line)
-                if out_snr is not None:
-                    signal_power.append(float(re.findall("\d+\.\d+", line)[0]))
-
-                re_text_search = "noise: "
-                out_snr = re.search(re_text_search, line)
-                if out_snr is not None:
-                    noise_power.append(float(re.findall("\d+\.\d+", line)[0]))
         except (RuntimeError, TypeError, NameError):
             _logger.debug("Error in parsing from line {}".format(line))
 
-    if template == "frame_detector":
-        avg_snr = sum(snr) / len(snr)
-        avg_signal_power = sum(signal_power) / len(signal_power)
-        avg_noise_power = sum(noise_power) / len(noise_power)
-        return num_right, num_dec, time, avg_snr, avg_signal_power, avg_noise_power
     return num_right, num_dec, time

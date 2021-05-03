@@ -4,7 +4,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-def increment_list(start, stop, increment, *skip):
+def increment_list(start, stop, increment, *skip) -> list:
     """
     Converts the input values from start to stop to an list
     Args:
@@ -111,10 +111,6 @@ def parse_config_colums(template):
             "num_per",
         ]
     )
-
-    if template == "frame_detector":
-        colum_names.extend(["threshold", "noise", "avg_snr", "avg_signal_power", "avg_noise_power"])
-
     return colum_names
 
 
@@ -167,11 +163,27 @@ def parse_config_data(cfg, template):
             config_list["threshold"]["end"],
             config_list["threshold"]["increment"],
         )
-        noise_list = increment_list(
-            config_list["noise"]["start"],
-            config_list["noise"]["end"],
-            config_list["noise"]["increment"],
+        snr_list = increment_list(
+            config_list["snr"]["start"],
+            config_list["snr"]["end"],
+            config_list["snr"]["increment"],
         )
+        delay_list = increment_list(
+            config_list["delay"]["start"],
+            config_list["delay"]["end"],
+            config_list["delay"]["increment"],
+        )
+        sto_list = increment_list(
+            config_list["sto"]["start"],
+            config_list["sto"]["end"],
+            config_list["sto"]["increment"],
+        )
+        cfo_list = increment_list(
+            config_list["cfo"]["start"],
+            config_list["cfo"]["end"],
+            config_list["cfo"]["increment"],
+        )
+
 
         return (
             input_list,
@@ -182,7 +194,10 @@ def parse_config_data(cfg, template):
             cr_list,
             time_wait_list,
             threshold_list,
-            noise_list,
+            delay_list,
+            snr_list,
+            sto_list,
+            cfo_list
         )
     else:
         return (

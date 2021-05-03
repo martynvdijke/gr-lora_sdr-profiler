@@ -84,7 +84,19 @@ frame_detector:
     start: 10
     end: 500
     increment: 20
-  noise:
-    start: 1
-    end: 1
+  snr:
+    start: -10
+    end: 10
     increment: 1
+  sto:
+    start: 0
+    end: 1
+    increment: 0.1
+  cfo:
+    start: 0
+    end: 1
+    increment: 0.1
+  delay:
+    start: 0
+    end: 1000
+    increment: 250

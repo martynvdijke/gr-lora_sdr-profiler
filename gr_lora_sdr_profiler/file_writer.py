@@ -187,7 +187,7 @@ def write_template_multi_stream(
 
 
 def write_template_frame_detector(
-    file_name, input_data, sf, impl_head, has_crc, cr, frames, time_wait, threshold, noise
+    file_name, input_data, sf, impl_head, has_crc, cr, frames, time_wait, threshold, snr, sto, cfo, delay
 ):
     """
     Writes the frame_detector template using the arguments
@@ -202,14 +202,17 @@ def write_template_frame_detector(
         frames: number of frames of the flowgraph
         time_wait: time between frames
         threshold: thesshold value to use
-        noise: noise level
+        snr : snr level to use
+        sto : sampling time offset to use
+        cfo : carrier frequency offset to use
+        delay : number of samples to have initially an offset (shift)
     Returns:
         writen template file
     """
     _logger.debug("Writing new template filer {0}".format(file_name))
     _logger.debug(
         "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(
-            input_data, impl_head, has_crc, cr, frames, time_wait, threshold, noise
+            input_data, impl_head, has_crc, cr, frames, time_wait, threshold, snr
         )
     )
     file_template = "templates/" + str(file_name)
@@ -225,7 +228,10 @@ def write_template_frame_detector(
         "n_frame": str(frames),
         "time_wait": str(time_wait),
         "threshold": str(threshold),
-        "noise": str(noise),
+        "snr": str(snr),
+        "delay": str(delay),
+        "sto": str(sto),
+        "cfo": str(cfo),
     }
 
     # serach the template text for @@ which hold the variables that need to be recplaced
