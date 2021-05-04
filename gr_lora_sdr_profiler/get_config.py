@@ -58,10 +58,10 @@ def get_label(x_colum_name, y_colum_name, *names):
         "num_dec": "Number of decoded messages",
         "num_per": "Percentage correctly decoded messages",
         "threshold": "Threshold value",
-        "noise": "Noise amplitude",
-        "avg_snr": "$SNR (dB)$",
-        "avg_signal_power": "$P_{signal}$",
-        "avg_noise_power": "$P_{noise}$",
+        "snr": "$SNR (dB)$",
+        "std" : "STO",
+        "cfo" : "CFO",
+        "delay" : "Delay="
     }
     return_list.append(labels[x_colum_name])
     return_list.append(labels[y_colum_name])
@@ -105,10 +105,12 @@ def parse_config_colums(template):
             "load_1min",
             "load_5min",
             "load_15min",
-            "num_right",
-            "num_total",
-            "num_dec",
             "num_per",
+            "cfo",
+            "snr",
+            "sto",
+            "delay",
+            "threshold"
         ]
     )
     return colum_names
