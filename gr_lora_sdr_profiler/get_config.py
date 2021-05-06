@@ -56,7 +56,7 @@ def get_label(x_colum_name, y_colum_name, *names):
         "load_15_min": "15 min cpu load",
         "num_right": "Rightfully decoded messages",
         "num_dec": "Number of decoded messages",
-        "num_per": "Percentage correctly decoded messages",
+        "num_per": "$\eta$",
         "threshold": "Threshold value",
         "snr": "$SNR (dB)$",
         "std" : "STO",
@@ -65,6 +65,7 @@ def get_label(x_colum_name, y_colum_name, *names):
     }
     return_list.append(labels[x_colum_name])
     return_list.append(labels[y_colum_name])
+
     # more names you want to have labels of
     for name in names:
         return_list.append(labels[name])
