@@ -1,7 +1,10 @@
+"""
+Simple file saver class that can save to pandas file or to wandb or both
+"""
+import logging
 import pandas
 import wandb
 from . import get_config
-import logging
 
 _logger = logging.getLogger(__name__)
 
@@ -12,6 +15,8 @@ class FileSaver:
     or as wandb data frames
     """
 
+    # pylint: disable=R0902
+
     def __init__(self, args, template):
         self.logger = _logger
         self.logger.debug("Making new FileSaver class")
@@ -19,19 +24,27 @@ class FileSaver:
         self.name = args.name
         if args.save == "pandas":
             colum_names = get_config.parse_config_colums(template)
-            self.df = pandas.DataFrame(columns=colum_names)
+            self.data_frame = pandas.DataFrame(columns=colum_names)
             self.output = args.output
         if args.save == "wandb":
             wandb.init(project="lora_sdr-profiler", name=args.name)
             self.config = wandb.config
         if args.save == "both":
             colum_names = get_config.parse_config_colums(template)
-            self.df = pandas.DataFrame(columns=colum_names)
+            self.data_frame = pandas.DataFrame(columns=colum_names)
             self.output = args.output
             wandb.init(project="lora_sdr-profiler")
             self.config = wandb.config
 
     def saver(self, data):
+        """
+        Main saver function that spawns pandas saving or wandb saving or both
+        Args:
+            data: input data (int he form of a dict)
+
+        Returns:
+
+        """
         if self.modus == "pandas":
             self.pandas_saver(data)
         if self.modus == "wandb":
@@ -62,7 +75,7 @@ class FileSaver:
 
         """
         self.logger.debug("Adding input data to pandas frame")
-        self.df = self.df.append(data, ignore_index=True)
+        self.data_frame = self.data_frame.append(data, ignore_index=True)
 
     def finish(self):
         """
@@ -72,9 +85,9 @@ class FileSaver:
         """
         self.logger.info("Saving files")
         if self.modus == "pandas":
-            self.df.to_csv(self.output)
+            self.data_frame.to_csv(self.output)
         if self.modus == "wandb":
             wandb.finish()
         if self.modus == "both":
-            self.df.to_csv(self.output)
+            self.data_frame.to_csv(self.output)
             wandb.finish()

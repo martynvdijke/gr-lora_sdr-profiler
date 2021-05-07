@@ -1,13 +1,16 @@
+"""
+Main function that dispatches all sub functions
+"""
 import argparse
 import logging
 import sys
 import os
 import pathlib
 from gr_lora_sdr_profiler import __version__
-from . import multi_stream
 from . import frame_detector
 from . import plotter
 
+# pylint: disable=R0801
 
 __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
@@ -139,19 +142,25 @@ def setup_logging(loglevel):
 
 
 def main(args):
+    """
+    Main function that does all the dispatching of the subfunctions
+    Args:
+        args: sys arguments
+
+    Returns:
+        none
+    """
     args = parse_args(args)
     setup_logging(args.loglevel)
     make_dirs(_logger)
-    _logger.info("Starting gr-lora_sdr-profiler, version {}".format(__version__))
+    _logger.info("Starting gr-lora_sdr-profiler, version %s", __version__)
 
     if args.plot is not None:
-        _logger.info("Running plotter with input file {}".format(args.plot))
+        _logger.info("Running plotter with input file %s", args.plot)
         plot = plotter.Plotter(args)
         plot.main()
     else:
-        _logger.info("Running profiler with mode: {}".format(args.mode))
-        if args.mode == "multi_stream":
-            multi_stream.main()
+        _logger.info("Running profiler with mode: %s", args.mode)
         if args.mode == "frame_detector":
             args.filename = "lora_sim_frame_detector.py"
             frame_detector.main(args)

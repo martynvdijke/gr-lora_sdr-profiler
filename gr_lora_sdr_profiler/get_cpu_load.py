@@ -3,7 +3,7 @@
     Returns:
         load_1min: 1 minute avg load
         load_5_min: 5 minute avg load
-        load_15_min: 15 minute avg load 
+        load_15_min: 15 minute avg load
     """
 import subprocess
 import logging
@@ -17,14 +17,14 @@ def load_avg_1min():
     Returns: average 1 min Linux load
 
     """
-    process = subprocess.Popen(
+    with subprocess.Popen(
         "cat /proc/loadavg | awk '{ print $1; }'", shell=True, stdout=subprocess.PIPE
-    )
-    out, err = process.communicate()
-    load = float(out.decode("utf-8")[:-1])
-    if err is not None:
-        _logger.debug("Bash error in 1 min load avg")
-    return load
+    ) as process:
+        out, err = process.communicate()
+        load = float(out.decode("utf-8")[:-1])
+        if err is not None:
+            _logger.debug("Bash error in 1 min load avg")
+        return load
 
 
 def load_avg_5min():
@@ -33,14 +33,14 @@ def load_avg_5min():
     Returns: average 5 min Linux load
 
     """
-    process = subprocess.Popen(
+    with subprocess.Popen(
         "cat /proc/loadavg | awk '{ print $2; }'", shell=True, stdout=subprocess.PIPE
-    )
-    out, err = process.communicate()
-    load = float(out.decode("utf-8")[:-1])
-    if err is not None:
-        _logger.debug("Bash error in 5 min load avg")
-    return load
+    ) as process:
+        out, err = process.communicate()
+        load = float(out.decode("utf-8")[:-1])
+        if err is not None:
+            _logger.debug("Bash error in 5 min load avg")
+        return load
 
 
 def load_avg_15min():
@@ -49,14 +49,14 @@ def load_avg_15min():
     Returns: average 15 min Linux load
 
     """
-    process = subprocess.Popen(
+    with subprocess.Popen(
         "cat /proc/loadavg | awk '{ print $3; }'", shell=True, stdout=subprocess.PIPE
-    )
-    out, err = process.communicate()
-    load = float(out.decode("utf-8")[:-1])
-    if err is not None:
-        _logger.debug("Bash error in 15 min load avg")
-    return load
+    ) as process:
+        out, err = process.communicate()
+        load = float(out.decode("utf-8")[:-1])
+        if err is not None:
+            _logger.debug("Bash error in 15 min load avg")
+        return load
 
 
 def load_all():

@@ -1,7 +1,11 @@
+"""
+functions for writing the template files to an actual runnable flowgraph
+"""
 import re
 import logging
 
 _logger = logging.getLogger(__name__)
+# pylint: disable=R0913,R0914,C0103,R0801
 
 
 def from_dict(dct):
@@ -20,7 +24,17 @@ def from_dict(dct):
 
 # needs cleaning
 def write_template_single(
-    file_name, source_data, bw, sf, paylen, impl_head, has_crc, cr, frames, frame_period, mean
+    file_name,
+    source_data,
+    bandwith,
+    spreading_factor,
+    paylen,
+    impl_head,
+    has_crc,
+    coding_rate,
+    frames,
+    frame_period,
+    mean,
 ):
     """
     Writes the temporary single chain template
@@ -28,20 +42,20 @@ def write_template_single(
     Args:
         file_name ([type]): filename
         source_data ([type]): input string to use
-        bw ([type]): bandwith
-        sf ([type]): spreading factor
+        bandwith ([type]): bandwith
+        spreading_factor ([type]): spreading factor
         paylen ([type]): paylen
         impl_head ([type]): impl head
         has_crc (bool): has_crc
-        cr ([type]): coding rate
+        coding_rate ([type]): coding rate
         frames ([type]): number of frames to run
         frame_period ([type]): frame_period
     """
     # open template and read template into variable
     file_name_open = "templates/" + str(file_name)
-    f_template = open(file_name_open, "r")
-    f_template_text = f_template.read()
-    f_template.close()
+    with open(file_name_open, "r") as f_template:
+        f_template_text = f_template.read()
+        f_template.close()
     delay_sf1 = 0
     delay_sf2 = 0
     delay_sf3 = 0
@@ -53,12 +67,12 @@ def write_template_single(
         # subsitutes placeholder values with values from run
         subs = {
             "source_data": str(source_data),
-            "bw": str(bw),
+            "bw": str(bandwith),
             "pay_len": str(paylen),
             "impl_head": str(impl_head),
             "has_crc": str(has_crc),
-            "cr": str(cr),
-            "sf": str(sf),
+            "cr": str(coding_rate),
+            "sf": str(spreading_factor),
             "n_frame": str(frames),
             "frame_period": str(frame_period),
             "mean": str(mean),
@@ -73,12 +87,12 @@ def write_template_single(
         # subsitutes placeholder values with values from run
         subs = {
             "source_data": str(source_data),
-            "bw": str(bw),
-            "sf": str(sf),
+            "bw": str(bandwith),
+            "sf": str(spreading_factor),
             "pay_len": str(paylen),
             "impl_head": str(impl_head),
             "has_crc": str(has_crc),
-            "cr": str(cr),
+            "cr": str(coding_rate),
             "n_frame": str(frames),
             "frame_period": str(frame_period),
             "mean": str(mean),
@@ -87,20 +101,20 @@ def write_template_single(
     replaced_text = re.sub("@@(.*?)@@", from_dict(subs), f_template_text)
     temp_file = "temp/flowgraph.py"
     # write temp file
-    f = open(temp_file, "w")
-    f.write(replaced_text)
-    f.close()
+    with open(temp_file, "w") as file:
+        file.write(replaced_text)
+        file.close()
 
 
 # needs cleaning
 def write_template_multi_stream(
     file_name,
     source_data,
-    bw,
+    bandwith,
     paylen,
     impl_head,
     has_crc,
-    cr,
+    coding_rate,
     frames,
     frame_period,
     mean,
@@ -116,11 +130,11 @@ def write_template_multi_stream(
     Args:
         file_name ([type]): template to use
         source_data ([type]): input string to use
-        bw ([type]): bandwith
+        bandwith ([type]): bandwith
         paylen ([type]): payload length
         impl_head ([type]): impl_head mode
         has_crc (bool): has_crc
-        cr ([type]): coding rate
+        coding_rate ([type]): coding rate
         frames ([type]): number of frames to use
         frame_period ([type]): frame period
         mean ([type]): time between frames
@@ -133,21 +147,21 @@ def write_template_multi_stream(
     """
     # open template and read template into variable
     file_name_open = "templates/" + str(file_name)
-    f_template = open(file_name_open, "r")
-    f_template_text = f_template.read()
-    f_template.close()
+    with open(file_name_open, "r") as f_template:
+        f_template_text = f_template.read()
+        f_template.close()
 
     if file_name == "lora_sim_multi1":
-        sf = 7
+        spreading_factor = 7
         # subsitutes placeholder values with values from run
         subs = {
             "source_data": str(source_data),
-            "bw": str(bw),
+            "bw": str(bandwith),
             "pay_len": str(paylen),
             "impl_head": str(impl_head),
             "has_crc": str(has_crc),
-            "cr": str(cr),
-            "sf": str(sf),
+            "cr": str(coding_rate),
+            "sf": str(spreading_factor),
             "n_frame": str(frames),
             "frame_period": str(frame_period),
             "mean": str(mean),
@@ -162,11 +176,11 @@ def write_template_multi_stream(
         # subsitutes placeholder values with values from run
         subs = {
             "source_data": str(source_data),
-            "bw": str(bw),
+            "bw": str(bandwith),
             "pay_len": str(paylen),
             "impl_head": str(impl_head),
             "has_crc": str(has_crc),
-            "cr": str(cr),
+            "cr": str(coding_rate),
             "n_frame": str(frames),
             "frame_period": str(frame_period),
             "mean": str(mean),
@@ -181,13 +195,25 @@ def write_template_multi_stream(
     replaced_text = re.sub("@@(.*?)@@", from_dict(subs), f_template_text)
     temp_file = "temp/flowgraph.py"
     # write temp file
-    f = open(temp_file, "w")
-    f.write(replaced_text)
-    f.close()
+    with open(temp_file, "w") as file:
+        file.write(replaced_text)
+        file.close()
 
 
 def write_template_frame_detector(
-    file_name, input_data, sf, impl_head, has_crc, cr, frames, time_wait, threshold, snr, sto, cfo):
+    file_name,
+    input_data,
+    spreading_factor,
+    impl_head,
+    has_crc,
+    coding_rate,
+    frames,
+    time_wait,
+    threshold,
+    snr,
+    sto,
+    cfo,
+):
     """
     Writes the frame_detector template using the arguments
     Args:
@@ -197,7 +223,7 @@ def write_template_frame_detector(
         paylen: payload length of the flowgraph
         impl_head: impl_head mode variable of the flowgraph
         has_crc: has_crc mode variable of the flowgraph
-        cr: coding rate of the flowgraph
+        coding_rate: coding rate of the flowgraph
         frames: number of frames of the flowgraph
         time_wait: time between frames
         threshold: thesshold value to use
@@ -207,22 +233,28 @@ def write_template_frame_detector(
     Returns:
         writen template file
     """
-    _logger.debug("Writing new template filer {0}".format(file_name))
+    _logger.debug("Writing new template filer %s", file_name)
     _logger.debug(
-        "{0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}".format(
-            input_data, impl_head, has_crc, cr, frames, time_wait, threshold, snr
-        )
+        "%s, %s, %s, %s, %s, %s, %s, %s",
+        input_data,
+        impl_head,
+        has_crc,
+        coding_rate,
+        frames,
+        time_wait,
+        threshold,
+        snr,
     )
     file_template = "templates/" + str(file_name)
-    f_template = open(file_template, "r")
-    f_template_text = f_template.read()
-    f_template.close()
+    with open(file_template, "r") as f_template:
+        f_template_text = f_template.read()
+        f_template.close()
     subs = {
         "input_data": str(input_data),
         "impl_head": str(impl_head),
         "has_crc": str(has_crc),
-        "cr": str(cr),
-        "sf": str(sf),
+        "cr": str(coding_rate),
+        "sf": str(spreading_factor),
         "n_frame": str(frames),
         "time_wait": str(time_wait),
         "threshold": str(threshold),
@@ -235,6 +267,6 @@ def write_template_frame_detector(
     replaced_text = re.sub("@@(.*?)@@", from_dict(subs), f_template_text)
     temp_file = "temp/flowgraph.py"
     # write temp file
-    f = open(temp_file, "w")
-    f.write(replaced_text)
-    f.close()
+    with open(temp_file, "w") as f:
+        f.write(replaced_text)
+        f.close()

@@ -1,7 +1,11 @@
-import yaml
+"""
+Functions to parse the yaml config file
+"""
 import logging
+import yaml
 
 _logger = logging.getLogger(__name__)
+# pylint: disable=W1401,R0914,R0801
 
 
 def increment_list(start, stop, increment, *skip) -> list:
@@ -15,15 +19,14 @@ def increment_list(start, stop, increment, *skip) -> list:
 
     Returns: list of values
     """
-
-    list = []
+    temp_list = []
     i = start
     while i < stop + 1:
         if i is not skip:
-            list.append(i)
+            temp_list.append(i)
         i += increment
 
-    return list
+    return temp_list
 
 
 def get_label(x_colum_name, y_colum_name, *names):
@@ -59,9 +62,9 @@ def get_label(x_colum_name, y_colum_name, *names):
         "num_per": "$\eta$",
         "threshold": "Threshold value",
         "snr": "$SNR (dB)$",
-        "std" : "STO",
-        "cfo" : "CFO",
-        "delay" : "Delay="
+        "std": "STO",
+        "cfo": "CFO",
+        "delay": "Delay=",
     }
     return_list.append(labels[x_colum_name])
     return_list.append(labels[y_colum_name])
@@ -80,7 +83,7 @@ def parse_config_colums(template):
         template: name of the template currenlty in use
 
     Returns:
-        list of colum names
+        list of column names
     """
     # list ot hold all configs values
     colum_names = []
@@ -111,9 +114,12 @@ def parse_config_colums(template):
             "cfo",
             "snr",
             "sto",
-            "threshold"
+            "threshold",
         ]
     )
+    if template == "multi_stream":
+        colum_names.extend(["test"])
+
     return colum_names
 
 
@@ -182,7 +188,6 @@ def parse_config_data(cfg, template):
             config_list["cfo"]["increment"],
         )
 
-
         return (
             input_list,
             sf_list,
@@ -194,15 +199,15 @@ def parse_config_data(cfg, template):
             threshold_list,
             snr_list,
             sto_list,
-            cfo_list
+            cfo_list,
         )
-    else:
-        return (
-            input_list,
-            sf_list,
-            frames_list,
-            impl_head_list,
-            has_crc_list,
-            cr_list,
-            time_wait_list,
-        )
+
+    return (
+        input_list,
+        sf_list,
+        frames_list,
+        impl_head_list,
+        has_crc_list,
+        cr_list,
+        time_wait_list,
+    )

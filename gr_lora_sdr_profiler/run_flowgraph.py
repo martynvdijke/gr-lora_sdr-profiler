@@ -33,19 +33,20 @@ def profile_flowgraph(string_input, timeout, template):
     time = td.time() - start_time
     # subprocess.call('profiler/bash_scripts/convert.sh', shell=True)
     # open output for parsing processing
-    file1 = open("temp/out.txt", "r")
-    try:
-        stdout = file1.readlines()
-    except (RuntimeError, TypeError, NameError):
-        _logger.debug("Error reading the output of the run")
-        stdout = "nothing"
+    with open("temp/out.txt", "r") as file1:
+        try:
+            stdout = file1.readlines()
+        except (RuntimeError, TypeError, NameError):
+            _logger.debug("Error reading the output of the run")
+            stdout = "nothing"
 
     return parse_stdout(stdout, string_input, time, template)
 
 
 def parse_stdout(stdout, string_input, time, template):
     """
-    Parses the stdout file of the flowgraph runner to find the number of decoded and rightfully decoded messages
+    Parses the stdout file of the flowgraph runner to find the number
+    of decoded and rightfully decoded messages
 
     Args:
         stdout ([lines]): output of stdout
@@ -74,6 +75,6 @@ def parse_stdout(stdout, string_input, time, template):
             if out_dec is not None:
                 num_dec = num_dec + 1
         except (RuntimeError, TypeError, NameError):
-            _logger.debug("Error in parsing from line {}".format(line))
+            _logger.debug("Error in parsing from line %s of template %s", line, template)
 
     return num_right, num_dec, time
