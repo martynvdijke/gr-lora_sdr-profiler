@@ -44,7 +44,7 @@ class lora_sim(gr.top_block):
         self.sf = sf = @@sf@@
         self.threshold = threshold = @@threshold@@
         self.time_wait = time_wait = @@time_wait@@
-        self.delay = delay = @@delay@@
+        self.delay = delay = 0
         self.cfo = cfo = @@cfo@@
         self.sto = sto = @@sto@@
         self.snr = snr = @@snr@@

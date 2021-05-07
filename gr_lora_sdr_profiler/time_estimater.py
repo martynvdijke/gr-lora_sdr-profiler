@@ -1,4 +1,9 @@
+"""
+Simple python file to give a time estimate on how long it takes to run the flowgraph.
+"""
+
 import logging
+import datetime
 _logger = logging.getLogger(__name__)
 
 def get_time_estimate(sf, n_times, counter):
@@ -25,7 +30,7 @@ def get_time_estimate(sf, n_times, counter):
 
     time = approx_times[sf]*n_times - counter*approx_times[sf]
 
-    return time
+    return datetime.timedelta(seconds=time)
 
 
 

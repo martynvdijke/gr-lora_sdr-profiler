@@ -106,11 +106,11 @@ def parse_config_colums(template):
             "load_1min",
             "load_5min",
             "load_15min",
-            "num_per",
+            "success_rate",
+            "error_rate",
             "cfo",
             "snr",
             "sto",
-            "delay",
             "threshold"
         ]
     )
@@ -171,11 +171,6 @@ def parse_config_data(cfg, template):
             config_list["snr"]["end"],
             config_list["snr"]["increment"],
         )
-        delay_list = increment_list(
-            config_list["delay"]["start"],
-            config_list["delay"]["end"],
-            config_list["delay"]["increment"],
-        )
         sto_list = increment_list(
             config_list["sto"]["start"],
             config_list["sto"]["end"],
@@ -197,7 +192,6 @@ def parse_config_data(cfg, template):
             cr_list,
             time_wait_list,
             threshold_list,
-            delay_list,
             snr_list,
             sto_list,
             cfo_list

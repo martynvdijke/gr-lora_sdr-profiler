@@ -187,8 +187,7 @@ def write_template_multi_stream(
 
 
 def write_template_frame_detector(
-    file_name, input_data, sf, impl_head, has_crc, cr, frames, time_wait, threshold, snr, sto, cfo, delay
-):
+    file_name, input_data, sf, impl_head, has_crc, cr, frames, time_wait, threshold, snr, sto, cfo):
     """
     Writes the frame_detector template using the arguments
     Args:
@@ -205,7 +204,6 @@ def write_template_frame_detector(
         snr : snr level to use
         sto : sampling time offset to use
         cfo : carrier frequency offset to use
-        delay : number of samples to have initially an offset (shift)
     Returns:
         writen template file
     """
@@ -229,7 +227,6 @@ def write_template_frame_detector(
         "time_wait": str(time_wait),
         "threshold": str(threshold),
         "snr": str(snr),
-        "delay": str(delay),
         "sto": str(sto),
         "cfo": str(cfo),
     }
