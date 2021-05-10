@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      
+
 jobs:
     build:
         runs-on: self-hosted
@@ -16,6 +16,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Set up Python
+              working-directory: ${{runner.workspace}}
               shell: bash
               run: |
                   if [ ! -d "venvprofiler" ]; then
@@ -23,6 +24,7 @@ jobs:
                   fi
 
             - name: Install dependencies
+              working-directory: ${{runner.workspace}}
               shell: bash
               run: |
                   source venvprofiler/bin/activate
@@ -30,6 +32,7 @@ jobs:
 
             - name: Run tox
               shell: bash
+              working-directory: ${{runner.workspace}}
               run: |
                   python -m tox
 
