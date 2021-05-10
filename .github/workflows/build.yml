@@ -1,3 +1,5 @@
+name: build
+
 jobs:
     build:
         runs-on: self-hosted
