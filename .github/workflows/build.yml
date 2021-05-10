@@ -28,16 +28,16 @@ jobs:
               shell: bash
               run: |
                   source venvprofiler/bin/activate
-                  pip install -r requirements.txt
+                  pip3 install -r requirements.txt
 
             - name: Run tox
               shell: bash
               working-directory: ${{runner.workspace}}/gr-lora_sdr-profiler
               run: |
-                  python -m tox
+                  python3 -m tox
 
-            # - name: Upload coverage to Codecov
-            #   uses: codecov/codecov-action@v1
-            #   if: contains(env.USING_COVERAGE, matrix.python-version)
-            #   with:
-            #       fail_ci_if_error: true
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v1
+              if: contains(env.CODECOV_TOKEN)
+              with:
+                  fail_ci_if_error: true

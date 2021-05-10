@@ -24,6 +24,7 @@ publish/*
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
+venvprofiler/*
 .idea/*
 .vscode/*
 results/*
@@ -31,3 +32,5 @@ gr_lora_sdr_profiler/__pycache__/*
 figures/*
 temp/*
 .run/*
+pylintrc
+profiler/
