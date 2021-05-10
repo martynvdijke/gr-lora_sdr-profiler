@@ -6,7 +6,7 @@ import logging
 import sys
 import os
 import pathlib
-from gr_lora_sdr_profiler import __version__
+from . import __version__
 from . import frame_detector
 from . import plotter
 
