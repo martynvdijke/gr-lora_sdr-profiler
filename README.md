@@ -6,8 +6,7 @@
 
 [![PyPI Version][pypi-image]][pypi-url]
 [![Build Status][build-image]][build-url]
-[![Code Coverage][coverage-image]][coverage-url]
-[![Code Quality][quality-image]][quality-url]
+![Pylint bage][coverage-image]
 
 ## Summary
 This is a python cli package to be able to load and config yml file and change values to the flowgraph.
@@ -62,11 +61,7 @@ $ tox
 
 <!-- Badges -->
 
-<!-- [pypi-image]: https://img.shields.io/pypi/v/gr_lora_sdr_profiler
+[pypi-image]: https://img.shields.io/pypi/v/gr_lora_sdr_profiler
 [pypi-url]: https://pypi.org/project/gr_lora_sdr_profiler/
-[build-image]: https://github.com/nalgeon/podsearch-py/actions/workflows/build.yml/badge.svg
-[build-url]: https://github.com/nalgeon/podsearch-py/actions/workflows/build.yml
-[coverage-image]: https://codecov.io/gh/nalgeon/podsearch-py/branch/main/graph/badge.svg
-[coverage-url]: https://codecov.io/gh/nalgeon/podsearch-py
-[quality-image]: https://api.codeclimate.com/v1/badges/3130fa0ba3b7993fbf0a/maintainability
-[quality-url]: https://codeclimate.com/github/nalgeon/podsearch-py -->
+[build-image]: https://github.com/martynvdijke/gr-lora_sdr-profiler/actions/workflows/build.yml/badge.svg
+[build-url]: https://github.com/martynvdijke/gr-lora_sdr-profiler/actions/workflows/build.yml
