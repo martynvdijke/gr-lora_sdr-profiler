@@ -16,7 +16,7 @@ jobs:
               uses: actions/checkout@v2
 
             - name: Set up Python
-              working-directory: ${{runner.workspace}}
+              working-directory: ${{runner.workspace}}/gr-lora_sdr-profiler
               shell: bash
               run: |
                   if [ ! -d "venvprofiler" ]; then
@@ -24,7 +24,7 @@ jobs:
                   fi
 
             - name: Install dependencies
-              working-directory: ${{runner.workspace}}
+              working-directory: ${{runner.workspace}}/gr-lora_sdr-profiler
               shell: bash
               run: |
                   source venvprofiler/bin/activate
@@ -32,7 +32,7 @@ jobs:
 
             - name: Run tox
               shell: bash
-              working-directory: ${{runner.workspace}}
+              working-directory: ${{runner.workspace}}/gr-lora_sdr-profiler
               run: |
                   python -m tox
 
