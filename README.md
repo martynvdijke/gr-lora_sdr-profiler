@@ -6,7 +6,6 @@
 
 [![PyPI Version][pypi-image]][pypi-url]
 [![Build Status][build-image]][build-url]
-![Pylint bage][coverage-image]
 
 ## Summary
 This is a python cli package to be able to load and config yml file and change values to the flowgraph.

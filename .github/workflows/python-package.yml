@@ -22,7 +22,7 @@ jobs:
 
             - name: Publish to PyPi
               env:
-                  FLIT_USERNAME: ${{ secrets.PYPI_USERNAME }}
-                  FLIT_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+                  FLIT_USERNAME: __token__
+                  FLIT_PASSWORD: ${{ secrets.PYPI_KEY }}
               run: |
                   make publish
