@@ -8,7 +8,7 @@ import datetime
 _logger = logging.getLogger(__name__)
 
 
-def get_time_estimate(spreading_factor, n_times, counter):
+def get_time_estimate(spreading_factor, n_times, counter, frames):
     """
     Gets an time estimate of how long the run is going to take
     using a simple lookup table
@@ -21,8 +21,9 @@ def get_time_estimate(spreading_factor, n_times, counter):
     Returns: time: current time estimate in seconds
 
     """
-    approx_times = {7: 3, 8: 3, 9: 4, 10: 7, 11: 12, 12: 18}
-
-    time = approx_times[spreading_factor] * n_times - counter * approx_times[spreading_factor]
+    # if no last time is given use approx times
+    default_approx_times = {7: 3, 8: 3, 9: 4, 10: 7, 11: 12, 12: 18}
+    time = (default_approx_times[spreading_factor] * n_times - counter * default_approx_times[spreading_factor]) * (
+                frames / 10)
 
     return datetime.timedelta(seconds=time)

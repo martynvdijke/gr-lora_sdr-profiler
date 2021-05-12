@@ -69,7 +69,7 @@ def main(args):
                                     for frames in frames_list:
                                         for spreading_factor in sf_list:
                                             est_time = time_estimater.get_time_estimate(
-                                                spreading_factor, n_times, __counter)
+                                                spreading_factor, n_times, __counter, frames)
                                             _logger.debug(
                                                 "Starting new run, estimated time to "
                                                 "completion %s", est_time)
