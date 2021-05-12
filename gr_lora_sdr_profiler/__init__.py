@@ -7,6 +7,6 @@ try:
     DIST_NAME = __name__
     __version__ = version(DIST_NAME)
 except PackageNotFoundError:  # pragma: no cover
-    __version__ = "v0.1"
+    __version__ = "v0.12"
 finally:
     del version, PackageNotFoundError

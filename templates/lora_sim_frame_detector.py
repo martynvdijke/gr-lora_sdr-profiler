@@ -53,7 +53,7 @@ class lora_sim(gr.top_block):
         ##################################################
         # Blocks
         ##################################################
-        self.lora_sdr_hier_tx_1 = lora_sdr.hier_tx(pay_len, n_frame, "TrccpfQHyKfvXswsA4ySxtTiIvi10nSJCUJPYonkWqDHH005UmNfGuocPw3FHKc9", cr, sf, impl_head,has_crc, samp_rate, bw, time_wait, [8, 16],True)
+        self.lora_sdr_hier_tx_1 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf, impl_head,has_crc, samp_rate, bw, time_wait, [8, 16],True)
         self.lora_sdr_hier_tx_1.set_min_output_buffer(2**sf*8)
         self.lora_sdr_hier_rx_1 = lora_sdr.hier_rx(samp_rate, bw, sf, impl_head, cr, pay_len, has_crc, [8, 16] , True)
         self.lora_sdr_frame_detector_1 = lora_sdr.frame_detector(sf,samp_rate,bw,threshold)

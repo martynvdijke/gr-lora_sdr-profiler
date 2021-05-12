@@ -23,7 +23,7 @@ def load_avg_1min():
         out, err = process.communicate()
         load = float(out.decode("utf-8")[:-1])
         if err is not None:
-            _logger.debug("Bash error in 1 min load avg")
+            _logger.warning("Bash error in 1 min load avg")
         return load
 
 
@@ -39,7 +39,7 @@ def load_avg_5min():
         out, err = process.communicate()
         load = float(out.decode("utf-8")[:-1])
         if err is not None:
-            _logger.debug("Bash error in 5 min load avg")
+            _logger.warning("Bash error in 5 min load avg")
         return load
 
 
@@ -55,7 +55,7 @@ def load_avg_15min():
         out, err = process.communicate()
         load = float(out.decode("utf-8")[:-1])
         if err is not None:
-            _logger.debug("Bash error in 15 min load avg")
+            _logger.warning("Bash error in 15 min load avg")
         return load
 
 

@@ -85,8 +85,8 @@ frame_detector:
     end: 15
     increment: 1
   snr:
-    start: -10
-    end: 10
+    start: -15
+    end: 15
     increment: 1
   sto:
     start: 1
@@ -94,5 +94,5 @@ frame_detector:
     increment: 1
   cfo:
     start: 0
-    end: 0.3
+    end: 0.5
     increment: 0.1

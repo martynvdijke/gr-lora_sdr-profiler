@@ -83,7 +83,7 @@ class FileSaver:
         Returns:
 
         """
-        self.logger.info("Saving files")
+        self.logger.debug("Saving files")
         if self.modus == "pandas":
             self.data_frame.to_csv(self.output)
         if self.modus == "wandb":

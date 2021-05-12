@@ -3,6 +3,7 @@ Runner for the frame_detector flowgraph
 This file runs the overall frame_detector flowgraph with all changing values
 """
 import logging
+
 from . import run_flowgraph
 from . import file_writer
 from . import get_config
@@ -12,9 +13,7 @@ from . import time_estimater
 
 _logger = logging.getLogger(__name__)
 
-
 # pylint: disable=R0914,R1702,R0912,R0801
-
 
 def main(args):
     """
@@ -28,7 +27,7 @@ def main(args):
     _logger.debug("Running frame detector runner")
     filename = args.filename
     timeout = args.timeout
-    counter = 0
+    __counter = 0
 
     # parse the config for the values to use
     (
@@ -47,18 +46,17 @@ def main(args):
     # initilize a saver object
     save = file_saver.FileSaver(args, "frame_detector")
     n_times = (
-        len(cfo_list)
-        * len(sto_list)
-        * len(snr_list)
-        * len(threshold_list)
-        * len(cr_list)
-        * len(has_crc_list)
-        * len(impl_head_list)
-        * len(frames_list)
-        * len(sf_list)
+            len(cfo_list)
+            * len(sto_list)
+            * len(snr_list)
+            * len(threshold_list)
+            * len(cr_list)
+            * len(has_crc_list)
+            * len(impl_head_list)
+            * len(frames_list)
+            * len(sf_list)
     )
     _logger.info("Flowgraph needs to run %s times", n_times)
-
     # loop over all values that needs to be runned
     for cfo in cfo_list:
         for sto in sto_list:
@@ -70,13 +68,11 @@ def main(args):
                                 for impl_head in impl_head_list:
                                     for frames in frames_list:
                                         for spreading_factor in sf_list:
-                                            _logger.info(
+                                            est_time = time_estimater.get_time_estimate(
+                                                spreading_factor, n_times, __counter)
+                                            _logger.debug(
                                                 "Starting new run, estimated time to "
-                                                "completion %s",
-                                                time_estimater.get_time_estimate(
-                                                    spreading_factor, n_times, counter
-                                                ),
-                                            )
+                                                "completion %s", est_time)
                                             # write template file
                                             try:
                                                 file_writer.write_template_frame_detector(
@@ -94,7 +90,7 @@ def main(args):
                                                     cfo,
                                                 )
                                             except (RuntimeError, TypeError, NameError):
-                                                _logger.debug("Writing frame_detector error")
+                                                _logger.critical("Writing frame_detector error")
                                             # run the flowgraph
                                             try:
                                                 (
@@ -105,7 +101,7 @@ def main(args):
                                                     input_data, timeout, "frame_detector"
                                                 )
                                             except (RuntimeError, TypeError, NameError):
-                                                _logger.debug(
+                                                _logger.critical(
                                                     "Error executing flowgraph of " "frame_detector"
                                                 )
                                             # get the average load
@@ -121,7 +117,7 @@ def main(args):
                                                 paylen = len(input_data)
                                                 data_rate = (paylen * frames) / time
                                             except (RuntimeError, TypeError, NameError):
-                                                _logger.debug(
+                                                _logger.warning(
                                                     "Error in getting the cpu load values "
                                                     "of the system"
                                                 )
@@ -150,7 +146,7 @@ def main(args):
                                                 "cfo": cfo,
                                                 "sto": sto,
                                             }
-                                            counter = counter + 1
+                                            __counter = __counter + 1
                                             # save data to pandas or wandb
                                             save.saver(data)
 

@@ -31,13 +31,13 @@ def profile_flowgraph(string_input, timeout, template):
     # call bash script to exectue flowgraph
     subprocess.call("gr_lora_sdr_profiler/bash_scripts/run.sh {}".format(timeout), shell=True)
     time = td.time() - start_time
-    # subprocess.call('profiler/bash_scripts/convert.sh', shell=True)
+    subprocess.call('gr_lora_sdr_profiler/bash_scripts/convert.sh', shell=True)
     # open output for parsing processing
-    with open("temp/out.txt", "r") as file1:
+    with open("temp/out2.txt", "r") as file1:
         try:
             stdout = file1.readlines()
         except (RuntimeError, TypeError, NameError):
-            _logger.debug("Error reading the output of the run")
+            _logger.error("Error reading the output of the run")
             stdout = "nothing"
 
     return parse_stdout(stdout, string_input, time, template)
@@ -75,6 +75,6 @@ def parse_stdout(stdout, string_input, time, template):
             if out_dec is not None:
                 num_dec = num_dec + 1
         except (RuntimeError, TypeError, NameError):
-            _logger.debug("Error in parsing from line %s of template %s", line, template)
+            _logger.error("Error in parsing from line %s of template %s", line, template)
 
     return num_right, num_dec, time

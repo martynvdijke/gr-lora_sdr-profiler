@@ -58,7 +58,7 @@ class Plotter:
             if not os.path.exists(self.output_png):
                 os.makedirs(self.output_png)
         except RuntimeError:
-            _logger.debug("Something went wrong making dirs")
+            _logger.error("Something went wrong making dirs")
 
     def line_plot(self):
         """

@@ -93,11 +93,11 @@ def parse_config_colums(template):
             "template",
             "time_wait",
             "input_data",
-            "sf",
+            "spreading_factor",
             "paylen",
             "impl_head",
             "has_crc",
-            "cr",
+            "coding_rate",
             "frames",
         ]
     )

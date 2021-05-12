@@ -2,7 +2,7 @@
 Main function that dispatches all sub functions
 """
 import argparse
-import logging
+import coloredlogs, logging
 import sys
 import os
 import pathlib
@@ -16,6 +16,7 @@ __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
 __license__ = "MIT"
 _logger = logging.getLogger(__name__)
+
 __templates__ = (
     "lora_sim_blocks",
     "lora_sim_chains",
@@ -139,6 +140,7 @@ def setup_logging(loglevel):
         format=logformat,
         datefmt="%Y-%m-%d %H:%M:%S",
     )
+    coloredlogs.install(level=loglevel, logger=_logger)
 
 
 def main(args):
