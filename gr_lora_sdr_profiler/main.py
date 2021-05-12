@@ -2,10 +2,11 @@
 Main function that dispatches all sub functions
 """
 import argparse
-import coloredlogs, logging
+import logging
 import sys
 import os
 import pathlib
+import coloredlogs
 from . import __version__
 from . import frame_detector
 from . import plotter

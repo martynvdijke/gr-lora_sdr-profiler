@@ -15,6 +15,7 @@ _logger = logging.getLogger(__name__)
 
 # pylint: disable=R0914,R1702,R0912,R0801
 
+
 def main(args):
     """
     Main function where all the computations happen
@@ -46,15 +47,15 @@ def main(args):
     # initilize a saver object
     save = file_saver.FileSaver(args, "frame_detector")
     n_times = (
-            len(cfo_list)
-            * len(sto_list)
-            * len(snr_list)
-            * len(threshold_list)
-            * len(cr_list)
-            * len(has_crc_list)
-            * len(impl_head_list)
-            * len(frames_list)
-            * len(sf_list)
+        len(cfo_list)
+        * len(sto_list)
+        * len(snr_list)
+        * len(threshold_list)
+        * len(cr_list)
+        * len(has_crc_list)
+        * len(impl_head_list)
+        * len(frames_list)
+        * len(sf_list)
     )
     _logger.info("Flowgraph needs to run %s times", n_times)
     # loop over all values that needs to be runned
@@ -69,10 +70,13 @@ def main(args):
                                     for frames in frames_list:
                                         for spreading_factor in sf_list:
                                             est_time = time_estimater.get_time_estimate(
-                                                spreading_factor, n_times, __counter, frames)
+                                                spreading_factor, n_times, __counter, frames
+                                            )
                                             _logger.debug(
                                                 "Starting new run, estimated time to "
-                                                "completion %s", est_time)
+                                                "completion %s",
+                                                est_time,
+                                            )
                                             # write template file
                                             try:
                                                 file_writer.write_template_frame_detector(

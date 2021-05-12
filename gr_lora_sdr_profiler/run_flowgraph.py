@@ -31,7 +31,7 @@ def profile_flowgraph(string_input, timeout, template):
     # call bash script to exectue flowgraph
     subprocess.call("gr_lora_sdr_profiler/bash_scripts/run.sh {}".format(timeout), shell=True)
     time = td.time() - start_time
-    subprocess.call('gr_lora_sdr_profiler/bash_scripts/convert.sh', shell=True)
+    subprocess.call("gr_lora_sdr_profiler/bash_scripts/convert.sh", shell=True)
     # open output for parsing processing
     with open("temp/out2.txt", "r") as file1:
         try:
