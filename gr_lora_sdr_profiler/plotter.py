@@ -68,14 +68,18 @@ class Plotter:
 
         """
         _logger.debug("Making line plot")
-        plot_x = prompt("Y value to choose ", completer=WordCompleter(self.colum_names)).strip()
-        plot_y = prompt("X value to choose ", completer=WordCompleter(self.colum_names)).strip()
+        plot_x = prompt("X value to choose ", completer=WordCompleter(self.colum_names)).strip()
+        plot_y = prompt("Y value to choose ", completer=WordCompleter(self.colum_names)).strip()
         plot_z = prompt("Value to groupby", completer=WordCompleter(self.colum_names)).strip()
         agg = prompt("Aggregate by", completer=(WordCompleter(__aggregate_options__))).strip()
+        log_plot = prompt("Do you want to plot on a log scale ?", completer=(WordCompleter(["yes", "no"]))).strip()
         # get labels for names
         labels = get_config.get_label(plot_x, plot_y, plot_z)
-
-        axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line()
+        if log_plot == "yes":
+            axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line()
+            axes.set_yscale('log')
+        else:
+            axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line()
         axes.legend(bbox_to_anchor=(1.04, 1), title=labels[2])
         plt.xlabel(labels[0])
         plt.ylabel(labels[1])
@@ -89,9 +93,9 @@ class Plotter:
         for agg in agg_list:
             if self.output:
                 self.logger.debug("Writing plot to file")
-                filename = "/line_{0}_{1}_{2}_{3}".format(plot_x, plot_y, plot_z, agg)
-                plt.savefig(self.output_eps + filename + ".eps", format="eps")
-                plt.savefig(self.output_png + filename + ".png")
+                filename = "/line_{0}_{1}_{2}_{3}_{4}".format(plot_x, plot_y, plot_z, agg, log_plot)
+                plt.savefig(self.output_eps + filename + ".eps", format="eps",  bbox_inches="tight")
+                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight")
             if self.show:
                 plt.show()
             self.logger.debug("Line plotted %s vs %s", plot_x, plot_y)

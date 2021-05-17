@@ -10,6 +10,7 @@ env/*
 
 ## folders
 profiler/profiler.egg-info/*
+bin/*
 
 update/*
 update/*

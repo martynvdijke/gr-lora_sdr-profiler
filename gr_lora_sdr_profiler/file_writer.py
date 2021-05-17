@@ -245,7 +245,7 @@ def write_template_frame_detector(
         threshold,
         snr,
     )
-    file_template = "templates/" + str(file_name)
+    file_template = "gr_lora_sdr_profiler/templates/" + str(file_name)
     with open(file_template, "r") as f_template:
         f_template_text = f_template.read()
         f_template.close()

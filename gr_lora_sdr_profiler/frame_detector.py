@@ -117,7 +117,7 @@ def main(args):
                                                 ) = get_cpu_load.load_all()
                                                 # calculate the derived values
                                                 succes_rate = num_right / frames * 100
-                                                error_rate = num_right / frames * 100
+                                                error_rate = (frames - num_right)/frames * 100
                                                 paylen = len(input_data)
                                                 data_rate = (paylen * frames) / time
                                             except (RuntimeError, TypeError, NameError):

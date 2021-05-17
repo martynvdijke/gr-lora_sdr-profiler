@@ -1,6 +1,6 @@
-from gr_lora_sdr_profiler import main
+from gr_lora_sdr_profiler import __main__
 import sys
 
 def run():
-    main.main(sys.argv[1:])
+    __main__.main(sys.argv[1:])
 run()
