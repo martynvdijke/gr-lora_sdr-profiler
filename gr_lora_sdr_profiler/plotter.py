@@ -3,6 +3,7 @@
 """
 import logging
 import os
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 from prompt_toolkit import prompt
@@ -40,6 +41,7 @@ class Plotter:
         self.output = True
         self.show = True
         self.barwidth = 0.9
+        self.dpi = 300
         self.data_frame = pd.read_csv(args.plot)
         self.colum_names = get_config.parse_config_colums(self.template)
         self.make_dirs()
@@ -72,12 +74,14 @@ class Plotter:
         plot_y = prompt("Y value to choose ", completer=WordCompleter(self.colum_names)).strip()
         plot_z = prompt("Value to groupby", completer=WordCompleter(self.colum_names)).strip()
         agg = prompt("Aggregate by", completer=(WordCompleter(__aggregate_options__))).strip()
-        log_plot = prompt("Do you want to plot on a log scale ?", completer=(WordCompleter(["yes", "no"]))).strip()
+        log_plot = prompt(
+            "Do you want to plot on a log scale ?", completer=(WordCompleter(["yes", "no"]))
+        ).strip()
         # get labels for names
         labels = get_config.get_label(plot_x, plot_y, plot_z)
         if log_plot == "yes":
             axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line()
-            axes.set_yscale('log')
+            axes.set_yscale("log")
         else:
             axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line()
         axes.legend(bbox_to_anchor=(1.04, 1), title=labels[2])
@@ -94,8 +98,13 @@ class Plotter:
             if self.output:
                 self.logger.debug("Writing plot to file")
                 filename = "/line_{0}_{1}_{2}_{3}_{4}".format(plot_x, plot_y, plot_z, agg, log_plot)
-                plt.savefig(self.output_eps + filename + ".eps", format="eps",  bbox_inches="tight")
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight")
+                plt.savefig(
+                    self.output_eps + filename + ".eps",
+                    format="eps",
+                    bbox_inches="tight",
+                    dpi=self.dpi,
+                )
+                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi)
             if self.show:
                 plt.show()
             self.logger.debug("Line plotted %s vs %s", plot_x, plot_y)
@@ -129,8 +138,13 @@ class Plotter:
             if self.output:
                 self.logger.debug("Writing plot to file")
                 filename = "/bar_{0}_{1}_{2}_{3}".format(plot_x, plot_y, plot_z, agg)
-                plt.savefig(self.output_eps + filename + ".eps", format="eps", bbox_inches="tight")
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight")
+                plt.savefig(
+                    self.output_eps + filename + ".eps",
+                    format="eps",
+                    bbox_inches="tight",
+                    dpi=self.dpi,
+                )
+                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi)
             if self.show:
                 plt.show()
             self.logger.debug("Bar plotted %s vs %s vs %s using %s", plot_x, plot_y, plot_z, agg)
@@ -169,8 +183,13 @@ class Plotter:
             if self.output:
                 self.logger.debug("Writing plot to file")
                 filename = "/barh_{0}_{1}_{2}_{3}".format(plot_x, plot_y, plot_z, agg)
-                plt.savefig(self.output_eps + filename + ".eps", format="eps", bbox_inches="tight")
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight")
+                plt.savefig(
+                    self.output_eps + filename + ".eps",
+                    format="eps",
+                    bbox_inches="tight",
+                    dpi=self.dpi,
+                )
+                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi)
             if self.show:
                 plt.show()
                 plt.close()
@@ -194,5 +213,5 @@ class Plotter:
 
             exit_plotter = prompt("Do you want to quit ?[N/y]", default="N")
             if exit_plotter == "y":
-                run = False
+                sys.exit("Done plotting")
         _logger.info("Received quit signal, stopping plotting")

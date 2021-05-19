@@ -5,6 +5,8 @@ import logging
 import yaml
 
 _logger = logging.getLogger(__name__)
+
+
 # pylint: disable=W1401,R0914,R0801
 
 
@@ -60,12 +62,12 @@ def get_label(x_colum_name, y_colum_name, *names):
         "num_right": "Rightfully decoded messages",
         "num_dec": "Number of decoded messages",
         "succes_rate": "$\eta$",
-        "error_rate" : "PER",
+        "error_rate": "PER",
         "threshold": "Threshold value",
         "snr": "$SNR (dB)$",
-        "std": "STO",
+        "sto": "STO",
         "cfo": "CFO",
-        "delay": "Delay=",
+        "delay": "Delay",
     }
     return_list.append(labels[x_colum_name])
     return_list.append(labels[y_colum_name])
