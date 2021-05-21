@@ -63,18 +63,33 @@ def parse_stdout(stdout, string_input, time, template):
     num_dec = 0
     # for each line in stdout find the number of rightfull and decoded messages
     for out in stdout:
-        try:
-            line = str(out)
-            re_text_right = "msg:" + str(string_input)
-            out_right = re.search(re_text_right, line)
-            re_text_dec = "msg:"
-            out_dec = re.search(re_text_dec, line)
-            # check if the search found match objects
-            if out_right is not None:
-                num_right = num_right + 1
-            if out_dec is not None:
-                num_dec = num_dec + 1
-        except (RuntimeError, TypeError, NameError):
-            _logger.error("Error in parsing from line %s of template %s", line, template)
+        if template == "frame_detector":
+            try:
+                line = str(out)
+                re_text_right = "Outside LoRa frame"
+                out_right = re.search(re_text_right, line)
+                re_text_dec = "Outside LoRa frame"
+                out_dec = re.search(re_text_dec, line)
+                # check if the search found match objects
+                if out_right is not None:
+                    num_right = num_right + 1
+                if out_dec is not None:
+                    num_dec = num_dec + 1
+            except (RuntimeError, TypeError, NameError):
+                _logger.error("Error in parsing from line %s of template %s", line, template)
+        else:
+            try:
+                line = str(out)
+                re_text_right = "msg:" + str(string_input)
+                out_right = re.search(re_text_right, line)
+                re_text_dec = "msg:"
+                out_dec = re.search(re_text_dec, line)
+                # check if the search found match objects
+                if out_right is not None:
+                    num_right = num_right + 1
+                if out_dec is not None:
+                    num_dec = num_dec + 1
+            except (RuntimeError, TypeError, NameError):
+                _logger.error("Error in parsing from line %s of template %s", line, template)
 
     return num_right, num_dec, time

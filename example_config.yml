@@ -85,7 +85,7 @@ frame_detector:
     end: 15
     increment: 1
   snr:
-    start: -15
+    start: -10
     end: 15
     increment: 1
   sto:
