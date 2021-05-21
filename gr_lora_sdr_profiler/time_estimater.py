@@ -22,10 +22,10 @@ def get_time_estimate(spreading_factor, n_times, counter, frames):
 
     """
     # if no last time is given use approx times
-    default_approx_times = {7: 3, 8: 3, 9: 4, 10: 7, 11: 12, 12: 18}
+    default_approx_times = {7: 0.03, 8: 0.03, 9: 0.05, 10: 0.09, 11: 0.15, 12: 0.3}
     time = (
         default_approx_times[spreading_factor] * n_times
         - counter * default_approx_times[spreading_factor]
-    ) * (frames / 10)
+    ) * frames
 
     return datetime.timedelta(seconds=time)
