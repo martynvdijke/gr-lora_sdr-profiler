@@ -23,7 +23,7 @@ def increment_list(start, stop, increment, *skip) -> list:
     """
     temp_list = []
     i = start
-    while i < stop + 1:
+    while i < stop + increment:
         if i is not skip:
             temp_list.append(i)
         i += increment
