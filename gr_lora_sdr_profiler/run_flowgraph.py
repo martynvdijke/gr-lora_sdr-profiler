@@ -9,6 +9,9 @@
 import subprocess
 import re
 import time as td
+import random
+import os
+import string
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -26,19 +29,36 @@ def profile_flowgraph(string_input, timeout, template):
 
     """
     _logger.debug("Starting new flowgraph run")
-    # set starttime
+    # generate random string to hold the temporary output
+    ran = "".join(random.choices(string.ascii_uppercase + string.digits, k=10))
+    results_file = str(ran)
+    results_converted = "temp/" + results_file + "-converted.txt"
+    results_file = "temp/" + results_file + ".txt"
+    _logger.debug("Random output file : %s", results_file)
+    # set start time
     start_time = td.time()
-    # call bash script to exectue flowgraph
-    subprocess.call("gr_lora_sdr_profiler/bash_scripts/run.sh {}".format(timeout), shell=True)
+    # call bash script to execute flowgraph
+    subprocess.call(
+        "gr_lora_sdr_profiler/bash_scripts/run.sh {0} {1}".format(timeout, results_file), shell=True
+    )
     time = td.time() - start_time
-    subprocess.call("gr_lora_sdr_profiler/bash_scripts/convert.sh", shell=True)
+    subprocess.call(
+        "gr_lora_sdr_profiler/bash_scripts/convert.sh {} {}".format(
+            results_file, results_converted
+        ),
+        shell=True,
+    )
     # open output for parsing processing
-    with open("temp/out2.txt", "r") as file1:
+    with open(results_converted, "r") as file1:
         try:
             stdout = file1.readlines()
         except (RuntimeError, TypeError, NameError):
             _logger.error("Error reading the output of the run")
             stdout = "nothing"
+
+    # delete temporary file
+    os.remove(results_file)
+    os.remove(results_converted)
 
     return parse_stdout(stdout, string_input, time, template)
 
