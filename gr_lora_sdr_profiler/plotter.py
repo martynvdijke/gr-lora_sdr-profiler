@@ -40,6 +40,7 @@ class Plotter:
         self.output_png = self.output_dir + "/png"
         self.output = True
         self.show = True
+        self.transparent = True
         self.barwidth = 0.9
         self.dpi = 300
         self.data_frame = pd.read_csv(args.plot)
@@ -79,14 +80,18 @@ class Plotter:
         ).strip()
         # get labels for names
         labels = get_config.get_label(plot_x, plot_y, plot_z)
+        xticks = self.data_frame[plot_x].unique()
         if log_plot == "yes":
-            axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line()
+            axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line(marker='o')
             axes.set_yscale("log")
+            axes.set_xticks(xticks)
         else:
             axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line()
-        axes.legend(bbox_to_anchor=(1.04, 1), title=labels[2])
+        axes.legend(bbox_to_anchor=(1.04, 1), title=labels[2], fancybox=True, framealpha=0.5)
         plt.xlabel(labels[0])
         plt.ylabel(labels[1])
+        plt.grid()
+
         # check if we want to plot all aggegrate options
         agg_list = []
         if agg == "all":
@@ -103,8 +108,9 @@ class Plotter:
                     format="eps",
                     bbox_inches="tight",
                     dpi=self.dpi,
+                    transparent=self.transparent,
                 )
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi)
+                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi,transparent=self.transparent)
             if self.show:
                 plt.show()
             self.logger.debug("Line plotted %s vs %s", plot_x, plot_y)
@@ -143,8 +149,9 @@ class Plotter:
                     format="eps",
                     bbox_inches="tight",
                     dpi=self.dpi,
+                    transparent=self.transparent,
                 )
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi)
+                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi,transparent=self.transparent,)
             if self.show:
                 plt.show()
             self.logger.debug("Bar plotted %s vs %s vs %s using %s", plot_x, plot_y, plot_z, agg)
@@ -188,8 +195,9 @@ class Plotter:
                     format="eps",
                     bbox_inches="tight",
                     dpi=self.dpi,
+                    transparent=self.transparent,
                 )
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi)
+                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi,transparent=self.transparent)
             if self.show:
                 plt.show()
                 plt.close()
