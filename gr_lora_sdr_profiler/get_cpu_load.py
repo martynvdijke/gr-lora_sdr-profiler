@@ -11,7 +11,7 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-def load_avg_1min():
+def load_avg_1min() -> float:
     """
     Query's the Linux system with the average 1 min Linux load
     Returns: average 1 min Linux load
@@ -27,7 +27,7 @@ def load_avg_1min():
         return load
 
 
-def load_avg_5min():
+def load_avg_5min() -> float:
     """
     Query's the Linux system with the average 5 min Linux load
     Returns: average 5 min Linux load
@@ -43,7 +43,7 @@ def load_avg_5min():
         return load
 
 
-def load_avg_15min():
+def load_avg_15min() -> float:
     """
     Query's the Linux system with the average 15 min Linux load
     Returns: average 15 min Linux load
@@ -59,7 +59,7 @@ def load_avg_15min():
         return load
 
 
-def load_all():
+def load_all() -> list:
     """
     Runs the above functions to get all the loads (1, 5 and 15 minutes)
     Returns: [list] with load figures

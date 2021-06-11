@@ -10,7 +10,7 @@ _logger = logging.getLogger(__name__)
 # pylint: disable=W1401,R0914,R0801
 
 
-def increment_list(start, stop, increment, *skip) -> list:
+def increment_list(start: float, stop: float, increment: float, *skip: float) -> list:
     """
     Converts the input values from start to stop to an list
     Args:
@@ -31,7 +31,7 @@ def increment_list(start, stop, increment, *skip) -> list:
     return temp_list
 
 
-def get_label(x_colum_name, y_colum_name, *names):
+def get_label(x_colum_name: str, y_colum_name: str, *names) -> list:
     """
 
     Args:
@@ -61,9 +61,10 @@ def get_label(x_colum_name, y_colum_name, *names):
         "load_15_min": "15 min cpu load",
         "num_right": "Rightfully decoded messages",
         "num_dec": "Number of decoded messages",
-        "succes_rate": "$\eta$",
-        "error_rate": "PER",
-        "detection_rate": "$DER$",
+        "decoded_success_per": "$\eta$",
+        "decoded_error_rate": "PER",
+        "packet_detection_err_rate": "DER",
+        "packet_detection_suc_per": "$\eta$",
         "threshold": "$Th$",
         "snr": "$SNR (dB)$",
         "sto": "STO",
@@ -80,7 +81,7 @@ def get_label(x_colum_name, y_colum_name, *names):
     return return_list
 
 
-def parse_config_colums(template):
+def parse_config_colums(template: str) -> list:
     """
     Returns the colums names (to be used in pandas) to use for diffrent templates
     Args:
@@ -113,9 +114,10 @@ def parse_config_colums(template):
             "load_1min",
             "load_5min",
             "load_15min",
-            "success_rate",
-            "error_rate",
-            "detection_rate",
+            "decoded_success_per",
+            "decoded_error_rate",
+            "packet_detection_err_rate",
+            "packet_detection_suc_per",
             "cfo",
             "snr",
             "sto",
@@ -128,7 +130,7 @@ def parse_config_colums(template):
     return colum_names
 
 
-def parse_config_data(cfg, template):
+def parse_config_data(cfg: str, template: str) -> list:
     """
     Parses the cfg file and returns all values as a list object.
     Args:

@@ -17,7 +17,7 @@ class FileSaver:
 
     # pylint: disable=R0902
 
-    def __init__(self, args, template):
+    def __init__(self, args: str, template: str) -> None:
         self.logger = _logger
         self.logger.debug("Making new FileSaver class")
         self.modus = args.save
@@ -36,7 +36,7 @@ class FileSaver:
             wandb.init(project="lora_sdr-profiler")
             self.config = wandb.config
 
-    def saver(self, data):
+    def saver(self, data: dict):
         """
         Main saver function that spawns pandas saving or wandb saving or both
         Args:
@@ -53,7 +53,7 @@ class FileSaver:
             self.pandas_saver(data)
             self.wandb_saver(data)
 
-    def wandb_saver(self, data):
+    def wandb_saver(self, data: dict) -> None:
         """
         Saves the input dataa to wandb
         Args:
@@ -65,7 +65,7 @@ class FileSaver:
         self.logger.debug("Adding input data to wandb frame")
         wandb.log(data)
 
-    def pandas_saver(self, data):
+    def pandas_saver(self, data: dict) -> None:
         """
         Saves the input data to update the pandas dataframe
         Args:

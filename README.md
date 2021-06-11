@@ -1,7 +1,5 @@
 # gr-lora_sdr-profiler
 
-
-
 > Profile different flowgraph configurations of [gr-lora_sdr](https://github.com/martynvdijke/gr-lora_sdr)
 
 [![PyPI Version][pypi-image]][pypi-url]
@@ -12,7 +10,7 @@ This is a python cli package to be able to load and config yml file and change v
 ## Installation
 
 ```sh
-pip install gr_lora_sdr_profiler
+$ pip install gr_lora_sdr_profiler
 ```
 ## Documentation
 
@@ -37,11 +35,11 @@ FILE [FILE ...]
 ### cli
 Run flowgraph 
 ```python
-python -m profiler --m frame_detector -s pandas example_config.yml 
+$ python -m profiler --m frame_detector -s pandas example_config.yml 
 ```
 Plot all values by using 
 ```python
-python -m profiler --m frame_detector -p results/out.csv example_config.yml 
+$ python -m profiler --m frame_detector -p results/out.csv example_config.yml 
 ```
 
 ## Development setup

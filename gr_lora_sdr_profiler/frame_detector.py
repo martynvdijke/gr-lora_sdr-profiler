@@ -16,7 +16,7 @@ _logger = logging.getLogger(__name__)
 # pylint: disable=R0914,R1702,R0912,R0801
 
 
-def main(args):
+def main(args: str) -> None:
     """
     Main function where all the computations happen
     Args:
@@ -28,6 +28,7 @@ def main(args):
     _logger.debug("Running frame detector runner")
     filename = args.filename
     timeout = args.timeout
+    remove_temp_files = args.remove
     __counter = 0
 
     # parse the config for the values to use
@@ -100,10 +101,16 @@ def main(args):
                                                 (
                                                     num_right,
                                                     num_dec,
+                                                    num_dec_suc,
+                                                    num_dec_err,
                                                     time,
                                                 ) = run_flowgraph.profile_flowgraph(
-                                                    input_data, timeout, "frame_detector"
+                                                    input_data,
+                                                    timeout,
+                                                    "frame_detector",
+                                                    remove_temp_files,
                                                 )
+
                                             except (RuntimeError, TypeError, NameError):
                                                 _logger.critical(
                                                     "Error executing flowgraph of " "frame_detector"
@@ -116,8 +123,14 @@ def main(args):
                                                     load_15min,
                                                 ) = get_cpu_load.load_all()
                                                 # calculate the derived values
-                                                succes_rate = num_right / frames * 100
-                                                error_rate = 1 - ((frames - num_right) / frames)
+                                                decoded_success_per = num_right / frames * 100
+                                                decoded_error_rate = 1 - (
+                                                    (frames - num_right) / frames
+                                                )
+                                                packet_detection_rate = 1 - (
+                                                    (frames - num_dec_err) / frames
+                                                )
+                                                packet_success_per = num_dec_suc / frames * 100
                                                 paylen = len(input_data)
                                                 data_rate = (paylen * frames) / time
                                             except (RuntimeError, TypeError, NameError):
@@ -142,8 +155,10 @@ def main(args):
                                                 "load_1min": load_1min,
                                                 "load_5min": load_5min,
                                                 "load_15min": load_15min,
-                                                "success_rate": succes_rate,
-                                                "error_rate": error_rate,
+                                                "decoded_success_per": decoded_success_per,
+                                                "decoded_error_rate": decoded_error_rate,
+                                                "packet_detection_err_rate": packet_detection_rate,
+                                                "packet_detection_suc_per": packet_success_per,
                                                 "data_rate": data_rate,
                                                 "threshold": threshold,
                                                 "snr": snr,

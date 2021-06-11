@@ -65,7 +65,7 @@ class lora_sim(gr.top_block):
             noise_voltage=10**(-snr/20),
             frequency_offset=cfo,
             epsilon=1+sto/samp_rate,
-            taps=[1.0 + 1.0j],
+            taps=[1.0],
             noise_seed=0,
             block_tags=False)
         self.channels_channel_model_0.set_min_output_buffer(2**sf*8)

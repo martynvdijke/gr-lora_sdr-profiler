@@ -26,7 +26,7 @@ class Plotter:
     Class to do all the plotting
     """
 
-    def __init__(self, args):
+    def __init__(self, args: str) -> None:
         """
         Initializes the plotter class
         Args:
@@ -47,7 +47,7 @@ class Plotter:
         self.colum_names = get_config.parse_config_colums(self.template)
         self.make_dirs()
 
-    def make_dirs(self):
+    def make_dirs(self) -> None:
         """
         Makes the output directories
         Returns:
@@ -63,7 +63,7 @@ class Plotter:
         except RuntimeError:
             _logger.error("Something went wrong making dirs")
 
-    def line_plot(self):
+    def line_plot(self) -> None:
         """
         Lets user choose from the values in the data frame and makes a line plot
         based on those values x vs y values
@@ -82,7 +82,12 @@ class Plotter:
         labels = get_config.get_label(plot_x, plot_y, plot_z)
         xticks = self.data_frame[plot_x].unique()
         if log_plot == "yes":
-            axes = self.data_frame.groupby([plot_x, plot_z])[plot_y].agg(agg).unstack().plot.line(marker='o')
+            axes = (
+                self.data_frame.groupby([plot_x, plot_z])[plot_y]
+                .agg(agg)
+                .unstack()
+                .plot.line(marker="o")
+            )
             axes.set_yscale("log")
             axes.set_xticks(xticks)
         else:
@@ -110,12 +115,17 @@ class Plotter:
                     dpi=self.dpi,
                     transparent=self.transparent,
                 )
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi,transparent=self.transparent)
+                plt.savefig(
+                    self.output_png + filename + ".png",
+                    bbox_inches="tight",
+                    dpi=self.dpi,
+                    transparent=self.transparent,
+                )
             if self.show:
                 plt.show()
             self.logger.debug("Line plotted %s vs %s", plot_x, plot_y)
 
-    def bar_plot(self):
+    def bar_plot(self) -> None:
         """
         Lets user choose from the values in the data frame and makes a bar plot
         based on those values x vs y values
@@ -151,12 +161,17 @@ class Plotter:
                     dpi=self.dpi,
                     transparent=self.transparent,
                 )
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi,transparent=self.transparent,)
+                plt.savefig(
+                    self.output_png + filename + ".png",
+                    bbox_inches="tight",
+                    dpi=self.dpi,
+                    transparent=self.transparent,
+                )
             if self.show:
                 plt.show()
             self.logger.debug("Bar plotted %s vs %s vs %s using %s", plot_x, plot_y, plot_z, agg)
 
-    def barh_plot(self):
+    def barh_plot(self) -> None:
         """
         Lets user choose from the values in the data frame and makes a barh plot
         based on those values x vs y values
@@ -197,13 +212,18 @@ class Plotter:
                     dpi=self.dpi,
                     transparent=self.transparent,
                 )
-                plt.savefig(self.output_png + filename + ".png", bbox_inches="tight", dpi=self.dpi,transparent=self.transparent)
+                plt.savefig(
+                    self.output_png + filename + ".png",
+                    bbox_inches="tight",
+                    dpi=self.dpi,
+                    transparent=self.transparent,
+                )
             if self.show:
                 plt.show()
                 plt.close()
             self.logger.debug("Barh plotted %s vs %s vs %s using %s", plot_x, plot_y, plot_z, agg)
 
-    def main(self):
+    def main(self) -> None:
         """
         Main function for the plotter handling the dispatching of the separate plot functions
         Returns: none

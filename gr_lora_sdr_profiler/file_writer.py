@@ -8,7 +8,7 @@ _logger = logging.getLogger(__name__)
 # pylint: disable=R0913,R0914,C0103,R0801
 
 
-def from_dict(dct):
+def from_dict(dct: dict) -> dict:
     """Replaces template files variables (denoted by @@<var>@@) with the variable value
 
     Args:
@@ -201,18 +201,18 @@ def write_template_multi_stream(
 
 
 def write_template_frame_detector(
-    file_name,
-    input_data,
-    spreading_factor,
-    impl_head,
-    has_crc,
-    coding_rate,
-    frames,
-    time_wait,
-    threshold,
-    snr,
-    sto,
-    cfo,
+    file_name: str,
+    input_data: str,
+    spreading_factor: int,
+    impl_head: bool,
+    has_crc: bool,
+    coding_rate: int,
+    frames: int,
+    time_wait: int,
+    threshold: float,
+    snr: float,
+    sto: float,
+    cfo: float,
 ):
     """
     Writes the frame_detector template using the arguments

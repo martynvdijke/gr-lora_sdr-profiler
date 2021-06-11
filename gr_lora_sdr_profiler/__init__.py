@@ -13,7 +13,7 @@ from . import plotter
 __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
 __license__ = "MIT"
-__version__ = "v0.18"
+__version__ = "v0.19"
 
 _logger = logging.getLogger(__name__)
 
@@ -105,6 +105,13 @@ def parse_args(args):
         type=int,
         help="Maximum time a run may take [default=%(default)r]",
     )
+    parser.add_argument(
+        "-r",
+        "--remove",
+        default=True,
+        type=bool,
+        help="Remove temp files or not [default=%(default)r]",
+    )
     # set logging level
     parser.add_argument(
         "-v",
@@ -127,7 +134,7 @@ def parse_args(args):
     return parser.parse_args(args)
 
 
-def setup_logging(loglevel):
+def setup_logging(loglevel: str) -> None:
     """Setup basic logging
 
     Args:
@@ -143,7 +150,7 @@ def setup_logging(loglevel):
     coloredlogs.install(level=loglevel, logger=_logger)
 
 
-def main(argv=None):
+def main(argv=None) -> None:
     """
     Main function that does all the dispatching of the subfunctions
     Args:

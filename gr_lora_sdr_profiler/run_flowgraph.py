@@ -15,15 +15,17 @@ import string
 import logging
 
 _logger = logging.getLogger(__name__)
+# pylint: disable=R0914,R1705
 
 
-def profile_flowgraph(string_input, timeout, template):
+def profile_flowgraph(string_input: str, timeout: int, template: str, remove_temp_files: bool):
     """
     Runs the actual flowgraph
     Args:
         template: template to use
         string_input: string input to verify against
         timeout : maximum number of seconds to let the flowgraph run
+        remove_temp_files: boolean value to remove temp files or not
 
     Returns: the number of decoded messages
 
@@ -56,9 +58,10 @@ def profile_flowgraph(string_input, timeout, template):
             _logger.error("Error reading the output of the run")
             stdout = "nothing"
 
-    # delete temporary file
-    os.remove(results_file)
-    os.remove(results_converted)
+    if remove_temp_files:
+        # delete temporary file
+        os.remove(results_file)
+        os.remove(results_converted)
 
     return parse_stdout(stdout, string_input, time, template)
 
@@ -71,33 +74,52 @@ def parse_stdout(stdout, string_input, time, template):
     Args:
         stdout ([lines]): output of stdout
         string_input ([string]): string to match against
-        time (int): execeution time
+        time (int): execution time
         template (string) : template file to use
 
     Returns:
-        [int]: number of rightlyfull decoded messages
+        [int]: number of rightfully decoded messages
     """
     # Number of rightlyfully decoded messages
     num_right = 0
     # Number of decoded messages
     num_dec = 0
     # for each line in stdout find the number of rightfull and decoded messages
-    for out in stdout:
-        if template == "frame_detector":
+    if template == "frame_detector":
+        num_dec_err = 0
+        num_dec_suc = 0
+        for out in stdout:
             try:
                 line = str(out)
-                re_text_right = "Outside LoRa frame"
+                # look for decoded pakcets
+                re_text_right = "msg:" + str(string_input)
                 out_right = re.search(re_text_right, line)
-                re_text_dec = "Outside LoRa frame"
+                re_text_dec = "msg:"
                 out_dec = re.search(re_text_dec, line)
+                # look for detected packets of the frame detector
+                re_text_packet_dec_err = "Packet Detection Error"
+                out_dec_packet_err = re.search(re_text_packet_dec_err, line)
+                re_text_packet_dec_suc = "Good Packet Detected"
+                out_dec_packet_suc = re.search(re_text_packet_dec_suc, line)
+
                 # check if the search found match objects
                 if out_right is not None:
                     num_right = num_right + 1
                 if out_dec is not None:
                     num_dec = num_dec + 1
+                if out_dec_packet_err is not None:
+                    num_dec_err = num_dec_err + 1
+                if out_dec_packet_suc is not None:
+                    num_dec_suc = num_dec_suc + 1
+
             except (RuntimeError, TypeError, NameError):
                 _logger.error("Error in parsing from line %s of template %s", line, template)
-        else:
+
+        # return all  parsed values
+        return num_right, num_dec, num_dec_suc, num_dec_err, time
+    # use standard approach
+    else:
+        for out in stdout:
             try:
                 line = str(out)
                 re_text_right = "msg:" + str(string_input)
@@ -111,5 +133,5 @@ def parse_stdout(stdout, string_input, time, template):
                     num_dec = num_dec + 1
             except (RuntimeError, TypeError, NameError):
                 _logger.error("Error in parsing from line %s of template %s", line, template)
-
-    return num_right, num_dec, time
+        # return all  parsed values
+        return num_right, num_dec, time
