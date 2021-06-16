@@ -130,7 +130,9 @@ def main(args: str) -> None:
                                                 packet_detection_rate = 1 - (
                                                     (frames - num_dec_err) / frames
                                                 )
-                                                packet_success_per = num_dec_suc / frames * 100
+                                                packet_success_rate = 1 - (
+                                                    (frames - num_dec_suc) / frames
+                                                )
                                                 paylen = len(input_data)
                                                 data_rate = (paylen * frames) / time
                                             except (RuntimeError, TypeError, NameError):
@@ -158,7 +160,7 @@ def main(args: str) -> None:
                                                 "decoded_success_per": decoded_success_per,
                                                 "decoded_error_rate": decoded_error_rate,
                                                 "packet_detection_err_rate": packet_detection_rate,
-                                                "packet_detection_suc_per": packet_success_per,
+                                                "packet_detection_suc_rate": packet_success_rate,
                                                 "data_rate": data_rate,
                                                 "threshold": threshold,
                                                 "snr": snr,
