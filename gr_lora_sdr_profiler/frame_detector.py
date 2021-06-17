@@ -125,10 +125,10 @@ def main(args: str) -> None:
                                                 # calculate the derived values
                                                 decoded_success_per = num_right / frames * 100
                                                 decoded_error_rate = 1 - (
-                                                    (frames - num_right) / frames
+                                                    num_right / frames
                                                 )
                                                 packet_detection_rate = 1 - (
-                                                    (frames - num_dec_suc) / frames
+                                                    num_dec_suc / frames
                                                 )
                                                 num_decoded_error = num_dec_err
                                                 paylen = len(input_data)
