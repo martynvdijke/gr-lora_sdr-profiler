@@ -13,7 +13,7 @@ from . import plotter
 __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
 __license__ = "MIT"
-__version__ = "v0.24"
+__version__ = "v0.25"
 
 _logger = logging.getLogger(__name__)
 
@@ -91,13 +91,7 @@ def parse_args(args):
         metavar="FILE",
         help="Specify to plot all the values from input file  [default=%(default)r]",
     )
-    parser.add_argument(
-        "-o",
-        "--output",
-        default="results/out.csv",
-        type=pathlib.Path,
-        help="Specify where to output the pandas csv file [default=%(default)r]",
-    )
+
     parser.add_argument(
         "-t",
         "--timeout",
@@ -105,13 +99,16 @@ def parse_args(args):
         type=int,
         help="Maximum time a run may take [default=%(default)r]",
     )
+    parser.add_argument('--no_remove_temp', dest='no_remove_temp', action='store_true')
+
     parser.add_argument(
-        "-r",
-        "--remove",
-        default=True,
-        type=bool,
-        help="Remove temp files or not [default=%(default)r]",
+        "-o",
+        "--output",
+        default="results/out.csv",
+        type=pathlib.Path,
+        help="Specify where to output the pandas csv file [default=%(default)r]",
     )
+
     # set logging level
     parser.add_argument(
         "-v",

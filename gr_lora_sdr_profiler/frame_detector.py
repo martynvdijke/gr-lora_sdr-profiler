@@ -28,7 +28,7 @@ def main(args: str) -> None:
     _logger.debug("Running frame detector runner")
     filename = args.filename
     timeout = args.timeout
-    remove_temp_files = args.remove
+    remove_temp_files = not args.no_remove_temp
     __counter = 0
 
     # parse the config for the values to use
@@ -158,6 +158,7 @@ def main(args: str) -> None:
                                                 "decoded_success_per": decoded_success_per,
                                                 "decoded_error_rate": decoded_error_rate,
                                                 "packet_detection_err_rate": packet_detection_rate,
+                                                "num_decoded_succes" : num_dec_suc,
                                                 "num_decoded_error": num_decoded_error,
                                                 "data_rate": data_rate,
                                                 "threshold": threshold,
