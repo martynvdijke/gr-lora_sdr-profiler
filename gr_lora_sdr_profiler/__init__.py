@@ -13,7 +13,7 @@ from . import plotter
 __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
 __license__ = "MIT"
-__version__ = "v0.26"
+__version__ = "v0.27"
 
 _logger = logging.getLogger(__name__)
 

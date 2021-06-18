@@ -6,7 +6,7 @@
 [![Build Status][build-image]][build-url]
 
 ## Summary
-This is a python cli package to be able to load and config yml file and change values to the flowgraph.
+This is a python cli package to be able to load a config yml file and change values to the flowgraph and run the flowgraph.
 ## Installation
 
 ```sh
@@ -17,20 +17,22 @@ $ pip install gr_lora_sdr_profiler
 ```python
 [-h] 
 [--version] 
-[-m {multi_stream,frame_detector,cran}] 
+[-m {multi_stream,frame_detector-sim,frame_detector-usrp,cran-sim,cran-usrp}]
 [-s {pandas,wandb,both}] 
 [-n NAME] 
 [-p FILE] 
 [-o OUTPUT] 
 [-t TIMEOUT] 
+[--no_remove_temp]
+[--sequential_spreading_factor]
 [-v] 
 [-vv] 
 FILE [FILE ...]
 ```
-
 ## Usage
 
 ### config
+the config files are parsed on launch of the script and are fed into the flowgraph script.
 
 ### cli
 Run flowgraph 
