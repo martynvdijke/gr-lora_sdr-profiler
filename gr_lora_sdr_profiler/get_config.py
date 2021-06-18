@@ -24,6 +24,8 @@ def increment_list(start: float, stop: float, increment: float, *skip: float) ->
     temp_list = []
     i = start
     while i < stop + increment:
+        # round up to two decimal places
+        i = round(i, 2)
         if i is not skip:
             temp_list.append(i)
         i += increment

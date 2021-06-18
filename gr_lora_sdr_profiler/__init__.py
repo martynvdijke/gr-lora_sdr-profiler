@@ -13,7 +13,7 @@ from . import plotter
 __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
 __license__ = "MIT"
-__version__ = "v0.25"
+__version__ = "v0.26"
 
 _logger = logging.getLogger(__name__)
 
@@ -99,8 +99,10 @@ def parse_args(args):
         type=int,
         help="Maximum time a run may take [default=%(default)r]",
     )
-    parser.add_argument('--no_remove_temp', dest='no_remove_temp', action='store_true')
-
+    parser.add_argument("--no_remove_temp", dest="no_remove_temp", action="store_true")
+    parser.add_argument(
+        "--sequential_spreading_factor", dest="sequential_spreading_factor", action="store_true"
+    )
     parser.add_argument(
         "-o",
         "--output",

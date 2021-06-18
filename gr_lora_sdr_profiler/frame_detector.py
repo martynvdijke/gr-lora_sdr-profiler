@@ -29,6 +29,7 @@ def main(args: str) -> None:
     filename = args.filename
     timeout = args.timeout
     remove_temp_files = not args.no_remove_temp
+    sequential_spreading_factor = args.sequential_spreading_factor
     __counter = 0
 
     # parse the config for the values to use
@@ -46,7 +47,7 @@ def main(args: str) -> None:
         cfo_list,
     ) = get_config.parse_config_data(args.config[0], "frame_detector")
     # initilize a saver object
-    save = file_saver.FileSaver(args, "frame_detector")
+
     n_times = (
         len(cfo_list)
         * len(sto_list)
@@ -59,17 +60,29 @@ def main(args: str) -> None:
         * len(sf_list)
     )
     _logger.info("Flowgraph needs to run %s times", n_times)
-    # loop over all values that needs to be runned
-    for cfo in cfo_list:
-        for sto in sto_list:
-            for snr in snr_list:
-                for threshold in threshold_list:
-                    for time_wait in time_wait_list:
-                        for coding_rate in cr_list:
-                            for has_crc in has_crc_list:
-                                for impl_head in impl_head_list:
-                                    for frames in frames_list:
-                                        for spreading_factor in sf_list:
+    # if no sequential spreading factor put everything into one large fram
+    if not sequential_spreading_factor:
+        save = file_saver.FileSaver(args, "frame_detector", sequential_spreading_factor=False)
+
+    for spreading_factor in sf_list:
+        # if sequential spreading factor is used make a new data frame for each spreading factor.
+        if sequential_spreading_factor:
+            save = file_saver.FileSaver(
+                args,
+                "frame_detector",
+                sequential_spreading_factor=True,
+                spreading_factor=spreading_factor,
+            )
+        # loop over all values that needs to be runned
+        for cfo in cfo_list:
+            for sto in sto_list:
+                for snr in snr_list:
+                    for threshold in threshold_list:
+                        for time_wait in time_wait_list:
+                            for coding_rate in cr_list:
+                                for has_crc in has_crc_list:
+                                    for impl_head in impl_head_list:
+                                        for frames in frames_list:
                                             est_time = time_estimater.get_time_estimate(
                                                 spreading_factor, n_times, __counter, frames
                                             )
@@ -124,12 +137,8 @@ def main(args: str) -> None:
                                                 ) = get_cpu_load.load_all()
                                                 # calculate the derived values
                                                 decoded_success_per = num_right / frames * 100
-                                                decoded_error_rate = 1 - (
-                                                    num_right / frames
-                                                )
-                                                packet_detection_rate = 1 - (
-                                                    num_dec_suc / frames
-                                                )
+                                                decoded_error_rate = 1 - (num_right / frames)
+                                                packet_detection_rate = 1 - (num_dec_suc / frames)
                                                 num_decoded_error = num_dec_err
                                                 paylen = len(input_data)
                                                 data_rate = (paylen * frames) / time
@@ -158,7 +167,7 @@ def main(args: str) -> None:
                                                 "decoded_success_per": decoded_success_per,
                                                 "decoded_error_rate": decoded_error_rate,
                                                 "packet_detection_err_rate": packet_detection_rate,
-                                                "num_decoded_succes" : num_dec_suc,
+                                                "num_decoded_succes": num_dec_suc,
                                                 "num_decoded_error": num_decoded_error,
                                                 "data_rate": data_rate,
                                                 "threshold": threshold,

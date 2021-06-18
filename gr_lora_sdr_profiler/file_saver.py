@@ -17,15 +17,38 @@ class FileSaver:
 
     # pylint: disable=R0902
 
-    def __init__(self, args: str, template: str) -> None:
+    def __init__(self, args: str, template: str, **kwargs) -> None:
+        """
+        Initialize the FileSaver object
+        Args:
+            args: parser arguments
+            template: template to use
+            **kwargs: extra optional arguments
+        """
         self.logger = _logger
         self.logger.debug("Making new FileSaver class")
         self.modus = args.save
         self.name = args.name
+        self.sequential_spreading_factor = kwargs["sequential_spreading_factor"]
         if args.save == "pandas":
             colum_names = get_config.parse_config_colums(template)
             self.data_frame = pandas.DataFrame(columns=colum_names)
-            self.output = args.output
+            if self.sequential_spreading_factor:
+                output_dir = args.output
+                filename = output_dir.name.split(".")
+                spreading_factor = kwargs["spreading_factor"]
+                output = (
+                    str(output_dir.parent)
+                    + "/"
+                    + filename[0]
+                    + "_"
+                    + str(spreading_factor)
+                    + "."
+                    + filename[1]
+                )
+                self.output = output
+            else:
+                self.output = args.output
         if args.save == "wandb":
             wandb.init(project="lora_sdr-profiler", name=args.name)
             self.config = wandb.config
