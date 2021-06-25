@@ -63,8 +63,8 @@ frame_detector:
     increment : 1
   paylen: 64
   frames:
-    start: 10000
-    end: 10000
+    start: 10
+    end: 10
     increment: 1
   impl_head:
     start: True

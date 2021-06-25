@@ -5,7 +5,8 @@ import sys
 import os
 import pathlib
 import coloredlogs
-from . import frame_detector
+from . import frame_detector_threshold
+from . import frame_detector_timeout
 from . import plotter
 
 # pylint: disable=R0801
@@ -13,7 +14,7 @@ from . import plotter
 __author__ = "Martyn van Dijke"
 __copyright__ = "Martyn van Dijke"
 __license__ = "MIT"
-__version__ = "v0.27"
+__version__ = "v0.28"
 
 _logger = logging.getLogger(__name__)
 
@@ -26,9 +27,18 @@ __templates__ = (
     "lora_sim_multi4",
     "lora_sim_multi5",
     "lora_sim_multi6",
-    "lora_sim_frame_detector",
+    "lora_sim_frame_detector_threshold",
+    "lora_sim_frame_detector_timeout",
+    "lora_sim_frame_detector_timeout",
 )
-__modes__ = ("multi_stream", "frame_detector-sim", "frame_detector-usrp", "cran-sim", "cran-usrp")
+__modes__ = (
+    "multi_stream",
+    "frame_detector_threshold",
+    "frame_detector_timeout",
+    "base",
+    "cran-sim",
+    "cran-usrp",
+)
 
 
 def make_dirs(_logger):
@@ -169,8 +179,14 @@ def main(argv=None) -> None:
         plot.main()
     else:
         _logger.info("Running profiler with mode: %s", args.mode)
-        if args.mode == "frame_detector-sim":
-            args.filename = "lora_sim_frame_detector-sim.py"
-            frame_detector.main(args)
+        if args.mode == "frame_detector_threshold":
+            args.filename = "frame_detector_threshold.py"
+            frame_detector_threshold.main(args)
+        if args.mode == "frame_detector_timeout":
+            args.filename = "frame_detector_timeout.py"
+            frame_detector_timeout.main(args)
+        if args.mode == "base":
+            args.filename = "base.py"
+            frame_detector_timeout.main(args)
 
     _logger.info("Profiler ended")
