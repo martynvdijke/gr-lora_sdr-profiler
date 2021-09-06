@@ -44,26 +44,29 @@ def profile_flowgraph(string_input: str, timeout: int, template: str, remove_tem
         "gr_lora_sdr_profiler/bash_scripts/run.sh {0} {1}".format(timeout, results_file), shell=True
     )
     time = td.time() - start_time
-    subprocess.call(
-        "gr_lora_sdr_profiler/bash_scripts/convert.sh {} {}".format(
-            results_file, results_converted
-        ),
-        shell=True,
-    )
-    # open output for parsing processing
-    with open(results_converted, "r") as file1:
-        try:
-            stdout = file1.readlines()
-        except (RuntimeError, TypeError, NameError):
-            _logger.error("Error reading the output of the run")
-            stdout = "nothing"
+    if template == "cran":
+        return time
+    else:
+        subprocess.call(
+            "gr_lora_sdr_profiler/bash_scripts/convert.sh {} {}".format(
+                results_file, results_converted
+            ),
+            shell=True,
+        )
+        # open output for parsing processing
+        with open(results_converted, "r") as file1:
+            try:
+                stdout = file1.readlines()
+            except (RuntimeError, TypeError, NameError):
+                _logger.error("Error reading the output of the run")
+                stdout = "nothing"
 
-    if remove_temp_files:
-        # delete temporary file
-        os.remove(results_file)
-        os.remove(results_converted)
+        if remove_temp_files:
+            # delete temporary file
+            os.remove(results_file)
+            os.remove(results_converted)
 
-    return parse_stdout(stdout, string_input, time, template)
+        return parse_stdout(stdout, string_input, time, template)
 
 
 def parse_stdout(stdout, string_input, time, template):

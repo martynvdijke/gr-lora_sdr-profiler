@@ -5,34 +5,38 @@
 # SPDX-License-Identifier: GPL-3.0
 #
 # GNU Radio Python Flow Graph
-# Title: test
-# Author: Martyn
+# Title: Frame detector test with noise and cfo
+# Author: Martyn van Dijke
 # Description: Simulation example LoRa
-# GNU Radio version: 3.8.2.0
+# GNU Radio version: 3.9.2.0
 
 from gnuradio import blocks
-from gnuradio import filter
-from gnuradio import gr
-import sys
-import signal
-from gnuradio import analog
-import lora_sdr
-import threading
-from gnuradio.eng_arg import eng_float, intx
-from gnuradio import eng_notation
 from gnuradio import channels
 from gnuradio.filter import firdes
+from gnuradio import gr
+from gnuradio.fft import window
+import sys
+import signal
+from argparse import ArgumentParser
+from gnuradio.eng_arg import eng_float, intx
+from gnuradio import eng_notation
+import lora_sdr
+import threading
 
-class lora_sim(gr.top_block):
+
+
+
+class cran_send(gr.top_block):
 
     def __init__(self):
-        gr.top_block.__init__(self, "test")
+        gr.top_block.__init__(self, "Frame detector test with noise and cfo", catch_exceptions=True)
 
         self._lock = threading.RLock()
 
         ##################################################
         # Variables
         ##################################################
+        self.center_freq = center_freq = 868.1e6
         src_data = "@@input_data@@"
         self.bw = bw = @@bw@@
         self.samp_rate = @@samp_rate@@ 
@@ -48,47 +52,33 @@ class lora_sim(gr.top_block):
         self.cfo = cfo = @@cfo@@
         self.sto = sto = @@sto@@
         self.snr = snr = @@snr@@
-        self.center_freq = center_freq = 868.1e6
 
         ##################################################
         # Blocks
         ##################################################
-        self.lora_sdr_hier_tx_1 = lora_sdr.hier_tx(pay_len, n_frame, src_data, cr, sf, impl_head, has_crc, samp_rate, bw, time_wait, [8, 16], True)
-        self.lora_sdr_hier_tx_1.set_min_output_buffer(2**sf*8)
-        self.lora_sdr_hier_rx_1 = lora_sdr.hier_rx(samp_rate, bw, sf, impl_head, cr, pay_len, has_crc, [8, 16] , True)
-        self.lora_sdr_frame_detector_1 = lora_sdr.frame_detector_threshold(sf,samp_rate,bw,threshold)
-        self.lora_sdr_frame_detector_1.set_min_output_buffer(2**sf*8)
-        self.interp_fir_filter_xxx_0_1_0 = filter.interp_fir_filter_ccf(4, (-0.128616616593872,	-0.212206590789194,	-0.180063263231421,	3.89817183251938e-17	,0.300105438719035	,0.636619772367581	,0.900316316157106,	1	,0.900316316157106,	0.636619772367581,	0.300105438719035,	3.89817183251938e-17,	-0.180063263231421,	-0.212206590789194,	-0.128616616593872))
-        self.interp_fir_filter_xxx_0_1_0.declare_sample_delay(0)
-        self.interp_fir_filter_xxx_0_1_0.set_min_output_buffer(2**sf*8)
+        self.lora_sdr_hier_tx_1 = lora_sdr.hier_tx(pay_len, n_frame, "PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ", cr, sf, impl_head,has_crc, samp_rate, bw, time_wait, [8, 16],False)
+        self.lora_sdr_hier_tx_1.set_min_output_buffer(4096)
+        self.lora_sdr_frame_sender_0 = lora_sdr.frame_sender('localhost', 5555, True, True, True, sf, samp_rate, bw, has_crc, pay_len, cr, impl_head, [8, 16], "PKdhtXMmr18n2L9K88eMlGn7CcctT9RwKSB1FebW397VI5uG1yhc3uavuaOb9vyJ")
+        self.lora_sdr_frame_detector_timeout_0_0 = lora_sdr.frame_detector_timeout(sf,samp_rate,bw,200,False)
         self.channels_channel_model_0 = channels.channel_model(
             noise_voltage=10**(-snr/20),
             frequency_offset=cfo,
-            epsilon=1+sto/samp_rate,
-            taps=[1.0],
+            epsilon=1+cfo*samp_rate/center_freq/2**sf,
+            taps=[1.0 + 1.0j],
             noise_seed=0,
             block_tags=False)
-        self.channels_channel_model_0.set_min_output_buffer(2**sf*8)
-        self.blocks_throttle_0_1_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate*10,True)
-        self.blocks_delay_0 = blocks.delay(gr.sizeof_gr_complex*1, delay)
-        self.blocks_add_xx_0 = blocks.add_vcc(1)
-        self.analog_const_source_x_0 = analog.sig_source_c(0, analog.GR_CONST_WAVE, 0, 0, 0)
-
-
+        self.channels_channel_model_0.set_min_output_buffer(4096)
+        self.blocks_throttle_0_1_0_0 = blocks.throttle(gr.sizeof_gr_complex*1, samp_rate*10,True)
 
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_const_source_x_0, 0), (self.blocks_add_xx_0, 0))
-        self.connect((self.blocks_add_xx_0, 0), (self.channels_channel_model_0, 0))
-        self.connect((self.blocks_delay_0, 0), (self.blocks_add_xx_0, 1))
-        self.connect((self.blocks_throttle_0_1_0, 0), (self.blocks_delay_0, 0))
-        self.connect((self.channels_channel_model_0, 0), (self.lora_sdr_frame_detector_1, 0))
-        self.connect((self.interp_fir_filter_xxx_0_1_0, 0), (self.lora_sdr_hier_rx_1, 0))
-        self.connect((self.lora_sdr_frame_detector_1, 0), (self.interp_fir_filter_xxx_0_1_0, 0))
-        self.connect((self.lora_sdr_hier_tx_1, 0), (self.blocks_throttle_0_1_0, 0))
+        self.connect((self.blocks_throttle_0_1_0_0, 0), (self.channels_channel_model_0, 0))
+        self.connect((self.channels_channel_model_0, 0), (self.lora_sdr_frame_detector_timeout_0_0, 0))
+        self.connect((self.lora_sdr_frame_detector_timeout_0_0, 0), (self.lora_sdr_frame_sender_0, 0))
+        self.connect((self.lora_sdr_hier_tx_1, 0), (self.blocks_throttle_0_1_0_0, 0))
 
 
     def get_bw(self):
@@ -105,13 +95,6 @@ class lora_sim(gr.top_block):
     def set_time_wait(self, time_wait):
         with self._lock:
             self.time_wait = time_wait
-
-    def get_threshold(self):
-        return self.threshold
-
-    def set_threshold(self, threshold):
-        with self._lock:
-            self.threshold = threshold
 
     def get_sto(self):
         return self.sto
@@ -142,7 +125,7 @@ class lora_sim(gr.top_block):
     def set_samp_rate(self, samp_rate):
         with self._lock:
             self.samp_rate = samp_rate
-            self.blocks_throttle_0_1_0.set_sample_rate(self.samp_rate*10)
+            self.blocks_throttle_0_1_0_0.set_sample_rate(self.samp_rate*10)
             self.channels_channel_model_0.set_timing_offset(1+self.cfo*self.samp_rate/self.center_freq/2**self.sf)
 
     def get_pay_len(self):
@@ -187,14 +170,6 @@ class lora_sim(gr.top_block):
         with self._lock:
             self.frame_period = frame_period
 
-    def get_delay(self):
-        return self.delay
-
-    def set_delay(self, delay):
-        with self._lock:
-            self.delay = delay
-            self.blocks_delay_0.set_dly(self.delay)
-
     def get_cr(self):
         return self.cr
 
@@ -222,7 +197,7 @@ class lora_sim(gr.top_block):
 
 
 
-def main(top_block_cls=lora_sim, options=None):
+def main(top_block_cls=cran_send, options=None):
     tb = top_block_cls()
 
     def sig_handler(sig=None, frame=None):

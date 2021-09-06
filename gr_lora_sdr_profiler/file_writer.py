@@ -270,3 +270,4 @@ def write_template_frame_detector(
     with open(temp_file, "w") as f:
         f.write(replaced_text)
         f.close()
+
