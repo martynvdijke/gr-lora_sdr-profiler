@@ -8,6 +8,7 @@ import coloredlogs
 from . import frame_detector_threshold
 from . import frame_detector_timeout
 from . import plotter
+from . import cran
 
 # pylint: disable=R0801
 
@@ -36,8 +37,7 @@ __modes__ = (
     "frame_detector_threshold",
     "frame_detector_timeout",
     "base",
-    "cran-sim",
-    "cran-usrp",
+    "cran"
 )
 
 
@@ -185,6 +185,9 @@ def main(argv=None) -> None:
         if args.mode == "frame_detector_timeout":
             args.filename = "frame_detector_timeout.py"
             frame_detector_timeout.main(args)
+        if args.mode == "cran":
+            args.filename = "cran.py"
+            cran.main(args)
         if args.mode == "base":
             args.filename = "base.py"
             frame_detector_timeout.main(args)

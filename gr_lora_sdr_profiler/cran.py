@@ -147,10 +147,11 @@ def main(args: str) -> None:
                                                 last_file = files[-1].split("_")[0]
                                                 latency = last_file+"_latency.csv"
                                                 packets = last_file+"_packets.csv"
-                                                latency_pd = pd.read_csv(latency)
                                                 #TODO figure out how to do this ?
                                                 pd_packets = pd.read_csv(packets)
-
+                                                num_dec = pd_packets['packets_decoded'].iloc[-1]
+                                                num_recv = pd_packets['packets_recieved'].iloc[-1]
+                                                num_send = pd_packets['packets_send'].iloc[-1]
                                             except:
                                                 _logger.warning("Error in loading the data")
 
@@ -174,6 +175,9 @@ def main(args: str) -> None:
                                                 "snr": snr,
                                                 "cfo": cfo,
                                                 "sto": sto,
+                                                "num_dec" : num_dec,
+                                                "num_recv" : num_recv,
+                                                "num_send" : num_send,
                                             }
                                             __counter = __counter + 1
                                             # save data to pandas or wandb
