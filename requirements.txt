@@ -56,6 +56,6 @@ typed-ast==1.4.3
 typing-extensions==3.10.0.0
 urllib3==1.26.5
 virtualenv==20.4.6
-wandb==0.10.30
+wandb==0.12.12
 wcwidth==0.2.5
 wrapt==1.12.1
