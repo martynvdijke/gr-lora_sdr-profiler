@@ -54,7 +54,7 @@ toml==0.10.2
 tox==3.23.1
 typed-ast==1.4.3
 typing-extensions==3.10.0.0
-urllib3==1.26.17
+urllib3==1.26.18
 virtualenv==20.4.6
 wandb==0.10.30
 wcwidth==0.2.5
