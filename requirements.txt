@@ -59,3 +59,4 @@ virtualenv==20.4.6
 wandb==0.15.12
 wcwidth==0.2.5
 wrapt==1.12.1
+zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
